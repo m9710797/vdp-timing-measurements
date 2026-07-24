@@ -1,0 +1,20 @@
+screen5sprite16x16nocmdnocpu_2.vcd 2294
+screen5sprite16x16HMMVcpuread.vcd 680
+screen5sprite16x16HMMVcpuwrite.vcd 3478
+screen5sprite16x16HMMVnocpu.vcd 0         # 6204
+screen5sprite16x16nocmdcpuread.vcd 4118
+screen5sprite16x16nocmdcpuwrite.vcd 2940
+screen5sprite16x16nocmdnocpuhalfsprites.vcd 3490
+screen5sprite16x16nocmdnocpu.vcd 1136
+screen5sprite16x16nocmdnocpu_x1.vcd 3370
+screen5sprite16x16nocmdnocpu_x2.vcd 5640
+screen5sprite16x16nocmdnocpu_x3.vcd 2882
+screen5sprite8x8nocmdcpuread.vcd 1394
+screen5sprite8x8nocmdcpuwrite.vcd 4690
+screen5sprite8x8nocmdnocpu.vcd 3520
+screen6sprites.vcd 3802
+screen7sprites.cvd.vcd 3896
+screen8sprites16x16HMMVcpuwrite.vcd 3246
+screen8sprites16x16HMMVnocpu.vcd 3594
+screen8sprites16x16nocmdcpuwrite.vcd 1718
+screen8sprites16x16nocmdnocpu.vcd 950

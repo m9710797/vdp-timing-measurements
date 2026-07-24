@@ -1,0 +1,58 @@
+  17:                            R.. 0x1c005
+  41:                            W.. 0x1c005
+  49:                                         R.. 0x1c00b  R.. 0x1c011
+  73:                                         W.. 0x1c00b  W.. 0x1c011
+ 165:                            R.. 0x1c005  R.. 0x1c00b  R.. 0x1c011
+ 189:                            W.. 0x1c005  W.. 0x1c00b  W.. 0x1c011
+ 237:               R.. 0x1c000
+ 261:               W.. 0x1c000
+ 277:                            R.. 0x1c006  R.. 0x1c00c  R.. 0x1c012
+ 285:               R.. 0x0c2ff  R.. 0x0caff  R.. 0x0d2ff  R.. 0x0daff
+ 301:                            W.. 0x1c006  W.. 0x1c00c  W.. 0x1c012
+ 349:               R.. 0x1c000
+ 373:               W.. 0x1c000
+ 389:                            R.. 0x1c006  R.. 0x1c00c  R.. 0x1c012
+ 413:               R.. 0x1c3ff  R.. 0x1cbff  R.. 0x1d3ff  R.. 0x1dbff
+ 421:                            W.. 0x1c006  W.. 0x1c00c  W.. 0x1c012
+ 461:               R.. 0x1c001
+ 485:               W.. 0x1c001
+ 509:                            R.. 0x1c007  R.. 0x1c00d  R.. 0x1c013
+ 533:                            W.. 0x1c007  W.. 0x1c00d  W.. 0x1c013
+ 541:               R.. 0x0c4ff  R.. 0x0ccff  R.. 0x0d4ff  R.. 0x0dcff
+ 573:               R.. 0x1c001
+ 597:               W.. 0x1c001
+ 621:                            R.. 0x1c007  R.. 0x1c00d  R.. 0x1c013
+ 645:                            W.. 0x1c007  W.. 0x1c00d  W.. 0x1c013
+ 669:               R.. 0x1c5ff  R.. 0x1cdff  R.. 0x1d5ff  R.. 0x1ddff
+ 685:               R.. 0x1c002
+ 709:               W.. 0x1c002
+ 733:                            R.. 0x1c008  R.. 0x1c00e  R.. 0x1c014
+ 757:                            W.. 0x1c008  W.. 0x1c00e  W.. 0x1c014
+ 797:               R.. 0x0c6ff  R.. 0x0ceff  R.. 0x0d6ff  R.. 0x0deff
+ 805:               R.. 0x1c002
+ 829:               W.. 0x1c002
+ 845:                            R.. 0x1c008  R.. 0x1c00e  R.. 0x1c014
+ 869:                            W.. 0x1c008  W.. 0x1c00e
+ 917:               R.. 0x1c003
+ 925:               R.. 0x1c7ff  R.. 0x1cfff  R.. 0x1d7ff
+ 941:               W.. 0x1c003
+ 957:                            R.. 0x1c009  R.. 0x1c00f
+ 981:                            W.. 0x1c009  W.. 0x1c00f
+1029:               R.. 0x1c003
+1053:  R.. 0x0c0ff  R.. 0x0c8ff  R.. 0x0d0ff  R.. 0x0d8ff
+1061:               W.. 0x1c003
+1069:                            R.. 0x1c009  R.. 0x1c00f
+1093:                            W.. 0x1c009  W.. 0x1c00f
+1149:               R.. 0x1c004
+1173:               W.. 0x1c004
+1181:  R.. 0x1ffff  R.. 0x1c9ff  R.. 0x1d1ff  R.. 0x1d9ff
+1189:                            R.. 0x1c00a  R.. 0x1c010
+1213:                            W.. 0x1c00a  W.. 0x1c010
+1237:  R.. 0x1ffff  R.. 0x1ffff  R.. 0x1ffff  R.. 0x1ffff
+1245:  R.. 0x1ffff  R.. 0x1ffff  R.. 0x1ffff  R.. 0x1ffff
+1253:  R.. 0x1ffff  R.. 0x1ffff  R.. 0x1ffff  R.. 0x1ffff
+1261:  R.. 0x1ffff  R.. 0x1ffff  R.. 0x1ffff  R.. 0x1ffff
+1269:               R.. 0x1c004
+1293:               W.. 0x1c004
+1301:                            R.. 0x1c00a  R.. 0x1c010
+1325:                            W.. 0x1c00a  W.. 0x1c010

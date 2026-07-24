@@ -1,0 +1,50 @@
+   1:                                         R.. 0x15a4f  R.. 0x15a62
+  33:               R.. 0x15a2c  R.. 0x15a3f
+  73:                                         R.. 0x15a50  R.. 0x15a63
+ 105:               R.. 0x15a2d  R.. 0x15a40
+ 165:                                         R.. 0x15a51  R.. 0x15a64
+ 181:               R.. 0x15a2e
+ 213:                                         R.. 0x15a52  R.. 0x15a65
+ 253:               R.. 0x15a2f
+ 285:               R.. 0x12f3f  R.. 0x1373f  R.. 0x13f3f  R.. 0x1477f
+ 293:                                         R.. 0x15a53  R.. 0x15a66
+ 325:               R.. 0x15a30
+ 357:                            R.. 0x15a41  R.. 0x15a54  R.. 0x15a67
+ 397:               R.. 0x15a31
+ 413:               R.. 0x0303f  R.. 0x0383f  R.. 0x0407f  R.. 0x0487f
+ 429:                            R.. 0x15a42  R.. 0x15a55  R.. 0x15a68
+ 469:               R.. 0x15a32
+ 501:                            R.. 0x15a43  R.. 0x15a56
+ 541:               R.. 0x1313f  R.. 0x1393f  R.. 0x1417f  R.. 0x1497f
+ 549:               R.. 0x15a33
+ 573:                            R.. 0x15a44  R.. 0x15a57
+ 613:               R.. 0x15a34
+ 645:                            R.. 0x15a45  R.. 0x15a58
+ 669:               R.. 0x0323f  R.. 0x03a3f  R.. 0x0427f  R.. 0x04a7f
+ 685:               R.. 0x15a35                            R.. 0x15a69
+ 717:                            R.. 0x15a46  R.. 0x15a59
+ 757:               R.. 0x15a36                            R.. 0x15a6a
+ 789:                            R.. 0x15a47  R.. 0x15a5a
+ 797:               R.. 0x1333f  R.. 0x13b3f  R.. 0x1437f  R.. 0x14b7f
+ 829:               R.. 0x15a37                            R.. 0x15a6b
+ 861:                            R.. 0x15a48  R.. 0x15a5b
+ 901:               R.. 0x15a38                            R.. 0x15a6c
+ 925:               R.. 0x0343f  R.. 0x03c3f  R.. 0x0447f
+ 933:                            R.. 0x15a49  R.. 0x15a5c
+ 973:               R.. 0x15a39
+1005:                            R.. 0x15a4a  R.. 0x15a5d
+1045:               R.. 0x15a3a
+1053:               R.. 0x1353f  R.. 0x13d3f  R.. 0x1457f
+1077:                            R.. 0x15a4b  R.. 0x15a5e
+1117:  R.. 0x15a28  R.. 0x15a3b
+1149:                            R.. 0x15a4c  R.. 0x15a5f
+1181:  R.. 0x02e3f  R.. 0x0363f  R.. 0x03e3f  R.. 0x0467f
+1189:  R.. 0x15a29  R.. 0x15a3c
+1221:                            R.. 0x15a4d  R.. 0x15a60
+1237:  R.. 0x1ffff  R.. 0x1ffff  R.. 0x1ffff  R.. 0x1ffff
+1245:  R.. 0x1ffff  R.. 0x1ffff  R.. 0x1ffff  R.. 0x1ffff
+1253:  R.. 0x1ffff  R.. 0x1ffff  R.. 0x1ffff  R.. 0x1ffff
+1261:  R.. 0x1ffff  R.. 0x1ffff  R.. 0x1ffff  R.. 0x1ffff
+1269:  R.. 0x15a2a  R.. 0x15a3d
+1293:                            R.. 0x15a4e  R.. 0x15a61
+1335:  R.. 0x15a2b  R.. 0x15a3e

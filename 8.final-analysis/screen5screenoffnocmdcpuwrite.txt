@@ -1,0 +1,49 @@
+   9:               W.c 0x16c69  W.c 0x16c7c
+  49:                                         W.c 0x16c8d  W.c 0x16ca0
+  81:               W.c 0x16c6a  W.c 0x16c7d
+ 121:                                         W.c 0x16c8e  W.c 0x16ca1
+ 165:               W.c 0x16c6b  W.c 0x16c7e
+ 189:                                         W.c 0x16c8f  W.c 0x16ca2
+ 229:               W.c 0x16c6c  W.c 0x16c7f
+ 261:                                         W.c 0x16c90  W.c 0x16ca3
+ 285:               R.r 0x0f4ff  R.r 0x0fcff  R.r 0x0043f  R.r 0x00c3f
+ 301:               W.c 0x16c6d
+ 333:                                         W.c 0x16c91  W.c 0x16ca4
+ 373:               W.c 0x16c6e
+ 405:                                         W.c 0x16c92  W.c 0x16ca5
+ 413:               R.r 0x1f5ff  R.r 0x1fdff  R.r 0x1053f  R.r 0x10d3f
+ 445:               W.c 0x16c6f
+ 477:                            W.c 0x16c80  W.c 0x16c93  W.c 0x16ca6
+ 517:               W.c 0x16c70
+ 541:               R.r 0x0f6ff  R.r 0x0feff  R.r 0x0063f  R.r 0x00e3f
+ 549:                            W.c 0x16c81  W.c 0x16c94  W.c 0x16ca7
+ 589:               W.c 0x16c71
+ 621:                            W.c 0x16c82  W.c 0x16c95
+ 661:               W.c 0x16c72
+ 669:               R.r 0x1f7ff  R.r 0x1ffff  R.r 0x1073f  R.r 0x10f3f
+ 693:                            W.c 0x16c83  W.c 0x16c96
+ 733:               W.c 0x16c73
+ 765:                            W.c 0x16c84  W.c 0x16c97
+ 797:               R.r 0x0f8ff  R.r 0x0003f  R.r 0x0083f  R.r 0x0103f
+ 805:               W.c 0x16c74                            W.c 0x16ca8
+ 837:                            W.c 0x16c85  W.c 0x16c98
+ 877:               W.c 0x16c75
+ 909:                            W.c 0x16c86  W.c 0x16c99
+ 925:               R.r 0x1f9ff  R.r 0x1013f  R.r 0x1093f
+ 949:               W.c 0x16c76
+ 981:                            W.c 0x16c87  W.c 0x16c9a
+1021:               W.c 0x16c77
+1053:  R.r 0x0f2ff  R.r 0x0faff  R.r 0x0023f  R.r 0x00a3f
+1061:                            W.c 0x16c88  W.c 0x16c9b
+1093:  W.c 0x16c65  W.c 0x16c78
+1125:                            W.c 0x16c89  W.c 0x16c9c
+1165:  W.c 0x16c66  W.c 0x16c79
+1181:  R.r 0x1ffff  R.r 0x1fbff  R.r 0x1033f  R.r 0x10b3f
+1197:                            W.c 0x16c8a  W.c 0x16c9d
+1237:  R.. 0x1ffff  R.. 0x1ffff  R.. 0x1ffff  R.. 0x1ffff
+1245:  R.. 0x1ffff  R.. 0x1ffff  R.. 0x1ffff  R.. 0x1ffff
+1253:  R.. 0x1ffff  R.. 0x1ffff  R.. 0x1ffff  R.. 0x1ffff
+1261:  R.. 0x1ffff  R.. 0x1ffff  R.. 0x1ffff  R.. 0x1ffff
+1269:  W.c 0x16c67  W.c 0x16c7a  W.c 0x16c8b  W.c 0x16c9e
+1309:  W.c 0x16c68  W.c 0x16c7b
+1345:                            W.c 0x16c8c  W.c 0x16c9f

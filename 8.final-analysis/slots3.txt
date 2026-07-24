@@ -1,0 +1,262 @@
+Hi,
+
+Another update. Last time I figured out when the VDP can access VRAM for
+CPU or command engine read/writes. Now I figured out how these slots are
+allocated to either CPU or commands. Short summary: the first available
+free slot is used (or almost, see below) and if CPU and command engine
+want to access VRAM at the same time, then the CPU gets priority.
+
+I'll now describe how I figured this out. First I created a table that
+contains the average duration between two CPU or two command accesses:
+
+	           || screen off | sprites off | sprites
+	-----------++------------+-------------+-------------
+	 -     -   ||  -     -   |  -     -    |   -     -
+	 -   read  ||  -    77.3 |  -    79.5  |   -    76.1
+	 -   write ||  -    77.4 |  -    77.3  |   -    83.6
+	           ||            |             |   -    85.5
+	           ||            |             |   -    85.5
+	           ||            |             |
+	HMMV   -   || 49.9   -   | 63.0   -    |  65.2   -
+	           ||            | 62.2   -    |  66.0   -
+	           ||            |             |  65.2   -
+	HMMV read  || 50.5  77.3 |             | 129.6  80.2
+	HMMV write || 51.1  77.4 | 61.9  77.2  | 121.3  79.0
+	           ||            |             | 127.2  83.1
+
+There are the usual three modes (three columns) and several tests with
+different combinations of command(HMMV)/no command and read/write/no CPU
+access. Each cell contains two numbers. The first is the average
+duration in VDP cycles between two successive command VRAM accesses and
+the second number is the duration for CPU accesses. For some of these
+combinations we had no data, sometimes we had multiple capture results.
+
+The test program (optionally) executed a HMMV command with NX=256. So
+(at least as a first approximation) we can assume that the command
+engine has something ready to write to VRAM at regular intervals (every
+256 writes there will be some extra delay, but I ignore that here). The
+test program also (optionally) read/writes to VRAM via the CPU. It does
+this with 40 consecutive 'IN A,(#98)' or 'OUT (#98),A' instructions,
+followed by some overhead and a jump back to these 40 IO instructions.
+Each IO instruction takes 12 Z80 cycles and this overhead takes 30 Z80
+cycles. Or from the VDP point of view this means there are 40 read/write
+requests every 72 cycles, but between the 40th and 41th request there are
+252 instead of 72 cycles. And this cycle repeats.
+
+We don't yet know how fast the commands execute. But we know exactly how
+fast we send CPU IO operations: we expect an average time between the
+CPU accesses of (39*72+252)/40 = 76.5 cycles. A full capture is only
+about 4 display lines, or approx 70 CPU access. So we can only expect a
+number that is approximately equal to this calculated average.
+
+Ok, now look at the table: in the first two columns (screen off, sprites
+off) the average time between two CPU accesses is like we predicted. But
+in the last column this average time is higher than expected. Since the
+Z80 does continue sending IO operations at a regular pace but the VDP
+processes less CPU accesses than expected. This must mean that some of
+the IO operations are lost. (An alternative is that the Z80 gets stalled
+'somehow', but later I'll show that this is not the case). CPU accesses
+even get lost when there is no VDP command executing.
+
+If we look at the average duration between command accesses, we see that
+the command executes fastest in the mode 'screen off', slower in the
+mode 'sprites off' and still slower in mode 'sprites' (completely as
+expected). But what is surprising (at least to me) is that the HMMV
+command drastically slows down when the Z80 simultaneously sends VRAM
+read/write requests. Note that OTOH the rate at which CPU requests are
+processed does not seem to be influenced by the execution of a VDP
+command.
+
+
+These results *suggest* that CPU accesses take priority over command
+accesses. To verify this I build a model that implements this guess and
+checked that I can make it fit the measured data.
+
+Take a look at the following table:
+
+  29(66):              Rc  66 32   Rc  66 32   We 132      We 132
+  93(64):              Rc  64 24   Rc  64 24   Rc 130 60   Rc 130 60
+ 163(70):              Rc  70 22   Rc  70 22   Rc  70 58   Rc  70 58
+ 171( 8):              We 390      We 390      We 142      We 142
+ 189(18):              --          --          --          --
+ 221(32):              We  50 #80  --          Rc  58 44   Rc  58 44
+ 253(32):              Rc  90 40   Rc  90 40   We  82 #76  We  82 #76
+ 317(64):              Rc  64 32   We 146      Rc  96 68   Rc  96 68
+ 349(32):              We 128      --          Rc  32 28   Rc  32 28
+ 381(32):              Rc  64 24   We  64      We 128      We 128
+ 445(64):              Rc  64 16   We  64      Rc  96 52   Rc  96 52
+ 477(32):              We 128      --          We  96 #84  We  96 #84
+ 509(32):              --          Rc 256!44   Rc  64 44
+ 573(64):              Rc 128  0*  Rc  64 36   Rc  64 36
+ 605(32):              We 128      We 160      We 128
+ 637(32):              --          Rc  64 28   Rc  64 28
+ 701(64):  Rc     56   Rc 128 56   Rc  64 20   Rc  64 20
+ 733(32):  Rc  32 16   Rc  32 16   We 128      We 128
+ 765(32):  We          We 160      --          --
+ 829(64):  Rc  96 40   Rc  96 40   Rc 128  4*  Rc 128  4*
+ 861(32):  We  96      We  96      We 128      We 128
+ 893(32):  Rc  64 32   Rc  64 32   --          --
+ 957(64):  Rc  64 24   Rc  64 24   Rc 128 60   Rc 128 60
+ 989(32):  We 128      We 128      Rc  32 20   Rc  32 20
+1021(32):  Rc  64 16   Rc  64 16   We 160      We 160
+1085(64):  We  96 #80  We  96 #80  Rc  96 44   Rc  96 44
+1117(32):  Rc  96 40   Rc  96 40   We  96 #76  We  96 #76
+1149(32):  We  64      We  64      Rc  64 36   Rc  64 36
+1213(64):  Rc  96 64   Rc  96 64   Rc  64 28   Rc  64 28
+1265(52):  Rc  52 44   Rc  52 44   We 148 #80  We 148 #80
+1331(66):  Rc  66 38   Rc  66 38   Rc 118  2*  Rc 118  2*
+
+These numbers are:
+- header column (before the ':') is the time in VDP cycles, the number
+  between parentheses is the difference with the previous time index.
+  Time runs from top to bottom and then continues in the next column.
+- The next columns represent 1 partial, 3 full and again 1 partial
+  display line.
+- For each moment in time there are several bits of information:
+  * Rc or We:  Read-CPU and Write-command-Engine (this table is for the
+    test: screen5, 16x16spritesm HMMV-command, cpu-reads). If this field
+    contains '--', then there was no access at this moment.
+  * Next number is the time since the last access of the same type (cpu
+    or command)
+  * The 3rd field is different for CPU and command accesses:
+    - For CPU it means: the delay between the time the Z80 issued the
+      IO operation and the time the VDP actually executed this request.
+      Note that all the data in this table comes from measurements or
+      calculations except for the very first number of this kind (later
+      numbers of this kind are again calculated). This first number is
+      estimated (mostly using trial-and-error). More on this below.
+    - For command accesses this field is often missing (because it's
+      often not important and to not overload the table). But when it is
+      present it starts with a '#' character. This number is the time
+      since the last *CPU* request (not command request!). Also more on
+      this below.
+  * Between the two numbers there is occasionally a '!' character. These
+    are locations where the Z80 started a new loop iteration, so when
+    there were 252 instead of 72 VDP cycles between the CPU requests.
+  * When there is a '*' character it means the CPU has already send a
+    new request before the VDP handled the previous one. So when (one or
+    more) CPU requests had to be dropped.
+
+Ok, that's a lot of data in a very compact format. Maybe it's worth to
+highlight some of the data:
+
+* 1st (non-header) column at time=701 'Rc    56': this is the first
+  access we see in this capture. The number '56' is the only number in
+  this whole table that I had to guess. More on this below.
+* 1st column, time=733 'Rc  32 16'. This is the second CPU action. It
+  comes 32 cycles after the previous one. Because 32 is less than 72
+  (the rate at which the Z80 sends new requests), we had a chance to do
+  some 'catching-up', so now we're only 16 cycles late in handling the
+  CPU request.
+* 3rd column, time=509 'Rc 256!44`: There's an exclamation mark, this
+  means the CPU didn't send a new request for 252 cycles. The last CPU
+  actions was 256 cycles ago, that 4 more than 252, so we're now 4
+  cycles more 'late' compared to the previous CPU action (40+4 = 44).
+* 2nd column, time=573: 'Rc 128  0*'. The previous CPU action was 128
+  cycles ago and at that time we were 16 cycles late. So now we're
+  16+128=144 cycles late. Though 144 > 72, so we've missed a CPU
+  request. If we take this miss into account, then we're back on track
+  (0 cycles late).
+  If you look at the 2nd and 4th column (a full column with '!'). There
+  should be 19 requests in these columns (1368/72 = 19, exactly). If you
+  count the number of actual processed CPU requests plus the misses
+  predicted by this model you indeed get 19.
+* All columns, time=189: there never (at least in this test!) seems to
+  be any action at this time, This may seem a waste since in the same
+  display line we also have to drop CPU requests. Though this slot comes
+  only 18 cycles after the previous and the one before was only 8
+  before. So both pending CPU and command accesses have been processed
+  and there is no new request ready yet. This does suggest that there
+  can only be one pending request of each type. If there was more buffer
+  space, then surely this idle slot could have been filled.
+
+These were the basics. Now for some more 'problematic' cases:
+
+* 1st column, time=1085 'We 96 #80': This is a command engine write.
+  It comes 96 cycles after the previous command action. (This delay can
+  be much higher than 96, e.g. see time=171. This again suggests that
+  CPU requests take priority over command requests). But now there's
+  also the part '#80'. This means that at this point we're 80 cycles
+  late for a CPU request. Last cpu action was at time=1021, at that time
+  we were 16 cycles late, now we're 64 cycles later in time, so we're 80
+  cycles late. This means that the CPU has already issued a new
+  read-request (remember, every 72 cycles). So then why doesn't the VDP
+  handle this new CPU request instead of the command request?
+* 2nd column, time=509 (no action at this point): The previous CPU
+  request was at time=445 (64 cycles ago) and at that time we were 16
+  cycles late. So at this time we're 16+64=80 cycles late, meaning that
+  the CPU has already issued a new request. So then why doesn't the VDP
+  handle it instead of leaving the bus idle? (The last command request
+  was only 32 cycles ago, so probably the command engine doesn't have a
+  new request ready yet).
+
+Remember that I had to make a guess for the 'late-ness' at which the
+first CPU request is handled. By changing this initial number all the
+other 'late-ness' numbers also change. But the order and the times at
+which the VDP handles CPU or command requests directly comes from
+measurements.
+
+So by playing with this initial guess, you sometimes get nonsense
+results: e.g. for some guesses you get negative numbers for 'late-ness',
+meaning that the VDP handles a CPU request before the CPU had actually
+given that request. Clearly such guesses can be rejected. Similarly too
+high late-ness numbers can be rejected. Still often there is a whole
+range of guesses that all produce valid results, let's call this the
+'allowed-range of guesses'.
+
+By picking different guesses from the allowed range, the locations,
+frequency and value of the '#' numbers varies (so the moments in time
+when the VDP chooses to handle a command request over an already issued
+CPU request). For this test I picked '56' because that gave the lowest
+overall maximum value for the '#' numbers (#84 in this case). For other
+tests there were cases were I couldn't get this number below #88. (I now
+see that I should also calculate a #-number of the idle slots, I'll do
+that one of the following days).
+
+Could this mean that the VDP only handles a request when it has been
+pending for at least 16 cycles (88-72 = 16). This would imply that the
+late-ness number should never fall below 16. That indeed seems to be the
+case in this table, except for the cases marked with '*' where we
+dropped a CPU request, so that doesn't count because the VDP did
+actually handle a long pending request in those slots.
+
+16 cycles seems like a long time. But it does make sense that a request
+has to be pending for a (little) while before it can be processed. E.g.
+to get the request buffered, or to give arbitration some time to pick
+the right candidate.
+
+(BTW: At work I recently had to work on a bus system that *could* do
+arbitration and buffering with zero cycles overhead. So the previous
+paragraph might be nonsense. OTOH the whole VDP doesn't seem very
+efficient in the area of VRAM bandwidth allocation, especially for the
+commands).
+
+Still 16 cycles seems like _a_lot_ of time. But then all the command
+engine related stuff seems to take a very long time (e.g. on average 49
+cycles per byte for the HMMV command! And that's the fastest command!).
+Could it be that internally the command engine runs at 1/8 of the clock
+speed??? This may explain why the command/cpu access slots only occur
+every 8 cycles instead of the more logical 6 cycles between actions.
+
+
+Something you can't see in the table above, but it does occur in some of
+the other capture results, is a situation where there are 2 '!'
+characters in one table. So two places where there is this extra loop
+overhead in the Z80 code. We know the Z80 sends exactly 40 requests
+between two such locations. And I could count the number of requests
+that the VDP had actually handled (was around 37). This difference
+matched exactly with the number of predicted requests drops according to
+the above model. This also proofs that the VDP is dropping requests and
+not stalling the CPU.
+
+
+So anyway, overall it seems like CPU request take priority over command
+requests. And that requests take (more or less?) the earliest free slot
+available. But there are still some details to work out.
+
+I'm not sure yet what I'll work on next. Either figuring out those
+details or investigating how much cycles the actual VDP commands take
+per step.
+
+
+Wouter

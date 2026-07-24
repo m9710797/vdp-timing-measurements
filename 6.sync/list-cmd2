@@ -1,0 +1,53 @@
+./annotate screen5screenoffHMMM3.txt
+./annotate screen5screenoffHMMM6.txt
+./annotate screen5screenoffHMMM.txt
+./annotate screen5screenoffHMMV3.txt
+./annotate screen5screenoffHMMV6.txt
+./annotate screen5screenoffHMMVcpuread.txt
+./annotate screen5screenoffHMMVcpuwrite.txt
+./annotate screen5screenoffHMMVnocpu_2.txt
+ ./annotate screen5screenoffHMMVnocpu.txt
+ ./annotate screen5screenoffHYMM6.txt
+ ./annotate screen5screenoffLINE0START.txt
+ ./annotate screen5screenoffLINE128START.txt
+ ./annotate screen5screenoffLINE256START.txt
+ ./annotate screen5screenoffLINE37START.txt
+ ./annotate screen5screenoffLINEXOR73.txt
+ ./annotate screen5screenoffLMMM1.txt
+ ./annotate screen5screenoffLMMM6.txt
+ ./annotate screen5screenoffLMMM7.txt
+ ./annotate screen5screenoffLMMM.txt
+ ./annotate screen5screenoffLMMV1.txt
+ ./annotate screen5screenoffLMMV6.txt
+
+./annotate screen5screenoffLMMV.txt
+./annotate screen5screenoffYMMM3.txt
+./annotate screen5screenoffYMMM.txt
+./annotate screen5sprite16x16HMMVcpuread_2.txt
+./annotate screen5sprite16x16HMMVcpuwrite.txt
+./annotate screen5sprite16x16HMMVnocpuhalfsprites_2.txt
+./annotate screen5sprite16x16HMMVnocpu.txt
+./annotate screen5spritesoffHMMVnocpu_2.txt
+./annotate screen8nospritesHMMVcpuwrite.txt
+./annotate screen8nospritesHMMVnocpu.txt
+./annotate screen8screenoffHMMM.txt
+./annotate screen8screenoffHMMV1.txt
+./annotate screen8screenoffHMMV6.txt
+./annotate screen8screenoffHMMVcpuwrite.txt
+
+./annotate screen8screenoffHMMVcpuwrite_wrong_range.txt
+./annotate screen8screenoffHMMVnocpu.txt
+./annotate screen8screenoffHMMVnocpu_wrong_range.txt
+./annotate screen8screenoffLINE0.txt
+./annotate screen8screenoffLINE37OR_2.txt
+./annotate screen8screenoffLINE37OR_3.txt
+./annotate screen8screenoffLINE37OR.txt
+./annotate screen8screenoffLMMM7TIMP.txt
+./annotate screen8screenoffLMMM.txt
+./annotate screen8screenoffYMMM1.txt
+./annotate screen8screenoffYMMM6.txt
+./annotate screen8screenoffYMMM.txt
+
+./annotate screen8sprites16x16HMMVcpuwrite.txt
+./annotate screen8sprites16x16HMMVnocpu.txt
+./annotate screen8spritesoffLINE37OR.txt

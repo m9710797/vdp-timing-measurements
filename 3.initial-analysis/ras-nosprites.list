@@ -1,0 +1,8 @@
+screen5nospritesHMMVnocpu_2.vcd 5154
+screen5nospritesnocmdcpuread.vcd 2200
+screen5nospritesnocmdcpuwrite.vcd 0   #5802
+screen5nospritesnocmdnocpu.vcd 5624
+screen8nospritesHMMVcpuwrite.vcd 236
+screen8nospritesHMMVnocpu.vcd 262
+screen8nospritesnocmdcpuwrite.vcd 828
+screen8nospritesnocmdnocpu.vcd 3166

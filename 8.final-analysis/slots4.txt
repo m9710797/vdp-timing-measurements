@@ -1,0 +1,325 @@
+In this text I'll explain how the command engine timing works in detail.
+Initially I was a bit afraid of this part, because when you looked at
+the initial VCD dumps or even the initial analysis results, the VRAM
+access pattern for commands was quite irregular. Though it turned out
+that this step of the analysis was actually one of the easiest steps. Of
+course all the work that was already done before this step helped
+enormously.
+
+
+To figure out the command timings, I reused the analysis tool from my
+previous post. Below I've shown a table for the test
+   screen 5, screen off, HMMV command, cpu reads
+In the previous post I already explained what all the numbers in this
+table mean, but I'll very briefly repeat it here:
+
+* Header column shows the VDP cycles where there is a VRAM access slot
+  that can be used for either CPU or command VRAM access. The number in
+  parenthesis in this column is the duration since the last slot.
+* The next 5 columns (1 partial, 3 full, 1 partial) represent display
+  lines (time goes from top to bottom, and when the bottom is reached,
+  it continues at the top of the next column). These columns have 3 sub
+  items:
+  - 1st is either 'We' (write for the command Engine), 'Rc' (read
+    for the CPU) or '--' (no access)
+  - 2nd is the duration since the last access of _the_same_ type
+  - 3rd is not important for this post
+
+   1( 8):              --          --          Rc  68  0   Rc  68  0
+   9( 8):              We          We  52      We  60      We  60
+  17( 8):              --          --          --          --
+  25( 8):              --          --          --          --
+  33( 8):              --          --          --          --
+  41( 8):              Rc  74  4   Rc  74  4   --          --
+  49( 8):              --          --          --          --
+  57( 8):              We  48      We  48      We  48      We  48
+  65( 8):              --          --          --          --
+  73( 8):              --          --          Rc  72  0   Rc  72  0
+  81( 8):              --          --          --          --
+  89( 8):              --          --          --          --
+  97( 8):              --          --          --          --
+ 105( 8):              We  48      We  48      We  48      We  48
+ 113( 8):              Rc  72  4   Rc  72  4   --          --
+ 121( 8):              --          --          --          --
+ 165(44):              We  60      We  60      Rc  92 20   Rc  92 20
+ 173( 8):              --          --          We  68      We  68
+ 181( 8):              Rc  68  0   Rc  68  0   --          --
+ 189( 8):              --          --          --          --
+ 197( 8):              --          --          --          --
+ 205( 8):              --          --          --          --
+ 213( 8):              We  48      We  48      --          --
+ 221( 8):              --          --          Rc  56  4   Rc  56  4
+ 229( 8):              --          --          We  56      We  56
+ 237( 8):              --          --          --          --
+ 245( 8):              --          --          --          --
+ 253( 8):              Rc  72  0   --          --          --
+ 261( 8):              We  48      We  48      --          --
+ 269( 8):              --          --          --          --
+ 277( 8):              --          --          We  48      We  48
+ 293(16):              --          --          Rc  72  4   Rc  72  4
+ 301( 8):              --          --          --          --
+ 309( 8):              We  48      We  48      --          --
+ 317( 8):              --          --          --          --
+ 325( 8):              Rc  72  0   --          We  48      We  48
+ 333( 8):              --          --          --          --
+ 341( 8):              --          --          --          --
+ 349( 8):              --          --          --          --
+ 357( 8):              We  48      We  48      --          --
+ 365( 8):              --          --          Rc  72  4   Rc  72  4
+ 373( 8):              --          --          We  48      We  48
+ 381( 8):              --          --          --          --
+ 389( 8):              --          --          --          --
+ 397( 8):              Rc  72  0   --          --          --
+ 405( 8):              We  48      We  48      --          --
+ 421(16):              --          --          We  48      We  48
+ 429( 8):              --          --          --          --
+ 437( 8):              --          Rc 256! 4   Rc  72  4   Rc  72  4
+ 445( 8):              --          --          --          --
+ 453( 8):              We  48      We  48      --          --
+ 461( 8):              --          --          --          --
+ 469( 8):              Rc  72  0   --          --          We  48
+ 477( 8):              --          --          --          --
+ 485( 8):              --          --          --          --
+ 493( 8):              --          --          --          --
+ 501( 8):              We  48      We  48      --          --
+ 509( 8):              --          Rc  72  4   Rc  72  4   Rc  72  4
+ 517( 8):              --          --          --          We  48
+ 525( 8):              --          --          We 104      --
+ 533( 8):              --          --          --          --
+ 549(16):              Rc  80  8   We  48      --          --
+ 557( 8):              We  56      --          --          --
+ 565( 8):              --          --          --          We  48
+ 573( 8):              --          --          We  48      --
+ 581( 8):              --          Rc  72  4   Rc  72  4   --
+ 589( 8):              --          --          --          --
+ 597( 8):              --          We  48      --          --
+ 605( 8):              We  48      --          --          --
+ 613( 8):              Rc  64  0   --          --          We  48
+ 621( 8):              --          --          We  48      --
+ 629( 8):              --          --          --          --
+ 637( 8):              --          --          --          --
+ 645( 8):              --          We  48      --          --
+ 653( 8):              We  48      Rc  72  4   Rc  72  4   --
+ 661( 8):              --          --          --          We  48
+ 677(16):              --          --          We  56      --
+ 685( 8):              Rc  72  0   --          --          --
+ 693( 8):              --          We  48      --          --
+ 701( 8):              We  48      --          --          --
+ 709( 8):              --          --          --          We  48
+ 717( 8):              --          --          --          --
+ 725( 8):              --          Rc  72  4   Rc  72  4   --
+ 733( 8):              --          --          We  56      --
+ 741( 8):              --          We  48      --          --
+ 749( 8):              We  48      --          --          --
+ 757( 8):              Rc  72  0   --          --          Rc 248! 0
+ 765( 8):              --          --          --          We  56
+ 773( 8):              --          --          --          --
+ 781( 8):              --          --          We  48      --
+ 789( 8):              --          We  48      --          --
+ 805(16):              We  56      Rc  80 12   Rc  80 12   --
+ 813( 8):              --          --          --          We  48
+ 821( 8):              --          --          --          --
+ 829( 8):              Rc  72  0   --          We  48      Rc  72  0
+ 837( 8):              --          We  48      --          --
+ 845( 8):              --          --          --          --
+ 853( 8):              We  48      --          --          --
+ 861( 8):              --          --          --          We  48
+ 869( 8):              --          Rc  64  4   Rc  64  4   --
+ 877( 8):              --          --          We  48      --
+ 885( 8):              --          We  48      --          --
+ 893( 8):              --          --          --          --
+ 901( 8):              Rc  72  0   --          --          Rc  72  0
+ 909( 8):              We  56      --          --          We  48
+ 917( 8):              --          --          --          --
+ 933(16):              --          We  48      We  56      --
+ 941( 8):              --          Rc  72  4   Rc  72  4   --
+ 949( 8):              --          --          --          --
+ 957( 8):              We  48      --          --          We  48
+ 965( 8):              --          --          --          --
+ 973( 8):              Rc  72  0   --          --          Rc  72  0
+ 981( 8):              --          We  48      We  48      --
+ 989( 8):              --          --          --          --
+ 997( 8):              --          --          --          --
+1005( 8):              We  48      --          --          We  48
+1013( 8):              --          Rc  72  4   Rc  72  4   --
+1021( 8):              --          --          --          --
+1029( 8):              --          We  48      We  48      --
+1037( 8):              --          --          --          --
+1045( 8):              Rc  72  0   --          --          Rc  72  0
+1061(16):              We  56      --          --          We  56
+1069( 8):              --          --          --          --
+1077( 8):              --          We  48      We  48      --
+1085( 8):              --          Rc  72  4   Rc  72  4   --
+1093( 8):              --          --          --          --
+1101( 8):              --          --          --          --
+1109( 8):              We  48      --          --          We  48
+1117( 8):              Rc  72  0   --          --          Rc  72  0
+1125( 8):              --          We  48      We  48
+1133( 8):              --          --          --
+1141( 8):              --          --          --
+1149( 8):              --          --          --
+1157( 8):              We  48      Rc  72  4   Rc  72  4
+1165( 8):              --          --          --
+1173( 8):              --          We  48      We  48
+1189(16):              Rc  72  0   --          --
+1197( 8):              --          --          --
+1205( 8):              We  48      --          --
+1213( 8):              --          --          --
+1221( 8):              --          We  48      We  48
+1229( 8):              --          Rc  72  4   Rc  72  4
+1269(40):              Rc  80  8   We  48      We  48
+1277( 8):              We  72      --          --
+1285( 8):              --          --          --
+1293( 8):              --          --          --
+1301( 8):              --          Rc  72  4   Rc  72  4
+1309( 8):              --          --          --
+1317( 8):              --          We  48      We  48
+1325( 8):              We  48      --          --
+1335(10):  Rc      2   Rc  66  2   --          --
+1345(10):  --          --          --          --
+1353( 8):  --          --          --          --
+1361( 8):  --          --          --          --
+
+
+Some notable things:
+* There are a lot of idle access slots. That's as expected because
+  this is a test with mode 'screen off'.
+* The HMMV command is very simple, it only has to do VRAM writes (all
+  other tested commands also need to do reads).
+* Most often there are 48 cycles between 2 command access. Sometimes
+  there are more cycles in between, but never less than 48.
+* For example: 2nd column, time=165. Here are 60 cycles (instead of 48)
+  because there simply was no earlier access slot available.
+* Note that when the command access was stalled (previous point), the
+  next command access does _NOT_ try to catch up (as was the case for
+  the CPU in the previous post). E.g. see column 2 time=213, this is 48
+  cycles after the previous access (not 48-12=36 cycles to catch up the
+  12 cycles that were lost in the previous access).
+* So it seems that the command engine is really stalled till there is a
+  free access slot. There is no buffer, not even for a single access.
+* See column 4 time=165,173. Time=165 is (more than) 48 cycles after
+  the previous command access, but there's also a pending CPU access at
+  that point. This data re-confirms that CPU accesses take priority. The
+  command access is moved to the next slot (time=165). (And again the
+  next command access does not try to catch up the lost time).
+* This data shows that even in the mode 'screen off', where there are
+  plenty of free access slots, the VDP commands do get (slightly) slowed
+  down by simultaneously reading/write VRAM via the CPU.
+
+
+The table above was for HMMV+cpuread. And we saw that each step of the
+HMMV command takes 48 cycles (without stalls). This is even easier to
+see if you look at the table for HMMV+nocpu (for brevity I won't paste
+any more tables in this text). All the results below were derived from
+looking at tables for screen-off/<command>/no-cpu.
+
+I'll now go over all the measured commands.
+
+
+* HMMV
+This is the simplest command. It only needs to write to VRAM. I've
+already discussed it above in detail.
+
+It's well known that commands on 'wide' rectangles execute faster than
+commands on 'narrow' rectangles (even if the area of both rectangles is
+the same). This is because the commands loop over the rectangle
+line-per-line and there is some overhead when going from one line to the
+next. This overhead can be clearly seen in our measurements:
+
+We had a test were we filled a rectangle of width NX=6 (screen 5, so
+that's 3 bytes). If you generate a table like above for this test, you
+can clearly see that the duration between the command writes is now
+  48, 48, 104, 48, 48, 104, ...
+So 48 cycles as we saw before, but every 3 steps there's some extra
+delay of 56 cycles. Let's notate this pattern as:
+  R48 .. D56
+
+
+* YMMM
+This command has to read a byte from VRAM and then write it to some
+different location. If you again study tables similar to the one above
+you can clearly see there are 40 cycles between the last write and the
+next read, and 24 cycles between the read and write.
+
+We again did tests with several different values for NX (so different
+widths of the rectangle) and surprisingly this doesn't seem to influence
+the timing. The YMMM command is a bit special in the way X-coordinates
+are handled, they always need to start from the (left or right) border.
+This may explain why there's no extra overhead in going from one line to
+the next in the rectangle.
+
+So the general pattern is:
+  R40 W24 .. D0
+
+
+* HMMM
+
+Similar to the YMMM command above, but now there is overhead when going
+from one line in the rectangle to the next. The pattern is:
+  R64 W24 .. D64
+
+
+* LMMV
+
+The logical commands work on a pixel (instead of byte) level. They also
+allow to apply a logical operation between the pixel that's currently in
+VRAM and the about-to-be-written pixel. So this requires to first read
+the old VRAM value and then overwrite it.
+
+Way before we did the first measurements, I speculated that the VDP
+might use optimized read-modify-write RAM access patterns. So perform a
+read and a write within the same RAS cycle. The measurements clearly
+show this is not the case: the VDP performs a regular read followed by a
+regular write. (And depending on how busy the VRAM bus is, there might
+be quite some time between this read and write).
+
+Anyway (without stalls) the general pattern is:
+  R72 W24 .. D64
+
+
+* LMMM
+
+This is one of the slowest commands. Per pixel it needs to read 2 values
+from VRAM and write 1 value. The pattern is:
+  R64 R32 W24 .. D64
+
+
+* LINE
+
+Like all the logical commands, this command allows logical operations.
+So again we first read the old value from VRAM and then overwrite it.
+This command uses the Bresenham algorithm to figure out which pixels are
+part of the line. This means that each step of the algorithm takes a
+step in the 'major' direction and in some cases (depending on the slope
+of the line), there's also a step in the 'minor' direction. When such a
+minor step is needed the VDP needs a bit more time. We can use the same
+notation as above (but now D means delay because of a minor step):
+  R88 W24 .. D32
+
+
+Summarized:
+ HMMV: R48         .. D56
+ YMMM: R40 W24     .. D0
+ HMMM: R64 W24     .. D64
+ LMMV: R72 W24     .. D64
+ LMMM: R64 R32 W24 .. D64
+ LINE: R88 W24     .. D32
+
+So all cycle numbers are multiples of 8 (of course the way how we
+measured only allows for an accuracy of 8 cycles). (I already hinted at
+this in one of the previous texts): this may indicate that the command
+engine is internally running at 1/8 of the VDP clock speed. Because e.g.
+64 clock cycles extra delay to go from one line in a rectangle command
+to the next is really a lot. 8 clock cycles (64/8) is still a lot, but
+already more reasonable.
+
+
+
+
+Ok, so now most of the analysis of our VDP measurements is done. There
+are only some details open in _exactly_ how the VRAM scheduling between
+CPU and command engine works (previous post). I'll re-visit that aspect
+one of the following days.
+
+
+Wouter

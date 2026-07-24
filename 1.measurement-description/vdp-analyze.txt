@@ -1,0 +1,431 @@
+Hallo,
+
+De meeting van 7 dec is niet doorgegaan. 4 jan hebben we een nieuwe kans,
+of willen we eerder nog een meeting? (Nijmegen is al 19 jan).
+
+Het doel van vorige meeting was/is het hardware-aspect van de metingen die
+we willen uitvoeren bespreken en eventueel al testen. Zodat we in Nijmegen
+zelf niet teveel tijd verliezen of tot de vaststelling komen dat we iets
+vergeten zijn zodat we misschien helemaal geen metingen kunnen doen.
+
+Wat ik vorige meeting ook wou doen is (beginnen met) de software kant van
+de metingen bespreken: op de MSX moet software draaien die de MSX VDP
+'nuttige' dingen laat doen tijdens de metingen.
+
+Ik wil met deze mail dus starten met de voorbereiding, want 4 jan is al
+vrij dicht bij Nijmegen.
+
+
+
+
+Het doel van de metingen:
+
+Het eigenlijke doel is om de accuracy van de openMSX emulatie te
+verbeteren. (Maar zelfs als achteraf blijkt dat het te moeilijk is om de
+emulatie te verbeteren lijkt het me toch ook gewoon een leuk project).
+
+Een van de dingen die op dit moment fout gaan in de openMSX emulatie is de
+(gedetailleerde) timing van de VDP command engine. Als je bijvoorbeeld een
+rechthoek kopieert gaat het sneller als je een lage brede rechthoek neemt
+dan met een smalle hoge rechthoek. Het lijkt alsof de VDP lijn per lijn
+(horizontaal) het commando afwerkt en er extra overhead is bij de overgang
+van een lijn naar de volgende. Ik heb metingen gedaan op een echte MSX en
+het blijkt dat dit model inderdaad dichter ligt bij de echte timing. Maar
+het is nog steeds niet volledig hetzelfde (ik heb grafieken die ik
+eventueel wel kan laten zien volgende meeting).
+
+Onze hypothese is dat de VDP de bandbreedte naar het VRAM opdeelt in
+vaste(?) time slots. Er zijn slots voor
+   display rendering (bitmap/character en sprites)
+   command engine
+   CPU VRAM access
+Als bijvoorbeeld de command engine iets langer bezig is dan verwacht (ik
+bedoel bijvoorbeeld overgang naar een volgende lijn i.p.v. overgang naar
+een volgende pixel in dezelfde lijn) dan kan het zijn dat de command
+engine zijn VRAM access slot net mist, dat geeft dan een relatief grote
+speed penalty. Maar het zou ook kunnen dat hij sowieso moest wachten en
+dat de tragere overgang niet resulteert in een trager commando. (Dit soort
+effecten zouden inderdaad de grafieken kunnen verklaren).
+
+VDP commando's voeren ook sneller uit als
+ - de verticale border gedisplayed wordt
+ - de sprites uit staan
+Dit is ook logisch, de time slots die normaal voorzien zijn voor
+sprite/display rendering kunnen nu gebruikt worden voor commandos.
+
+
+Een ander voorbeeld is het LINE commando, afhankelijk van de richting
+van de lijn loopt het commando iets sneller of trager. Zie
+  http://www.msx.org/forum/msx-talk/software-and-gaming/line?page=2
+en dan vooral NYYRIKKI's post van '10-8-2012 18:17' (page 3) en mijn post
+van '10-8-2012 20:53' (page 4). Het (nieuwe) timing model in openMSX geeft
+een regelmatig achthoekig patroon, maar het echte patroon is slechts
+ongeveer een achthoek. (Ik heb ook meer gedetailleerde metingen die ik
+eventueel volgende meeting kan laten zien).
+
+Ook dit complexere line-patroon zou kunnen verklaart worden door timing
+slots.
+
+
+Nog een ander voorbeeld waar timing slots zichtbaar zijn is de 'VERTI'
+demo. Dit is een demo waar verschillende keren per horizontale lijn het
+vertical-scroll register (VDP R#23) van waarde wordt veranderd. De demo is
+zo getimed dat de cyclus waarin de Z80 nieuwe register waarden schrijft
+*precies* even lang duurt als de duur van 1 display lijn. Dus visueel
+wordt er telkens op exact dezelfde horizontale positie een andere
+vertical-scroll waarde gebruikt. En dit resulteert dan in een aantal (6 à
+7 IIRC) verticaal scrollende banden. De tijd tussen 2 register write is
+altijd precies dezelfde, dus in de huidige openMSX emulatie hebben alle
+banden ook precies dezelfde breedte. Op een echte MSX zijn er echter
+bredere en smallere banden, maar de banden zijn wel altijd een veelvoud
+van 8 pixels.
+
+Een verklaring voor dit effect zou kunnen zijn dat de VDP altijd 8 bytes
+uit VRAM leest om 8 pixels (screen 8) te renderen. Pas daarna wordt een
+nieuw VRAM adres berekend en worden opnieuw 8 bytes gelezen. Lezen in
+groep heeft ook het voordeel dat dit kan met een burst-read actie (en dit
+kost minder cycles).
+
+
+Het primaire doel van de metingen is dus om dit time-slot mechanisme te
+achterhalen. Secundaire doelen zijn:
+- Wat is de delay tussen het lezen van VRAM en het moment waarop de
+  pixels effectief zichtbaar worden?
+- Wat is de tijd tussen een CPU-VRAM write en het moment waarop die
+  data effectief in VRAM komt.
+- Kunnen we de exacte cycle-counts van de verschillende VDP commando's
+  bepalen?
+
+Kan iemand nog andere doelen bedenken? Het is waarschijnlijk gemakkelijker
+om nu iets uitgebreidere metingen te doen dan (pas na een jaar?) volledig
+nieuwe metingen te doen.
+
+
+
+
+Hardware kant
+
+Joost had een logic analyzer. IIRC dit model:
+  http://www.seeedstudio.com/depot/open-workbench-logic-sniffer-p-612.html
+
+Ik wil mijn NMS8250 ter beschikking stellen. Daar zit dus een V9938 in.
+Dat betekent geen screen 11/12 en ook geen horizontale scroll. Ik vermoed
+dat screen 11/12 exact dezelfde timing heeft dan screen 7/8, maar dat
+kunnen we dus niet nagaan (is dat een probleem?).
+
+Side-note: bij screen 11/12 moet je 4 bytes lezen voordat je de eerste
+pixel kan beginnen tonen, dit komt al min of meer overeen met de VRAM
+burst-read waar ik het hierboven al over had.
+
+
+Welke VDP pinnen willen we connecteren aan de logic analyzer? Volgens de
+online specificatie kunnen we ofwel:
+ - 32 probes @  50MHz
+ - 16 probes @ 100MHz
+50MHz zou genoeg moeten zijn voor ons (eerst dachten we dat 100MHz nog
+niet genoeg was, maar dit bleek gelukkig niet waar te zijn).
+
+Hebben we ook de hardware om effectief 32 pinnen te connecteren? Hieronder
+heb ik proberen een lijst te maken met pinnen die nuttig zijn om te
+capture'en. 16 pinnen zou kunnen, maar is krap. 32 is ruim voldoende. In
+totaal heeft de V9938 64 pinnen, we moeten dus sowieso een keuze maken.
+
+Ik heb de lijst van te capture'n pinnen min of meer gesorteerd volgens
+belangrijkheid (pinnen die we zeker nodig hebben eerst, optionele pinnen
+laatst). Ik heb ook altijd de naam, het pin nummer, direction en
+beschrijving uit de VDP datasheet gekopieerd.
+
+
+VCC en GND:
+(VCC)  58  in : 5V power supply
+ GND    1  in : Ground 0V
+
+Ik vermoed dat de logic analyzer een referentie spanning nodig heeft
+(GND) en dat deze pin niet meetelt in het aantal probes. Ik vermoed
+ook dat VCC niet moet geconnecteerd worden naar de analyzer?
+
+
+Referentie clock:
+ XTAL 1  63  in  : Connect to XTAL or use for connection of an
+                   external oscillator
+(XTAL 2) 64  in  :
+
+Het is altijd nuttig om een referentie clock signaal te hebben. Ik
+vermoed dat we maar een van deze twee pinnen moeten connecteren naar
+de analyzer. Welke van deze twee? Maakt misschien niet uit?
+
+
+De VDP<->VRAM interface:
+ AD0-AD7 49-56 out : VRAM address bus
+ /RAS    62    out : VRAM row address strobe
+ /CAS0   61    out : VRAM columns address strobe 0 (VRAM 1st half)
+ /CAS1   60    out : VRAM columns address strobe 1 (VRAM 2nd half)
+ R-/W    57    out : VRAM write strobe
+(RD0-RD7)41-48 i/o : VRAM data bus
+
+Dit zijn 8 adres pinnen, RAS, 2xCAS en een read/write control signal.
+Hiermee kunnen we precies zien wanneer en naar welke locatie een VRAM
+access gedaan wordt.
+Er zijn ook 8 data pinnen, maar die hebben we niet strikt nodig voor
+onze testen.
+
+
+Sync signalen:
+ HSYNC  5  i/o : Tri-level logic:
+                 upper levels (high to middle) for output,
+                 lower levels (middle to low) for input
+                  High:   Non-HSYNC, color burst period
+                  Middle: HSYNC or non-color burst period
+                  Low:    HSYNC input
+ CSYNC  6  i/o : Tri-level logic,
+                  High:   Composite SYNC output
+                  Low:    VSYNC input
+
+Het kan nuttig zijn om te weten waar ergens de display rendering bezig is
+(in een horizontal/vertical border of in display area). Kunnen deze twee
+signalen dit vertellen?? Het zijn tri-level signalen (wat betekent dit
+precies?) dus waarschijnlijk kan een logic analyzer die niet juist
+capture'n, maar we kunnen proberen, misschien zien we toch 2 van de 3
+mogelijke states.
+
+Deze signalen kunnen ook nuttig zijn als we de precieze timing tussen
+rendering en borders willen bepalen.
+
+Als we krap zitten qua probes dan kunnen we deze twee misschien weglaten.
+
+
+VDP<->CPU interface:
+ /INT     25       out : CPU interrupt output; open drain output
+                          Low: interrupt
+ MODE0-1  29-28    in  : CPU interface mode select (IO port 0x99-0x9B)
+ /CSR     31       in  : CPU-MSX-VIDEO read strobe
+ /CSW     30       in  : CPU-MSX-VIDEO write strobe
+(CD0-CD7) 40-34,32 i/o : CPU data bus
+
+Het interrupt signaal geeft een indicatie over waar de vertical border
+zich bevindt. Heel nuttig als capture'n van HSYNC/CSYNC niet zou lukken,
+of eventueel ook voor te bepalen wanneer precies de IRQ gegenereerd wordt.
+
+De VDP zit op IO poorten 0x99-0x9B, de laagst 2 bits daarvan gaan naar 2
+adres input pins (MODE0-1). Daarnaast is er een control pin voor read en
+een voor write. Hiermee kunnen we misschien meten hoeveel tijd er is
+tussen het geven van een commando en het moment waarop het commando
+effectief begint uit te voeren, of de tijd tussen het geven van een VDP
+read/write actie en het moment dat de data effectief van/naar VRAM gaat.
+
+Er zijn 8 data pinnen, maar net zoals bij de VDP-VRAM interface stel ik
+voor om die niet te capture'n. Als we krap zitten qua probes dan kunnen we
+ook de 2 adres pinnen (MODE0-1) weglaten.
+
+
+Optioneel VDS:
+ /VDS  4  out : VRAM data select
+                 Low:  access to VRAM is for display data
+                 High: access to VRAM is for other than the above
+
+Blijkbaar heeft de VDP een pin die de functie van de VRAM access aangeeft.
+(Waarom is dit nuttig? Vanuit een hardware standpunt bedoel ik dan). Ik
+zou de test software zo schrijven dat we enkel adhv het adres de functie
+van de access kennen. Maar we kunnen deze pin capture'n als extra
+controle.
+
+
+Optioneel BLEO (blank, even, odd):
+ BLEO  7  out : Tri-level output (open drain):
+                 High:   Secondary field, active
+                 Middle: First field, active
+                 Low:    Blanking interval
+
+Dit zou nuttig kunnen zijn als een 1-bit frame counter of als een
+alternatief mechanisme om vertical border te detecteren. Maar het
+is weer een tri-level pin, dus ik weet niet wat een logic analyzer hier
+zal meten.
+
+
+Optioneel color bus:
+ C0-C7  19-12  i/o : Color bus
+                      Usually the color code is output
+                      ...skipped info over digitize and mouse...
+
+Tot nu toe hadden we geen manier om te weten welke pixel de VDP effectief
+aan het tonen is (de R,G,B pinnen (22, 23, 24) zijn analoge signalen en
+kunnen we dus niet capture'n). Misschien lukt dit met deze 8 pinnen?
+
+Als ik Alex goed begrepen heb, dan komt op deze pinnen het palette nummer
+(screen 5-7) of color nummer (screen 8) van de huidige pixel (klopt dit?
+Wat in character modes, ook het palette nummer?). Hiermee zouden we dus de
+tijd kunnen meten die zit tussen een VRAM read en het moment waarop die
+data effectief getoond wordt.
+
+
+Als ik goed geteld heb zijn dit in totaal 30 pinnen plus GND. Het is
+waarschijnlijk nuttig als jullie zelf ook eens over alle pinnen in de VDP
+datasheet gaan. Misschien ben ik er nog nuttige vergeten, of misschien heb
+ik de functie van sommige pinnen verkeerd begrepen.
+
+
+
+
+Software kant
+
+ [ Dit gedeelte heb ik helemaal nog niet zover uitgedacht. Ik heb enkel
+   nog maar een begin over de VRAM indeling. Ik heb nog niets over de
+   eigenlijke content van VRAM (maakt vooral uit voor sprites. En ook
+   nog niets voor de VDP commands en CPU-VRAM access. ]
+
+Zoals ik dus al eerder zei, ik kan mijn NMS8250 meebrengen om metingen op
+te doen. Daar zit dus een V9938 in (geen V9958). Dat betekent:
+ - geen screen 11/12
+ - geen horizontal scroll
+ - geen VDP commandos in niet-bitmap modes
+
+Er zijn verschillende soorten van VRAM access:
+ - display (read-only):
+    * name-table
+    * pattern-table
+    * color-table
+    * sprite-attribute-table
+    * sprite-pattern-table
+ - command engine:
+    * source (read-only)
+    * destination (write or read-modify-write)
+ - CPU VRAM access
+    * read
+    * write
+
+Ik stel voor om voor alle deze 9 types een totaal gescheiden VRAM range te
+voorzien. Dat betekent dat je enkel adhv het VRAM adres het type van
+access kan bepalen.
+
+Dus we stellen de VDP base pointer registers zo in zodat in geen enkele
+screen mode een tabel overlapt met een andere tabel (eventueel zelfs met
+een tabel van een andere screen mode, want afhankelijk van de screen mode
+kan een bepaalde tabel meer of minder data bevatten).
+
+De tabellen kunnen niet op willekeurige adressen starten, en afhankelijk
+van de screen mode moeten sommige bits van de base-address registers op
+'1' staan.
+
+Ik stel voor om volgende register waarden te gebruiken:
+
+  R#2  = 0x1F   (name-tab,         lower 5 bits must be '1')
+  R#3  = 0x7F   (color-tab-low,    lower 7 bits must be '1')
+  R#4  = 0x1F   (pattern-tab,      lower 2 bits must be '1')
+  R#5  = 0xAF   (spr-attr-tab-low, lower 3 bits must be '1')
+  R#6  = 0x1B   (spr-pat-tab)
+  R#10 = 0x04   (color-tab-high)
+  R#11 = 0x01   (spr-attr-tab-high)
+
+Dat geeft dan:
+(Het zou heel nuttig zijn als iemand deze adressen zou kunnen nakijken!)
+
+* screen 0/40 (TEXT-1)
+   name-tab:     0x07C00-0x07FBF
+   pattern-tab:  0x0F800-0x0FFFF
+
+* screen 0/80 (TEXT-2)
+   name-tab:     0x07000-0x07870
+   pattern-tab:  0x0F800-0x0FFFF
+   color-tab:    0x11E00-0x11F0E
+
+* screen 1 (GRAPHICS-1)
+   name-tab:     0x07C00-0x07EFF
+   pattern-tab:  0x0F800-0x0FFFF
+   color-tab:    0x11FC0-0x11FDF
+   spr-attr-tab: 0x0D780-0x0D7FF
+   spr-pat-tab:  0x0D800-0x0DFFF
+
+* screen 2 (GRAPHICS-2)
+   name-tab:     0x07C00-0x07EFF
+   pattern-tab:  0x0E000-0x0F7FF
+   color-tab:    0x10000-0x117FF
+   spr-attr-tab: 0x0D780-0x0D7FF
+   spr-pat-tab:  0x0D800-0x0DFFF
+
+* screen 3 (MULTI-COLOR)
+   name-tab:     0x07C00-0x07EFF
+   pattern-tab:  0x0F800-0x0FFFF
+   spr-attr-tab: 0x0D780-0x0D7FF
+   spr-pat-tab:  0x0D800-0x0DFFF
+
+* screen 4 (GRAPHICS-3)
+   name-tab:     0x07C00-0x07EFF
+   pattern-tab:  0x0E000-0x0F7FF
+   color-tab:    0x10000-0x117FF
+   spr-attr-tab: 0x0D400-0x0D67F
+   spr-pat-tab:  0x0D800-0x0DFFF
+
+* screen 5 (GRAPHICS-4)
+* screen 6 (GRAPHICS-5)
+   name-tab:     0x00000-0x069FF
+   spr-attr-tab: 0x0D400-0x0D67F
+   spr-pat-tab:  0x0D800-0x0DFFF
+
+* screen 7 (GRAPHICS-6)
+* screen 8 (GRAPHICS-7)
+   name-tab:     0x00000-0x0D3FF
+   spr-attr-tab: 0x0D400-0x0D67F
+   spr-pat-tab:  0x0D800-0x0DFFF
+
+
+De unie van deze ranges geeft dan (afgerond):
+   name-tab:     0x00000-0x0D3FF
+   pattern-tab:  0x0E000-0x0FFFF
+   color-tab:    0x10000-0x11FFF
+   spr-attr-tab: 0x0D400-0x0D7FF
+   spr-pat-tab:  0x0D800-0x0DFFF
+
+Ik stel voor om verder deze ranges te gebruiken
+   command engine source: 0x18000-0x1BFFF
+   command engine dest:   0x1C000-0x1FFFF
+   CPU read:              0x14000-0x15FFF
+   CPU write:             0x16000-0x17FFF
+
+Dat geeft dan volgende memory map:
+   0x00000-0x0D3FF: name table
+   0x0D400-0x0D7FF: sprite attribute table
+   0x0D800-0x0DFFF: sprite pattern table
+   0x0E000-0x0FFFF: pattern table
+   0x10000-0x11FFF: color table
+   0x12000-0x13FFF:  not used
+   0x14000-0x15FFF: CPU read
+   0x16000-0x17FFF: CPU write
+   0x18000-0x1BFFF: command engine source
+   0x1C000-0x1FFFF: command engine destination
+
+Merk op dat dit 'logische' adressen zijn. Hiermee bedoel ik adressen zoals
+de programmeur ze ziet. In screen 7 en 8 wordt VRAM aangestuurd in
+'interleaved-mode'. Dit betekent dat even adressen naar de 1e helft van
+VRAM gaan en oneven naar de 2e helft. Vermoedelijk is dit gedaan om beide
+VRAM banken semi in parallel te kunnen gebruiken (beide banken delen adres
+en RAS pinnen, maar hebben een eigen CAS pin). En voor screen 7/8 heb je
+inderdaad een grotere VRAM bandbreedte nodig.
+
+
+TODO
+* Hoe vullen we VRAM? Het VRAM fetch gedrag voor display van
+  bitmap/characters wordt niet beinvloed door de VRAM content. Voor
+  sprites maakt dit waarschijnlijk wel uit. Als het lukt om nuttige data
+  uit de color-bus te leze dan heeft het wel belang dat we VRAM vullen met
+  herkenbare patronen (liefst een patroon dat toelaat de positie te
+  bepalen.)
+
+* Welke commando's moeten we laten uitvoeren?
+
+* Wanneer moeten we CPU-VRAM accesses doen?
+
+
+
+
+Na de metingen
+
+Ik veronderstel dat uit de logic analyzer een soort van VCD dump komt.
+Daarna moeten we de data nog interpreteren. We moeten op z'n minst uit de
+toggle'ende signalen logische VRAM accesses kunnen halen. Bestaat hier al
+software voor?
+
+Voor zover ik zie zijn er deze soort accesses:
+   single byte read
+   single byte write
+   burst read
+  (is er ook een read-modify-write?)

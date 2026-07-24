@@ -1,0 +1,85 @@
+  25:               R.e 0x12a05  R.e 0x0ec01  R.e 0x12d04
+  49:               W.e 0x12a05               W.e 0x12d04
+  57:                            R.e 0x12c01
+  81:                            W.e 0x12c01
+ 113:               R.e 0x0ea06               R.e 0x0ed05
+ 165:  R.e 0x0e903  R.e 0x12a06  R.e 0x0ec02  R.e 0x12d05
+ 189:               W.e 0x12a06               W.e 0x12d05
+ 197:  R.e 0x12903               R.e 0x12c02
+ 221:  W.e 0x12903               W.e 0x12c02
+ 253:                                         R.e 0x0ed06
+ 285:  R.r 0x1ffff  R.r 0x1e5ff  R.r 0x1edff  R.r 0x1f5ff
+ 293:  R.e 0x0e904               R.e 0x0ec03  R.e 0x12d06
+ 317:               R.e 0x0eb00               W.e 0x12d06
+ 325:  R.e 0x12904               R.e 0x12c03
+ 349:  W.e 0x12904  R.e 0x12b00  W.e 0x12c03
+ 373:               W.e 0x12b00
+ 413:  R.r 0x0deff  R.r 0x0e6ff  R.r 0x0eeff  R.r 0x0f6ff
+ 421:  R.e 0x0e905               R.e 0x0ec04
+ 437:               R.e 0x0eb01
+ 445:                                         R.e 0x0ee00
+ 453:  R.e 0x12905               R.e 0x12c04
+ 469:               R.e 0x12b01
+ 477:  W.e 0x12905               W.e 0x12c04  R.e 0x12e00
+ 493:               W.e 0x12b01
+ 501:                                         W.e 0x12e00
+ 541:  R.r 0x1dfff  R.r 0x1e7ff  R.r 0x1efff  R.r 0x1f7ff
+ 549:  R.e 0x0e906               R.e 0x0ec05
+ 557:               R.e 0x0eb02
+ 565:                                         R.e 0x0ee01
+ 581:  R.e 0x12906               R.e 0x12c05
+ 589:               R.e 0x12b02
+ 597:                                         R.e 0x12e01
+ 605:  W.e 0x12906               W.e 0x12c05
+ 613:               W.e 0x12b02
+ 621:                                         W.e 0x12e01
+ 669:  R.r 0x0e0ff  R.r 0x0e8ff  R.r 0x0f0ff  R.r 0x0f8ff
+ 677:               R.e 0x0eb03  R.e 0x0ec06
+ 685:                                         R.e 0x0ee02
+ 709:               R.e 0x12b03  R.e 0x12c06
+ 717:                                         R.e 0x12e02
+ 733:  R.e 0x0ea00  W.e 0x12b03  W.e 0x12c06
+ 741:                                         W.e 0x12e02
+ 765:  R.e 0x12a00
+ 789:  W.e 0x12a00
+ 797:  R.r 0x1ffff  R.r 0x1e9ff  R.r 0x1f1ff  R.r 0x1f9ff
+ 805:               R.e 0x0eb04               R.e 0x0ee03
+ 837:               R.e 0x12b04               R.e 0x12e03
+ 853:  R.e 0x0ea01
+ 861:               W.e 0x12b04  R.e 0x0ed00  W.e 0x12e03
+ 885:  R.e 0x12a01
+ 893:                            R.e 0x12d00
+ 909:  W.e 0x12a01
+ 917:                            W.e 0x12d00
+ 925:  R.r 0x0e2ff  R.r 0x0eaff  R.r 0x0f2ff  R.r 0x0faff
+ 933:               R.e 0x0eb05               R.e 0x0ee04
+ 965:               R.e 0x12b05               R.e 0x12e04
+ 973:  R.e 0x0ea02
+ 981:                            R.e 0x0ed01
+ 989:               W.e 0x12b05               W.e 0x12e04
+1005:  R.e 0x12a02
+1013:                            R.e 0x12d01
+1029:  W.e 0x12a02
+1037:                            W.e 0x12d01
+1053:  R.r 0x1e3ff  R.r 0x1ebff  R.r 0x1f3ff  R.r 0x1fbff
+1061:               R.e 0x0eb06               R.e 0x0ee05
+1093:  R.e 0x0ea03  R.e 0x12b06               R.e 0x12e05
+1101:                            R.e 0x0ed02
+1117:               W.e 0x12b06               W.e 0x12e05
+1125:  R.e 0x12a03
+1133:                            R.e 0x12d02
+1149:  W.e 0x12a03
+1157:                            W.e 0x12d02
+1181:  R.r 0x0e4ff  R.r 0x0ecff  R.r 0x0f4ff  R.r 0x0fcff
+1189:                                         R.e 0x0ee06
+1213:  R.e 0x0ea04
+1221:                            R.e 0x0ed03  R.e 0x12e06
+1237:  R.. 0x1ffff  R.. 0x1ffff  R.. 0x1ffff  R.. 0x1ffff
+1245:  R.. 0x1ffff  R.. 0x1ffff  R.. 0x1ffff  R.. 0x1ffff
+1253:  R.. 0x1ffff  R.. 0x1ffff  R.. 0x1ffff  R.. 0x1ffff
+1261:  R.. 0x1ffff  R.. 0x1ffff  R.. 0x1ffff  R.. 0x1ffff
+1269:  R.e 0x12a04  R.e 0x0ec00  R.e 0x12d03  W.e 0x12e06
+1293:  W.e 0x12a04               W.e 0x12d03
+1301:               R.e 0x12c00
+1325:               W.e 0x12c00
+1361:  R.e 0x0ea05               R.e 0x0ed04

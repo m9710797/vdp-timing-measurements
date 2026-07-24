@@ -1,0 +1,173 @@
+#1618
+#7988
+#14356
+#20726
+time=   40 r addr=0x0a792
+time=  152 r addr=0x0143f
+time=  188 w addr=0x0a792
+time=  486 r addr=0x06793
+time=  636 r addr=0x0a793
+time=  748 r addr=0x1153f
+time=  784 w addr=0x0a793
+time= 1008 r addr=0x1ffff
+time= 1046 r addr=0x1ffff
+time= 1082 r addr=0x1ffff
+time= 1120 r addr=0x1ffff
+time= 1156 r addr=0x06793
+time= 1306 r addr=0x0a793
+time= 1422 w addr=0x0a793
+time= 1734 r addr=0x06794
+time= 1884 r addr=0x0a794
+time= 1996 w addr=0x0a794
+time= 2386 r addr=0x06794
+time= 2536 r addr=0x0a794
+time= 2646 w addr=0x0a794
+time= 2944 r addr=0x0163f
+time= 2982 r addr=0x06795
+time= 3132 r addr=0x0a795
+time= 3242 w addr=0x0a795
+time= 3542 r addr=0x1173f
+time= 3578 r addr=0x06795
+time= 3728 r addr=0x0a795
+time= 3838 w addr=0x0a795
+time= 4136 r addr=0x0183f
+time= 4174 r addr=0x06796
+time= 4324 r addr=0x0a796
+time= 4434 w addr=0x0a796
+time= 4732 r addr=0x1193f
+time= 4770 r addr=0x06796
+time= 4918 r addr=0x0a796
+time= 5030 w addr=0x0a796
+time= 5328 r addr=0x01a3f
+time= 5366 r addr=0x06797
+time= 5516 r addr=0x0a797
+time= 5626 w addr=0x0a797
+time= 5924 r addr=0x11b3f
+time= 5962 r addr=0x06797
+time= 6112 r addr=0x0a797
+time= 6222 w addr=0x0a797
+time= 6520 r addr=0x01c3f
+time= 6558 r addr=0x06798
+time= 6706 r addr=0x0a798
+time= 6818 w addr=0x0a798
+time= 7116 r addr=0x11d3f
+time= 7154 r addr=0x06798
+time= 7302 r addr=0x0a798
+time= 7378 r addr=0x1ffff
+time= 7414 r addr=0x1ffff
+time= 7452 r addr=0x1ffff
+time= 7490 r addr=0x1ffff
+time= 7526 w addr=0x0a798
+time= 7838 r addr=0x06799
+time= 7992 r addr=0x0a799
+time= 8104 w addr=0x0a799
+time= 8402 r addr=0x06799
+time= 8550 r addr=0x0a799
+time= 8756 w addr=0x0a799
+time= 9054 r addr=0x0679a
+time= 9202 r addr=0x0a79a
+time= 9314 r addr=0x01e3f
+time= 9352 w addr=0x0a79a
+time= 9650 r addr=0x0679a
+time= 9798 r addr=0x0a79a
+time= 9910 r addr=0x11f3f
+time= 9948 w addr=0x0a79a
+time=10246 r addr=0x0679b
+time=10394 r addr=0x0a79b
+time=10506 r addr=0x0203f
+time=10544 w addr=0x0a79b
+time=10842 r addr=0x0679b
+time=10990 r addr=0x0a79b
+time=11102 r addr=0x1213f
+time=11140 w addr=0x0a79b
+time=11438 r addr=0x0679c
+time=11586 r addr=0x0a79c
+time=11698 r addr=0x0223f
+time=11736 w addr=0x0a79c
+time=12034 r addr=0x0679c
+time=12182 r addr=0x0a79c
+time=12294 r addr=0x1233f
+time=12332 w addr=0x0a79c
+time=12630 r addr=0x0679d
+time=12778 r addr=0x0a79d
+time=12890 r addr=0x0243f
+time=12928 w addr=0x0a79d
+time=13226 r addr=0x0679d
+time=13374 r addr=0x0a79d
+time=13486 r addr=0x1253f
+time=13524 w addr=0x0a79d
+time=13748 r addr=0x1ffff
+time=13784 r addr=0x1ffff
+time=13822 r addr=0x1ffff
+time=13858 r addr=0x1ffff
+time=13896 r addr=0x0679e
+time=14046 r addr=0x0a79e
+time=14162 w addr=0x0a79e
+time=14474 r addr=0x0679e
+time=14622 r addr=0x0a79e
+time=14734 w addr=0x0a79e
+time=15126 r addr=0x0679f
+time=15274 r addr=0x0a79f
+time=15386 w addr=0x0a79f
+time=15684 r addr=0x0263f
+time=15722 r addr=0x0679f
+time=15870 r addr=0x0a79f
+time=15982 w addr=0x0a79f
+time=16280 r addr=0x1273f
+time=16318 r addr=0x067a0
+time=16466 r addr=0x0a7a0
+time=16578 w addr=0x0a7a0
+time=16876 r addr=0x0283f
+time=16914 r addr=0x067a0
+time=17062 r addr=0x0a7a0
+time=17174 w addr=0x0a7a0
+time=17472 r addr=0x1293f
+time=17510 r addr=0x067a1
+time=17658 r addr=0x0a7a1
+time=17770 w addr=0x0a7a1
+time=18068 r addr=0x02a3f
+time=18106 r addr=0x067a1
+time=18254 r addr=0x0a7a1
+time=18366 w addr=0x0a7a1
+time=18664 r addr=0x12b3f
+time=18702 r addr=0x067a2
+time=18850 r addr=0x0a7a2
+time=18962 w addr=0x0a7a2
+time=19260 r addr=0x02c3f
+time=19296 r addr=0x067a2
+time=19446 r addr=0x0a7a2
+time=19558 w addr=0x0a7a2
+time=19856 r addr=0x12d3f
+time=19894 r addr=0x067a3
+time=20042 r addr=0x0a7a3
+time=20116 r addr=0x1ffff
+time=20154 r addr=0x1ffff
+time=20192 r addr=0x1ffff
+time=20228 r addr=0x1ffff
+time=20266 w addr=0x0a7a3
+time=20578 r addr=0x067a3
+time=20732 r addr=0x0a7a3
+time=20842 w addr=0x0a7a3
+time=21140 r addr=0x067a4
+time=21290 r addr=0x0a7a4
+time=21494 w addr=0x0a7a4
+time=21792 r addr=0x067a4
+time=21942 r addr=0x0a7a4
+time=22054 r addr=0x02e3f
+time=22090 w addr=0x0a7a4
+time=22388 r addr=0x067a5
+time=22538 r addr=0x0a7a5
+time=22650 r addr=0x12f3f
+time=22686 w addr=0x0a7a5
+time=22984 r addr=0x067a5
+time=23134 r addr=0x0a7a5
+time=23246 r addr=0x0303f
+time=23282 w addr=0x0a7a5
+time=23580 r addr=0x067a6
+time=23730 r addr=0x0a7a6
+time=23842 r addr=0x1313f
+time=23878 w addr=0x0a7a6
+time=24176 r addr=0x067a6
+time=24326 r addr=0x0a7a6
+time=24438 r addr=0x0323f
+time=24474 w addr=0x0a7a6
