@@ -1,0 +1,32 @@
+  23:                            W.d 0x06780               W.d 0x06a00               W.d 0x06c80
+  95:                            R.d 0x06781               R.d 0x06a01               R.d 0x06c81
+ 119:                            W.d 0x06781               W.d 0x06a01               W.d 0x06c81
+ 163:               R.d 0x06680               R.d 0x06900               R.d 0x06b80
+ 189:               W.d 0x06680               W.d 0x06900               W.d 0x06b80
+ 215:                            R.d 0x06781               R.d 0x06a01               R.d 0x06c81
+ 247:                            W.d 0x06781               W.d 0x06a01               W.d 0x06c81
+ 279:               R.d 0x06680               R.d 0x06900               R.d 0x06b80
+ 311:               W.d 0x06680               W.d 0x06900               W.d 0x06b80
+ 381:  R.d 0x06580               R.d 0x06800               R.d 0x06a80               R.d 0x06d00
+ 407:  W.d 0x06580  R.d 0x06681  W.d 0x06800  R.d 0x06901  W.d 0x06a80  R.d 0x06b81  W.d 0x06d00
+ 439:               W.d 0x06681               W.d 0x06901               W.d 0x06b81
+ 503:  R.d 0x06580               R.d 0x06800               R.d 0x06a80               R.d 0x06d00
+ 535:  W.d 0x06580  R.d 0x06681  W.d 0x06800  R.d 0x06901  W.d 0x06a80  R.d 0x06b81  W.d 0x06d00
+ 567:               W.d 0x06681               W.d 0x06901               W.d 0x06b81
+ 631:  R.d 0x06581               R.d 0x06801               R.d 0x06a81               R.d 0x06d01
+ 663:  W.d 0x06581               W.d 0x06801               W.d 0x06a81               W.d 0x06d01
+ 701:               R.d 0x06700               R.d 0x06980               R.d 0x06c00
+ 727:               W.d 0x06700               W.d 0x06980               W.d 0x06c00
+ 759:  R.d 0x06581               R.d 0x06801               R.d 0x06a81               R.d 0x06d01
+ 791:  W.d 0x06581               W.d 0x06801               W.d 0x06a81
+ 823:               R.d 0x06700               R.d 0x06980               R.d 0x06c00
+ 855:               W.d 0x06700               W.d 0x06980               W.d 0x06c00
+ 951:  R.d 0x06600  R.d 0x06701  R.d 0x06880  R.d 0x06981  R.d 0x06b00  R.d 0x06c01
+ 983:  W.d 0x06600  W.d 0x06701  W.d 0x06880  W.d 0x06981  W.d 0x06b00  W.d 0x06c01
+1079:  R.d 0x06600  R.d 0x06701  R.d 0x06880  R.d 0x06981  R.d 0x06b00  R.d 0x06c01
+1111:  W.d 0x06600  W.d 0x06701  W.d 0x06880  W.d 0x06981  W.d 0x06b00  W.d 0x06c01
+1207:  R.d 0x06601               R.d 0x06881               R.d 0x06b01
+1267:  W.d 0x06601  R.d 0x06780  W.d 0x06881  R.d 0x06a00  W.d 0x06b01  R.d 0x06c80
+1291:               W.d 0x06780               W.d 0x06a00               W.d 0x06c80
+1343:  R.d 0x06601               R.d 0x06881               R.d 0x06b01
+1367:  W.d 0x06601  R.d 0x06780  W.d 0x06881  R.d 0x06a00  W.d 0x06b01  R.d 0x06c80

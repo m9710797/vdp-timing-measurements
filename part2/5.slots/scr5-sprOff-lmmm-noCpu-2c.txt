@@ -1,0 +1,54 @@
+   7:                            R.d 0x1d380
+  23:               W.d 0x1d201               W.d 0x1d480  R.s 0x19581               R.d 0x1d800
+  31:                            W.d 0x1d380                            R.s 0x19700
+  47:  W.d 0x1d101                                                                   W.d 0x1d800
+  55:                                                      R.d 0x1d581
+  63:                                                                   R.d 0x1d700
+  79:                                                      W.d 0x1d581
+  87:                                         R.s 0x19481               W.d 0x1d700
+  95:                            R.s 0x19380
+ 111:  R.s 0x19101                                                                   R.s 0x19801
+ 119:                                         R.d 0x1d481
+ 163:  R.d 0x1d101  R.s 0x19280  R.d 0x1d380  W.d 0x1d481               R.s 0x19700  R.d 0x1d801
+ 189:  W.d 0x1d101               W.d 0x1d380                                         W.d 0x1d801
+ 215:               R.d 0x1d280                            R.s 0x19600  R.d 0x1d700
+ 247:               W.d 0x1d280               R.s 0x19481  R.d 0x1d600  W.d 0x1d700
+ 253:                            R.s 0x19381                                         R.s 0x19801
+ 279:                                         R.d 0x1d481  W.d 0x1d600
+ 311:               R.s 0x19280  R.d 0x1d381  W.d 0x1d481               R.s 0x19701  R.d 0x1d801
+ 343:  R.s 0x19180  R.d 0x1d280  W.d 0x1d381               R.s 0x19600  R.d 0x1d701  W.d 0x1d801
+ 375:  R.d 0x1d180  W.d 0x1d280                            R.d 0x1d600  W.d 0x1d701
+ 407:  W.d 0x1d180               R.s 0x19381               W.d 0x1d600
+ 439:               R.s 0x19281  R.d 0x1d381  R.s 0x19500               R.s 0x19701
+ 471:  R.s 0x19180  R.d 0x1d281  W.d 0x1d381  R.d 0x1d500  R.s 0x19601  R.d 0x1d701  R.s 0x19880
+ 503:  R.d 0x1d180  W.d 0x1d281               W.d 0x1d500  R.d 0x1d601  W.d 0x1d701
+ 535:  W.d 0x1d180                                         W.d 0x1d601
+ 567:               R.s 0x19281               R.s 0x19500
+ 599:  R.s 0x19181  R.d 0x1d281  R.s 0x19400  R.d 0x1d500  R.s 0x19601
+ 631:  R.d 0x1d181  W.d 0x1d281  R.d 0x1d400  W.d 0x1d500  R.d 0x1d601  R.s 0x19780
+ 663:  W.d 0x1d181               W.d 0x1d400               W.d 0x1d601  R.d 0x1d780
+ 695:                                         R.s 0x19501               W.d 0x1d780
+ 727:  R.s 0x19181               R.s 0x19400  R.d 0x1d501
+ 759:  R.d 0x1d181  R.s 0x19300  R.d 0x1d400  W.d 0x1d501               R.s 0x19780
+ 791:  W.d 0x1d181  R.d 0x1d300  W.d 0x1d400               R.s 0x19680  R.d 0x1d780
+ 823:               W.d 0x1d300               R.s 0x19501  R.d 0x1d680  W.d 0x1d780
+ 855:                            R.s 0x19401  R.d 0x1d501  W.d 0x1d680
+ 887:               R.s 0x19300  R.d 0x1d401  W.d 0x1d501               R.s 0x19781
+ 919:  R.s 0x19200  R.d 0x1d300  W.d 0x1d401               R.s 0x19680  R.d 0x1d781
+ 951:  R.d 0x1d200  W.d 0x1d300                            R.d 0x1d680  W.d 0x1d781
+ 983:  W.d 0x1d200               R.s 0x19401               W.d 0x1d680
+1015:               R.s 0x19301  R.d 0x1d401  R.s 0x19580               R.s 0x19781
+1047:  R.s 0x19200  R.d 0x1d301  W.d 0x1d401  R.d 0x1d580  R.s 0x19681  R.d 0x1d781
+1079:  R.d 0x1d200  W.d 0x1d301               W.d 0x1d580  R.d 0x1d681  W.d 0x1d781
+1111:  W.d 0x1d200                                         W.d 0x1d681
+1143:               R.s 0x19301               R.s 0x19580
+1175:  R.s 0x19201  R.d 0x1d301  R.s 0x19480  R.d 0x1d580  R.s 0x19681
+1207:  R.d 0x1d201  W.d 0x1d301  R.d 0x1d480  W.d 0x1d580  R.d 0x1d681  R.s 0x19800
+1267:  W.d 0x1d201               W.d 0x1d480  R.s 0x19581  W.d 0x1d681  R.d 0x1d800
+1291:                                                                   W.d 0x1d800
+1299:                                         R.d 0x1d581
+1324:                                         W.d 0x1d581
+1334:  R.s 0x19201               R.s 0x19480
+1343:               R.s 0x19380
+1359:                                                                   R.s 0x19800
+1367:  R.d 0x1d201               R.d 0x1d480

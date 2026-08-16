@@ -1,0 +1,74 @@
+   7:               W.d 0x1c521                                         W.d 0x1c537
+  31:               W.w 0x16fb3
+  47:                                         W.w 0x16fd7
+  55:                            W.w 0x16fc4                                         W.w 0x1700e
+  63:                                                                   W.w 0x16ffb
+  71:                            R.d 0x1c527  R.d 0x1c52c  W.w 0x16fe8               R.d 0x1c53d
+  79:               R.d 0x1c521                            R.d 0x1c532  R.d 0x1c537
+  95:                            W.d 0x1c527  W.d 0x1c52c                            W.d 0x1c53d
+ 103:               W.w 0x16fb4                            W.d 0x1c532  W.d 0x1c537
+ 111:               W.d 0x1c521
+ 119:                                         W.w 0x16fd8
+ 163:                            W.w 0x16fc5               W.w 0x16fe9  W.w 0x16ffc  W.w 0x1700f
+ 171:               W.w 0x16fb5  R.d 0x1c527  R.d 0x1c52d                            R.d 0x1c53d
+ 183:               R.d 0x1c522                            R.d 0x1c532  R.d 0x1c538
+ 189:                                         R.. 0x1ffff
+ 215:               W.d 0x1c522  W.w 0x16fc6  W.w 0x16fd9  W.w 0x16fea  W.w 0x16ffd  W.d 0x1c53d
+ 221:                            W.d 0x1c527  W.d 0x1c52d  W.d 0x1c532  W.d 0x1c538
+ 247:               W.w 0x16fb6
+ 279:                            W.w 0x16fc7  W.w 0x16fda               W.w 0x16ffe
+ 311:               W.w 0x16fb7  R.d 0x1c528  R.d 0x1c52d  W.w 0x16feb  R.d 0x1c538  R.d 0x1c53e
+ 317:               R.d 0x1c522                            R.d 0x1c533
+ 343:               W.d 0x1c522  W.w 0x16fc8  W.w 0x16fdb  W.d 0x1c533  W.d 0x1c538  W.d 0x1c53e
+ 349:                            W.d 0x1c528  W.d 0x1c52d
+ 375:                                                      W.w 0x16fec  W.w 0x16fff  W.w 0x17010
+ 407:               W.w 0x16fb8               W.w 0x16fdc
+ 439:               R.d 0x1c523  W.w 0x16fc9  R.d 0x1c52e  W.w 0x16fed  W.w 0x17000  R.d 0x1c53e
+ 445:                            R.d 0x1c528               R.d 0x1c533  R.d 0x1c539
+ 471:               W.w 0x16fb9  W.d 0x1c528  W.d 0x1c52e  W.d 0x1c533  W.d 0x1c539  W.w 0x17011
+ 477:               W.d 0x1c523               R.. 0x1ffff                            W.d 0x1c53e
+ 503:                            W.w 0x16fca  W.w 0x16fdd  W.w 0x16fee  W.w 0x17001
+ 535:               W.w 0x16fba                                                      W.w 0x17012
+ 567:               R.d 0x1c523  W.w 0x16fcb  W.w 0x16fde  R.d 0x1c534  W.w 0x17002  R.d 0x1c53f
+ 573:                            R.d 0x1c529  R.d 0x1c52e  R.. 0x1ffff  R.d 0x1c539
+ 599:               W.w 0x16fbb  W.d 0x1c529  W.d 0x1c52e  W.w 0x16fef  W.d 0x1c539  W.w 0x17013
+ 605:               W.d 0x1c523                            W.d 0x1c534               W.d 0x1c53f
+ 631:                            W.w 0x16fcc  W.w 0x16fdf
+ 637:                                                                   R.. 0x1ffff
+ 663:                                                      W.w 0x16ff0  W.w 0x17003  W.w 0x17014
+ 695:  W.w 0x16fa9  W.w 0x16fbc  R.d 0x1c529  W.w 0x16fe0  R.d 0x1c534  R.d 0x1c53a  R.d 0x1c53f
+ 701:  R.d 0x1c51e  R.d 0x1c524  R.. 0x1ffff  R.d 0x1c52f
+ 727:  W.d 0x1c51e  W.d 0x1c524  W.w 0x16fcd  W.d 0x1c52f  W.w 0x16ff1  W.w 0x17004  W.d 0x1c53f
+ 733:                            W.d 0x1c529               W.d 0x1c534  W.d 0x1c53a
+ 759:  W.w 0x16faa  W.w 0x16fbd               W.w 0x16fe1                            W.w 0x17015
+ 791:                            W.w 0x16fce               W.w 0x16ff2  W.w 0x17005
+ 823:  W.w 0x16fab  W.w 0x16fbe  R.d 0x1c52a  R.d 0x1c52f  R.d 0x1c535  R.d 0x1c53a  W.w 0x17016
+ 829:  R.d 0x1c51f  R.d 0x1c524                                                      R.d 0x1c540
+ 855:  W.d 0x1c51f  W.d 0x1c524  W.w 0x16fcf  W.w 0x16fe2  W.d 0x1c535  W.w 0x17006  W.d 0x1c540
+ 861:                            W.d 0x1c52a  W.d 0x1c52f  R.. 0x1ffff  W.d 0x1c53a
+ 887:               W.w 0x16fbf                            W.w 0x16ff3               W.w 0x17017
+ 919:  W.w 0x16fac               W.w 0x16fd0  W.w 0x16fe3
+ 951:  R.d 0x1c51f  R.d 0x1c525  R.d 0x1c52a  R.d 0x1c530  W.w 0x16ff4  W.w 0x17007  W.w 0x17018
+ 957:                                                      R.d 0x1c535  R.d 0x1c53b  R.d 0x1c540
+ 983:  W.w 0x16fad  W.d 0x1c525  W.w 0x16fd1  W.w 0x16fe4  W.d 0x1c535  W.d 0x1c53b  W.d 0x1c540
+ 989:  W.d 0x1c51f               W.d 0x1c52a  W.d 0x1c530
+1015:                                                      W.w 0x16ff5  W.w 0x17008
+1021:                                                                                R.. 0x1ffff
+1047:  W.w 0x16fae                            W.w 0x16fe5                            W.w 0x17019
+1079:  R.d 0x1c520  R.d 0x1c525  W.w 0x16fd2  R.d 0x1c530  W.w 0x16ff6  W.w 0x17009  R.d 0x1c541
+1085:                            R.d 0x1c52b               R.d 0x1c536  R.d 0x1c53b
+1111:  W.w 0x16faf  W.d 0x1c525  W.d 0x1c52b  W.d 0x1c530  W.d 0x1c536  W.d 0x1c53b  W.w 0x1701a
+1117:  W.d 0x1c520                                                                   W.d 0x1c541
+1143:               W.w 0x16fc0  W.w 0x16fd3  W.w 0x16fe6  W.w 0x16ff7  W.w 0x1700a
+1175:                                                                                W.w 0x1701b
+1207:  W.w 0x16fb0  W.w 0x16fc1  W.w 0x16fd4  W.w 0x16fe7  R.d 0x1c536  W.w 0x1700b
+1213:  R.d 0x1c520  R.d 0x1c526  R.d 0x1c52b  R.d 0x1c531               R.d 0x1c53c
+1267:  W.w 0x16fb1  W.d 0x1c526  W.d 0x1c52b  W.d 0x1c531  W.w 0x16ff8  W.d 0x1c53c
+1275:  W.d 0x1c520               W.w 0x16fd5               W.d 0x1c536
+1283:               W.w 0x16fc2                                         W.w 0x1700c
+1291:                                                      W.w 0x16ff9
+1324:  W.w 0x16fb2
+1343:               R.d 0x1c526  R.d 0x1c52c  R.d 0x1c531               R.d 0x1c53c
+1351:  R.d 0x1c521               W.w 0x16fd6               R.d 0x1c537
+1359:               W.w 0x16fc3                            W.w 0x16ffa  W.w 0x1700d
+1367:               W.d 0x1c526  W.d 0x1c52c  W.d 0x1c531               W.d 0x1c53c

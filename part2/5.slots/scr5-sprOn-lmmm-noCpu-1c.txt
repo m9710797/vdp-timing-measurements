@@ -1,0 +1,29 @@
+  29:               R.s 0x1bc81  R.s 0x1bd80  R.d 0x1fe01  W.d 0x1ff00  R.d 0x1ff81  R.d 0x00080
+  93:               R.d 0x1fc81  R.d 0x1fd80  W.d 0x1fe01  R.s 0x1bf00  W.d 0x1ff81  W.d 0x00080
+ 163:               W.d 0x1fc81  W.d 0x1fd80  R.s 0x1be01  R.d 0x1ff00               R.s 0x1c081  R.s 0x1c180
+ 189:                                                      W.d 0x1ff00
+ 221:                                         R.d 0x1fe01                            R.d 0x00081  R.d 0x00180
+ 253:               R.s 0x1bc81  R.s 0x1bd80  W.d 0x1fe01  R.s 0x1bf01  R.s 0x1c000  W.d 0x00081  W.d 0x00180
+ 317:               R.d 0x1fc81  R.d 0x1fd80               R.d 0x1ff01  R.d 0x00000  R.s 0x1c081
+ 349:               W.d 0x1fc81  W.d 0x1fd80               W.d 0x1ff01  W.d 0x00000
+ 381:                                                                                R.d 0x00081
+ 445:                            R.s 0x1bd81  R.s 0x1be80  R.s 0x1bf01  R.s 0x1c000  W.d 0x00081
+ 509:               R.s 0x1bd00  R.d 0x1fd81  R.d 0x1fe80  R.d 0x1ff01  R.d 0x00000
+ 573:               R.d 0x1fd00  W.d 0x1fd81  W.d 0x1fe80  W.d 0x1ff01  W.d 0x00000
+ 605:               W.d 0x1fd00                                                      R.s 0x1c100
+ 637:                            R.s 0x1bd81  R.s 0x1be80               R.s 0x1c001
+ 701:               R.s 0x1bd00  R.d 0x1fd81  R.d 0x1fe80               R.d 0x00001  R.d 0x00100
+ 733:                            W.d 0x1fd81  W.d 0x1fe80  R.s 0x1bf80  W.d 0x00001  W.d 0x00100
+ 765:               R.d 0x1fd00
+ 829:               W.d 0x1fd00               R.s 0x1be81  R.d 0x1ff80  R.s 0x1c001  R.s 0x1c100
+ 861:                                                      W.d 0x1ff80
+ 893:               R.s 0x1bd01  R.s 0x1be00  R.d 0x1fe81               R.d 0x00001  R.d 0x00100
+ 957:               R.d 0x1fd01  R.d 0x1fe00  W.d 0x1fe81  R.s 0x1bf80  W.d 0x00001  W.d 0x00100
+ 989:               W.d 0x1fd01  W.d 0x1fe00
+1021:                                         R.s 0x1be81  R.d 0x1ff80               R.s 0x1c101
+1085:               R.s 0x1bd01  R.s 0x1be00  R.d 0x1fe81  W.d 0x1ff80               R.d 0x00101
+1117:                                         W.d 0x1fe81               R.s 0x1c080  W.d 0x00101
+1149:               R.d 0x1fd01  R.d 0x1fe00               R.s 0x1bf81
+1213:  R.s 0x1bc80  W.d 0x1fd01  W.d 0x1fe00               R.d 0x1ff81  R.d 0x00080  R.s 0x1c101
+1265:  R.d 0x1fc80                            R.s 0x1bf00  W.d 0x1ff81  W.d 0x00080  R.d 0x00101
+1331:  W.d 0x1fc80               R.s 0x1be01  R.d 0x1ff00  R.s 0x1bf81  R.s 0x1c080  W.d 0x00101

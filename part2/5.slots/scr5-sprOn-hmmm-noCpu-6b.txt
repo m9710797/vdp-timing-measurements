@@ -1,0 +1,29 @@
+  29:               W.d 0x1d996  R.s 0x19a00  W.d 0x1da0a  W.d 0x1da14  W.d 0x1da1e  W.d 0x1da88
+  93:               R.s 0x19997  W.d 0x1da00  R.s 0x19a0b  R.s 0x19a15  R.s 0x19a1f  R.s 0x19a89
+ 163:               W.d 0x1d997  R.s 0x19a01  W.d 0x1da0b  W.d 0x1da15  W.d 0x1da1f  W.d 0x1da89
+ 189:                            W.d 0x1da01
+ 253:               R.s 0x19998  R.s 0x19a02  R.s 0x19a0c  R.s 0x19a16               R.s 0x19a8a
+ 317:               W.d 0x1d998  W.d 0x1da02  W.d 0x1da0c  W.d 0x1da16  R.s 0x19a80  W.d 0x1da8a
+ 349:                                                                   W.d 0x1da80
+ 381:               R.s 0x19999  R.s 0x19a03  R.s 0x19a0d  R.s 0x19a17               R.s 0x19a8b
+ 445:               W.d 0x1d999  W.d 0x1da03  W.d 0x1da0d  W.d 0x1da17  R.s 0x19a81  W.d 0x1da8b
+ 477:                                                                   W.d 0x1da81
+ 509:               R.s 0x1999a  R.s 0x19a04  R.s 0x19a0e  R.s 0x19a18               R.s 0x19a8c
+ 573:               W.d 0x1d99a  W.d 0x1da04  W.d 0x1da0e  W.d 0x1da18  R.s 0x19a82  W.d 0x1da8c
+ 605:                                                                   W.d 0x1da82
+ 637:  R.s 0x19991  R.s 0x1999b  R.s 0x19a05  R.s 0x19a0f  R.s 0x19a19               R.s 0x19a8d
+ 701:  W.d 0x1d991  W.d 0x1d99b  W.d 0x1da05  W.d 0x1da0f  W.d 0x1da19  R.s 0x19a83  W.d 0x1da8d
+ 733:                                                                   W.d 0x1da83
+ 765:  R.s 0x19992  R.s 0x1999c  R.s 0x19a06  R.s 0x19a10  R.s 0x19a1a               R.s 0x19a8e
+ 829:  W.d 0x1d992  W.d 0x1d99c  W.d 0x1da06  W.d 0x1da10  W.d 0x1da1a  R.s 0x19a84  W.d 0x1da8e
+ 861:                                                                   W.d 0x1da84
+ 893:  R.s 0x19993  R.s 0x1999d  R.s 0x19a07  R.s 0x19a11  R.s 0x19a1b               R.s 0x19a8f
+ 957:  W.d 0x1d993  W.d 0x1d99d  W.d 0x1da07  W.d 0x1da11  W.d 0x1da1b  R.s 0x19a85  W.d 0x1da8f
+ 989:                                                                   W.d 0x1da85
+1021:  R.s 0x19994  R.s 0x1999e  R.s 0x19a08  R.s 0x19a12  R.s 0x19a1c               R.s 0x19a90
+1085:  W.d 0x1d994  W.d 0x1d99e  W.d 0x1da08  W.d 0x1da12  W.d 0x1da1c  R.s 0x19a86  W.d 0x1da90
+1117:                                                                   W.d 0x1da86
+1149:  R.s 0x19995  R.s 0x1999f  R.s 0x19a09  R.s 0x19a13  R.s 0x19a1d
+1213:  W.d 0x1d995  W.d 0x1d99f  W.d 0x1da09  W.d 0x1da13  W.d 0x1da1d  R.s 0x19a87
+1265:                                                                   W.d 0x1da87
+1331:  R.s 0x19996               R.s 0x19a0a  R.s 0x19a14  R.s 0x19a1e  R.s 0x19a88

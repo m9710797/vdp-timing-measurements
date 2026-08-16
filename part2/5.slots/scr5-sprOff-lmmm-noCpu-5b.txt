@@ -1,0 +1,49 @@
+  23:               R.d 0x1d403  W.d 0x1d408  R.s 0x1940e  R.d 0x1d413  W.d 0x1d418  R.s 0x1941d
+  47:               W.d 0x1d403                            W.d 0x1d413
+  55:                                         R.d 0x1d40e                            R.d 0x1d41d
+  79:                                         W.d 0x1d40e                            W.d 0x1d41d
+  87:                            R.s 0x19409                            R.s 0x19418
+ 111:               R.s 0x19404                            R.s 0x19413
+ 119:                            R.d 0x1d409                            R.d 0x1d418
+ 163:               R.d 0x1d404  W.d 0x1d409  R.s 0x1940e  R.d 0x1d413  W.d 0x1d418  R.s 0x1941e
+ 189:               W.d 0x1d404                            W.d 0x1d413
+ 215:                                         R.d 0x1d40e                            R.d 0x1d41e
+ 247:  R.s 0x1939f               R.s 0x19409  W.d 0x1d40e               R.s 0x19419  W.d 0x1d41e
+ 253:               R.s 0x19404                            R.s 0x19414
+ 279:  R.d 0x1d39f               R.d 0x1d409                            R.d 0x1d419
+ 311:  W.d 0x1d39f  R.d 0x1d404  W.d 0x1d409  R.s 0x1940f  R.d 0x1d414  W.d 0x1d419  R.s 0x1941e
+ 343:               W.d 0x1d404               R.d 0x1d40f  W.d 0x1d414               R.d 0x1d41e
+ 375:                            R.s 0x1940a  W.d 0x1d40f               R.s 0x19419  W.d 0x1d41e
+ 407:               R.s 0x19405  R.d 0x1d40a               R.s 0x19414  R.d 0x1d419
+ 439:  R.s 0x19400  R.d 0x1d405  W.d 0x1d40a  R.s 0x1940f  R.d 0x1d414  W.d 0x1d419  R.s 0x1941f
+ 471:  R.d 0x1d400  W.d 0x1d405               R.d 0x1d40f  W.d 0x1d414               R.d 0x1d41f
+ 503:  W.d 0x1d400               R.s 0x1940a  W.d 0x1d40f               R.s 0x1941a  W.d 0x1d41f
+ 535:               R.s 0x19405  R.d 0x1d40a               R.s 0x19415  R.d 0x1d41a
+ 567:  R.s 0x19400  R.d 0x1d405  W.d 0x1d40a  R.s 0x19410  R.d 0x1d415  W.d 0x1d41a  R.s 0x1941f
+ 599:  R.d 0x1d400  W.d 0x1d405               R.d 0x1d410  W.d 0x1d415               R.d 0x1d41f
+ 631:  W.d 0x1d400               R.s 0x1940b  W.d 0x1d410               R.s 0x1941a  W.d 0x1d41f
+ 663:               R.s 0x19406  R.d 0x1d40b               R.s 0x19415  R.d 0x1d41a
+ 695:  R.s 0x19401  R.d 0x1d406  W.d 0x1d40b  R.s 0x19410  R.d 0x1d415  W.d 0x1d41a
+ 727:  R.d 0x1d401  W.d 0x1d406               R.d 0x1d410  W.d 0x1d415
+ 759:  W.d 0x1d401               R.s 0x1940b  W.d 0x1d410               R.s 0x1941b
+ 791:               R.s 0x19406  R.d 0x1d40b               R.s 0x19416  R.d 0x1d41b
+ 823:  R.s 0x19401  R.d 0x1d406  W.d 0x1d40b  R.s 0x19411  R.d 0x1d416  W.d 0x1d41b
+ 855:  R.d 0x1d401  W.d 0x1d406               R.d 0x1d411  W.d 0x1d416
+ 887:  W.d 0x1d401               R.s 0x1940c  W.d 0x1d411               R.s 0x1941b
+ 919:               R.s 0x19407  R.d 0x1d40c               R.s 0x19416  R.d 0x1d41b
+ 951:  R.s 0x19402  R.d 0x1d407  W.d 0x1d40c  R.s 0x19411  R.d 0x1d416  W.d 0x1d41b
+ 983:  R.d 0x1d402  W.d 0x1d407               R.d 0x1d411  W.d 0x1d416
+1015:  W.d 0x1d402               R.s 0x1940c  W.d 0x1d411               R.s 0x1941c
+1047:               R.s 0x19407  R.d 0x1d40c               R.s 0x19417  R.d 0x1d41c
+1079:  R.s 0x19402  R.d 0x1d407  W.d 0x1d40c  R.s 0x19412  R.d 0x1d417  W.d 0x1d41c
+1111:  R.d 0x1d402  W.d 0x1d407               R.d 0x1d412  W.d 0x1d417
+1143:  W.d 0x1d402               R.s 0x1940d  W.d 0x1d412               R.s 0x1941c
+1175:               R.s 0x19408  R.d 0x1d40d               R.s 0x19417  R.d 0x1d41c
+1207:  R.s 0x19403  R.d 0x1d408  W.d 0x1d40d  R.s 0x19412  R.d 0x1d417  W.d 0x1d41c
+1267:  R.d 0x1d403  W.d 0x1d408  R.s 0x1940d  R.d 0x1d412  W.d 0x1d417  R.s 0x1941d
+1291:  W.d 0x1d403                            W.d 0x1d412
+1299:                            R.d 0x1d40d                            R.d 0x1d41d
+1324:                            W.d 0x1d40d                            W.d 0x1d41d
+1334:               R.s 0x19408                            R.s 0x19418
+1359:  R.s 0x19403                            R.s 0x19413
+1367:               R.d 0x1d408                            R.d 0x1d418

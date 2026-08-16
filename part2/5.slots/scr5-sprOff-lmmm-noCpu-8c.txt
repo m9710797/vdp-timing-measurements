@@ -1,0 +1,51 @@
+  23:               R.d 0x04880  W.d 0x04981                            R.d 0x04d01  W.d 0x04e01
+  31:                                                      R.s 0x00c00
+  47:               W.d 0x04880                                         W.d 0x04d01
+  63:                                                      R.d 0x04c00
+  87:                            R.s 0x00981  R.s 0x00b00  W.d 0x04c00
+ 111:               R.s 0x00881                                         R.s 0x00d01
+ 119:                            R.d 0x04981  R.d 0x04b00
+ 163:               R.d 0x04881  W.d 0x04981  W.d 0x04b00  R.s 0x00c01  R.d 0x04d01  R.s 0x00e80
+ 189:               W.d 0x04881                                         W.d 0x04d01
+ 215:                                                      R.d 0x04c01               R.d 0x04e80
+ 247:                                         R.s 0x00b00  W.d 0x04c01               W.d 0x04e80
+ 253:               R.s 0x00881
+ 279:                                         R.d 0x04b00
+ 311:               R.d 0x04881  R.s 0x00a00  W.d 0x04b00  R.s 0x00c01               R.s 0x00e80
+ 343:               W.d 0x04881  R.d 0x04a00               R.d 0x04c01  R.s 0x00d80  R.d 0x04e80
+ 375:  W.d 0x04781               W.d 0x04a00  R.s 0x00b01  W.d 0x04c01  R.d 0x04d80  W.d 0x04e80
+ 407:                                         R.d 0x04b01               W.d 0x04d80
+ 439:  R.s 0x00781               R.s 0x00a00  W.d 0x04b01                            R.s 0x00e81
+ 471:  R.d 0x04781  R.s 0x00900  R.d 0x04a00                            R.s 0x00d80  R.d 0x04e81
+ 503:  W.d 0x04781  R.d 0x04900  W.d 0x04a00  R.s 0x00b01  R.s 0x00c80  R.d 0x04d80  W.d 0x04e81
+ 535:               W.d 0x04900               R.d 0x04b01  R.d 0x04c80  W.d 0x04d80
+ 567:                            R.s 0x00a01  W.d 0x04b01  W.d 0x04c80               R.s 0x00e81
+ 599:               R.s 0x00900  R.d 0x04a01                            R.s 0x00d81  R.d 0x04e81
+ 631:  R.s 0x00800  R.d 0x04900  W.d 0x04a01               R.s 0x00c80  R.d 0x04d81  W.d 0x04e81
+ 663:  R.d 0x04800  W.d 0x04900                            R.d 0x04c80  W.d 0x04d81
+ 695:  W.d 0x04800               R.s 0x00a01  R.s 0x00b80  W.d 0x04c80
+ 727:               R.s 0x00901  R.d 0x04a01  R.d 0x04b80               R.s 0x00d81
+ 759:  R.s 0x00800  R.d 0x04901  W.d 0x04a01  W.d 0x04b80  R.s 0x00c81  R.d 0x04d81  R.s 0x00f00
+ 791:  R.d 0x04800  W.d 0x04901                            R.d 0x04c81  W.d 0x04d81  R.d 0x04f00
+ 823:  W.d 0x04800                            R.s 0x00b80  W.d 0x04c81               W.d 0x04f00
+ 855:               R.s 0x00901               R.d 0x04b80
+ 887:  R.s 0x00801  R.d 0x04901  R.s 0x00a80  W.d 0x04b80  R.s 0x00c81
+ 919:  R.d 0x04801  W.d 0x04901  R.d 0x04a80               R.d 0x04c81  R.s 0x00e00
+ 951:  W.d 0x04801               W.d 0x04a80  R.s 0x00b81  W.d 0x04c81  R.d 0x04e00
+ 983:                                         R.d 0x04b81               W.d 0x04e00
+1015:  R.s 0x00801               R.s 0x00a80  W.d 0x04b81
+1047:  R.d 0x04801  R.s 0x00980  R.d 0x04a80                            R.s 0x00e00
+1079:  W.d 0x04801  R.d 0x04980  W.d 0x04a80  R.s 0x00b81  R.s 0x00d00  R.d 0x04e00
+1111:               W.d 0x04980               R.d 0x04b81  R.d 0x04d00  W.d 0x04e00
+1143:                            R.s 0x00a81  W.d 0x04b81  W.d 0x04d00
+1175:               R.s 0x00980  R.d 0x04a81                            R.s 0x00e01
+1207:  R.s 0x00880  R.d 0x04980  W.d 0x04a81               R.s 0x00d00  R.d 0x04e01
+1267:  R.d 0x04880  W.d 0x04980  R.s 0x00a81               R.d 0x04d00  W.d 0x04e01
+1275:                                         R.s 0x00c00
+1291:  W.d 0x04880                                         W.d 0x04d00
+1299:                            R.d 0x04a81
+1307:                                         R.d 0x04c00
+1324:                            W.d 0x04a81
+1334:               R.s 0x00981               W.d 0x04c00               R.s 0x00e01
+1359:  R.s 0x00880                                         R.s 0x00d01
+1367:               R.d 0x04981                                         R.d 0x04e01

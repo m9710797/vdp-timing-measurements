@@ -1,0 +1,32 @@
+  23:                            W.d 0x1f480               W.d 0x1f700               W.d 0x1f980
+  95:                            R.d 0x1f481               R.d 0x1f701               R.d 0x1f981
+ 119:                            W.d 0x1f481               W.d 0x1f701               W.d 0x1f981
+ 163:               R.d 0x1f380               R.d 0x1f600               R.d 0x1f880
+ 189:               W.d 0x1f380               W.d 0x1f600               W.d 0x1f880
+ 215:                            R.d 0x1f481               R.d 0x1f701               R.d 0x1f981
+ 247:                            W.d 0x1f481               W.d 0x1f701               W.d 0x1f981
+ 279:               R.d 0x1f380               R.d 0x1f600               R.d 0x1f880
+ 311:               W.d 0x1f380               W.d 0x1f600               W.d 0x1f880
+ 381:                            R.d 0x1f500               R.d 0x1f780               R.d 0x1fa00
+ 407:               R.d 0x1f381  W.d 0x1f500  R.d 0x1f601  W.d 0x1f780  R.d 0x1f881  W.d 0x1fa00
+ 439:               W.d 0x1f381               W.d 0x1f601               W.d 0x1f881
+ 503:                            R.d 0x1f500               R.d 0x1f780               R.d 0x1fa00
+ 535:  W.d 0x1f280  R.d 0x1f381  W.d 0x1f500  R.d 0x1f601  W.d 0x1f780  R.d 0x1f881  W.d 0x1fa00
+ 567:               W.d 0x1f381               W.d 0x1f601               W.d 0x1f881
+ 631:  R.d 0x1f281               R.d 0x1f501               R.d 0x1f781               R.d 0x1fa01
+ 663:  W.d 0x1f281               W.d 0x1f501               W.d 0x1f781               W.d 0x1fa01
+ 701:               R.d 0x1f400               R.d 0x1f680               R.d 0x1f900
+ 727:               W.d 0x1f400               W.d 0x1f680               W.d 0x1f900
+ 759:  R.d 0x1f281               R.d 0x1f501               R.d 0x1f781               R.d 0x1fa01
+ 791:  W.d 0x1f281               W.d 0x1f501               W.d 0x1f781               W.d 0x1fa01
+ 823:               R.d 0x1f400               R.d 0x1f680               R.d 0x1f900
+ 855:               W.d 0x1f400               W.d 0x1f680               W.d 0x1f900
+ 951:  R.d 0x1f300  R.d 0x1f401  R.d 0x1f580  R.d 0x1f681  R.d 0x1f800  R.d 0x1f901  R.d 0x1fa80
+ 983:  W.d 0x1f300  W.d 0x1f401  W.d 0x1f580  W.d 0x1f681  W.d 0x1f800  W.d 0x1f901  W.d 0x1fa80
+1079:  R.d 0x1f300  R.d 0x1f401  R.d 0x1f580  R.d 0x1f681  R.d 0x1f800  R.d 0x1f901
+1111:  W.d 0x1f300  W.d 0x1f401  W.d 0x1f580  W.d 0x1f681  W.d 0x1f800  W.d 0x1f901
+1207:  R.d 0x1f301               R.d 0x1f581               R.d 0x1f801
+1267:  W.d 0x1f301  R.d 0x1f480  W.d 0x1f581  R.d 0x1f700  W.d 0x1f801  R.d 0x1f980
+1291:               W.d 0x1f480               W.d 0x1f700               W.d 0x1f980
+1343:  R.d 0x1f301               R.d 0x1f581               R.d 0x1f801
+1367:  W.d 0x1f301  R.d 0x1f480  W.d 0x1f581  R.d 0x1f700  W.d 0x1f801  R.d 0x1f980

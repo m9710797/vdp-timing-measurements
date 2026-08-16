@@ -1,4 +1,4 @@
 for file in *.txt; do
     [ -f "$file" ] || continue
-    ./process "$file" > "../time/$file"
+    ./process "$file" > "../3.time/$file"
 done
