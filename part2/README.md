@@ -65,3 +65,40 @@ some more variation in which slots are used (and then hopefully also get more
 variation in the distance between the slots, to get tighter bounds on the
 command execution timings) I now varied the block with a lot more. The filenames
 for this new set of measurements ends with `*nx??-?d.*`.
+
+
+
+
+
+
+
+Preliminary analysis:
+
+IMPORTANT CORRECTION:
+After the old set of measurements we located the access slots:
+* For dispOff: ... 1317 **1325** **1335** 1345 ...
+* For sprOff:  ... 1315 **1323** **1333** 1343 ...
+* For sprOn:   ... 1330 ...
+
+In these new sets of measurements we instead get
+* For dispOff: ... 1317 **1326** **1336** 1345 ...    (2 slots shifted by 1)
+* For sprOff:  ... 1315 **1324** **1334** 1343 ...    (2 slots shifted by 1)
+* For sprOn:   ... 1330 ...                           (unchanged)
+
+If I go back to the old measurements, around the position of these shifted
+slots, the timing is a bit ambiguous. The old data is also a good fit for the
+corrected slots. So when using the old measurement data, we need to interpret
+that as-if accesses on slots 1323, 1325, 1333, 1335 instead happened at 1324,
+1326, 1334, 1336.
+
+
+
+My best fit for the command execution timings, using the union of all
+measurement data, and using some heuristics (when there are multiple equivalent
+solutions) is:
+    HMMV                  : W 46 (+58)
+    LMMV                  : R 24 W 72 (+58)
+    YMMM                  : R 24 W 38 (+66)
+    HMMM                  : R 24 W 62 (+66)
+    LMMM (dispOff, sprOff): R 32 R 24 W 62 (+66)
+    LMMM (sprOn)          : R 34 R 24 W 64 (+66)
