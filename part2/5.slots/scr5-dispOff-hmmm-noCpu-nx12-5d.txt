@@ -1,0 +1,79 @@
+   1:                            R.s 0x19983                                         R.s 0x19e03
+   9:                                         R.s 0x19a85
+  17:               W.d 0x1d881                                         W.d 0x1dd01
+  25:                            W.d 0x1d983                                         W.d 0x1de03
+  33:                                         W.d 0x1da85  R.s 0x19c00
+  57:                                                      W.d 0x1dc00
+  81:               R.s 0x19882                                         R.s 0x19d02
+  89:                            R.s 0x19984                                         R.s 0x19e04
+ 105:               W.d 0x1d882                                         W.d 0x1dd02
+ 113:                            W.d 0x1d984                                         W.d 0x1de04
+ 121:  R.s 0x19781                                         R.s 0x19c01
+ 165:  W.d 0x1d781  R.s 0x19883               R.s 0x19b00  W.d 0x1dc01  R.s 0x19d03
+ 173:                            R.s 0x19985                                         R.s 0x19e05
+ 189:               W.d 0x1d883               W.d 0x1db00               W.d 0x1dd03
+ 197:                            W.d 0x1d985                                         W.d 0x1de05
+ 229:  R.s 0x19782                                         R.s 0x19c02
+ 253:  W.d 0x1d782  R.s 0x19884               R.s 0x19b01  W.d 0x1dc02  R.s 0x19d04
+ 277:               W.d 0x1d884               W.d 0x1db01               W.d 0x1dd04
+ 317:  R.s 0x19783                                         R.s 0x19c03
+ 325:                            R.s 0x19a00                                         R.s 0x19e80
+ 341:  W.d 0x1d783  R.s 0x19885               R.s 0x19b02  W.d 0x1dc03  R.s 0x19d05
+ 349:                            W.d 0x1da00                                         W.d 0x1de80
+ 365:               W.d 0x1d885               W.d 0x1db02               W.d 0x1dd05
+ 405:  R.s 0x19784                                         R.s 0x19c04
+ 421:                            R.s 0x19a01                                         R.s 0x19e81
+ 429:  W.d 0x1d784                            R.s 0x19b03  W.d 0x1dc04
+ 445:                            W.d 0x1da01                                         W.d 0x1de81
+ 453:                                         W.d 0x1db03
+ 493:  R.s 0x19785  R.s 0x19900                            R.s 0x19c05  R.s 0x19d80
+ 509:                            R.s 0x19a02                                         R.s 0x19e82
+ 517:  W.d 0x1d785  W.d 0x1d900               R.s 0x19b04  W.d 0x1dc05  W.d 0x1dd80
+ 533:                            W.d 0x1da02
+ 549:                                         W.d 0x1db04
+ 581:               R.s 0x19901                                         R.s 0x19d81
+ 597:                            R.s 0x19a03
+ 605:               W.d 0x1d901                                         W.d 0x1dd81
+ 613:                                         R.s 0x19b05
+ 621:                            W.d 0x1da03
+ 637:                                         W.d 0x1db05
+ 645:  R.s 0x19800                                         R.s 0x19c80
+ 677:  W.d 0x1d800  R.s 0x19902                            W.d 0x1dc80  R.s 0x19d82
+ 685:                            R.s 0x19a04
+ 701:               W.d 0x1d902                                         W.d 0x1dd82
+ 709:                            W.d 0x1da04
+ 741:  R.s 0x19801                                         R.s 0x19c81
+ 765:  W.d 0x1d801  R.s 0x19903               R.s 0x19b80  W.d 0x1dc81  R.s 0x19d83
+ 773:                            R.s 0x19a05
+ 789:               W.d 0x1d903               W.d 0x1db80               W.d 0x1dd83
+ 805:                            W.d 0x1da05
+ 829:  R.s 0x19802                                         R.s 0x19c82
+ 853:  W.d 0x1d802  R.s 0x19904               R.s 0x19b81  W.d 0x1dc82  R.s 0x19d84
+ 877:               W.d 0x1d904               W.d 0x1db81               W.d 0x1dd84
+ 917:  R.s 0x19803                                         R.s 0x19c83
+ 933:                            R.s 0x19a80
+ 941:  W.d 0x1d803  R.s 0x19905               R.s 0x19b82  W.d 0x1dc83  R.s 0x19d85
+ 957:                            W.d 0x1da80
+ 965:               W.d 0x1d905               W.d 0x1db82               W.d 0x1dd85
+1005:  R.s 0x19804                                         R.s 0x19c84
+1021:                            R.s 0x19a81
+1029:  W.d 0x1d804                            R.s 0x19b83  W.d 0x1dc84
+1045:                            W.d 0x1da81
+1061:                                         W.d 0x1db83
+1093:  R.s 0x19805  R.s 0x19980                            R.s 0x19c85  R.s 0x19e00
+1109:                            R.s 0x19a82
+1117:  W.d 0x1d805  W.d 0x1d980                            W.d 0x1dc85  W.d 0x1de00
+1125:                                         R.s 0x19b84
+1133:                            W.d 0x1da82
+1149:                                         W.d 0x1db84
+1189:               R.s 0x19981                                         R.s 0x19e01
+1197:                            R.s 0x19a83
+1213:               W.d 0x1d981               R.s 0x19b85               W.d 0x1de01
+1221:                            W.d 0x1da83
+1269:  R.s 0x19880                            W.d 0x1db85  R.s 0x19d00
+1277:               R.s 0x19982                                         R.s 0x19e02
+1285:                            R.s 0x19a84
+1293:  W.d 0x1d880                                         W.d 0x1dd00
+1301:               W.d 0x1d982                                         W.d 0x1de02
+1309:                            W.d 0x1da84
+1361:  R.s 0x19881                                         R.s 0x19d01

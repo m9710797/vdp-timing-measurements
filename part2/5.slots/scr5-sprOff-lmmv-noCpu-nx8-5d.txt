@@ -1,0 +1,46 @@
+  23:                                         W.. 0x0be02
+  63:               R.. 0x0bd00                            R.. 0x0bf00
+  71:                            R.. 0x0bd81                            R.. 0x0bf81
+  87:               W.. 0x0bd00                            W.. 0x0bf00
+  95:  R.. 0x0bc03               W.. 0x0bd81  R.. 0x0be03               W.. 0x0bf81
+ 119:  W.. 0x0bc03                            W.. 0x0be03
+ 163:               R.. 0x0bd00                            R.. 0x0bf00
+ 171:                            R.. 0x0bd82                            R.. 0x0bf82
+ 189:               W.. 0x0bd00                            W.. 0x0bf00
+ 215:  R.. 0x0bc03               W.. 0x0bd82  R.. 0x0be03               W.. 0x0bf82
+ 247:  W.. 0x0bc03                            W.. 0x0be03
+ 279:               R.. 0x0bd01                            R.. 0x0bf01
+ 311:               W.. 0x0bd01  R.. 0x0bd82               W.. 0x0bf01  R.. 0x0bf82
+ 343:                            W.. 0x0bd82                            W.. 0x0bf82
+ 375:                                                                                R.r 0x14000
+ 381:  R.. 0x0bc80                            R.. 0x0be80
+ 407:  W.. 0x0bc80  R.. 0x0bd01               W.. 0x0be80  R.. 0x0bf01
+ 439:               W.. 0x0bd01  R.. 0x0bd83               W.. 0x0bf01  R.. 0x0bf83
+ 471:                            W.. 0x0bd83                            W.. 0x0bf83
+ 503:  R.. 0x0bc80                            R.. 0x0be80
+ 535:  W.. 0x0bc80  R.. 0x0bd02               W.. 0x0be80  R.. 0x0bf02
+ 567:               W.. 0x0bd02  R.. 0x0bd83               W.. 0x0bf02  R.. 0x0bf83
+ 599:                            W.. 0x0bd83                            W.. 0x0bf83
+ 631:  R.. 0x0bc81                            R.. 0x0be81
+ 663:  W.. 0x0bc81  R.. 0x0bd02               W.. 0x0be81  R.. 0x0bf02
+ 695:               W.. 0x0bd02                            W.. 0x0bf02
+ 733:                            R.. 0x0be00
+ 759:  R.. 0x0bc81               W.. 0x0be00  R.. 0x0be81
+ 791:  W.. 0x0bc81  R.. 0x0bd03               W.. 0x0be81  R.. 0x0bf03
+ 823:               W.. 0x0bd03                            W.. 0x0bf03
+ 855:                            R.. 0x0be00
+ 887:  R.. 0x0bc82               W.. 0x0be00  R.. 0x0be82
+ 919:  W.. 0x0bc82  R.. 0x0bd03               W.. 0x0be82  R.. 0x0bf03
+ 951:               W.. 0x0bd03                            W.. 0x0bf03
+ 983:                            R.. 0x0be01
+1015:  R.. 0x0bc82               W.. 0x0be01  R.. 0x0be82
+1047:  W.. 0x0bc82                            W.. 0x0be82
+1085:               R.. 0x0bd80                            R.. 0x0bf80
+1111:               W.. 0x0bd80  R.. 0x0be01               W.. 0x0bf80
+1143:  R.. 0x0bc83               W.. 0x0be01  R.. 0x0be83
+1175:  W.. 0x0bc83                            W.. 0x0be83
+1207:               R.. 0x0bd80                            R.. 0x0bf80
+1267:  R.. 0x0bc83  W.. 0x0bd80  R.. 0x0be02  R.. 0x0be83  W.. 0x0bf80
+1291:  W.. 0x0bc83               W.. 0x0be02  W.. 0x0be83
+1343:               R.. 0x0bd81                            R.. 0x0bf81
+1367:               W.. 0x0bd81  R.. 0x0be02               W.. 0x0bf81

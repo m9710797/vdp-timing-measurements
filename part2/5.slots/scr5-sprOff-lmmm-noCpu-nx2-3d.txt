@@ -1,0 +1,69 @@
+   7:               W.d 0x1c200               R.d 0x1c600
+  23:                                                                   R.d 0x1ca00
+  31:                                         W.d 0x1c600
+  39:                            R.r 0x14024
+  47:               R.r 0x14011  R.s 0x18400                            W.d 0x1ca00
+  63:                                                      R.s 0x18800
+  71:               R.s 0x18200
+  79:                            R.d 0x1c400
+  87:                                                                                R.s 0x18c80
+  95:                                         R.s 0x18600  R.d 0x1c800
+ 103:               R.d 0x1c200  W.d 0x1c400
+ 111:                            R.r 0x14025
+ 119:               R.r 0x14012                            W.d 0x1c800               R.d 0x1cc80
+ 163:               W.d 0x1c200  R.s 0x18400  R.d 0x1c600                            W.d 0x1cc80
+ 183:                            R.r 0x14026                            R.s 0x18a80
+ 189:               R.. 0x1ffff               W.d 0x1c600
+ 215:               R.r 0x14013  R.d 0x1c400                            R.d 0x1ca80
+ 247:                            W.d 0x1c400               R.s 0x18880  W.d 0x1ca80  R.s 0x18c80
+ 253:                            R.. 0x1ffff
+ 279:               R.r 0x14014  R.r 0x14027               R.d 0x1c880               R.d 0x1cc80
+ 311:               R.s 0x18280                            W.d 0x1c880  R.s 0x18a80  W.d 0x1cc80
+ 343:               R.r 0x14015  R.r 0x14028  R.s 0x18680               R.d 0x1ca80
+ 349:               R.d 0x1c280
+ 375:               W.d 0x1c280  R.s 0x18480  R.d 0x1c680  R.s 0x18880  W.d 0x1ca80
+ 407:               R.r 0x14016  R.d 0x1c480  W.d 0x1c680  R.d 0x1c880
+ 439:               R.s 0x18280  W.d 0x1c480               W.d 0x1c880               R.s 0x18d00
+ 471:               R.d 0x1c280               R.s 0x18680                            R.d 0x1cd00
+ 477:               R.. 0x1ffff
+ 503:               R.r 0x14017  R.s 0x18480  R.d 0x1c680               R.s 0x18b00  W.d 0x1cd00
+ 509:               W.d 0x1c280
+ 535:                            R.d 0x1c480  W.d 0x1c680               R.d 0x1cb00
+ 567:               R.r 0x14018  W.d 0x1c480               R.s 0x18900  W.d 0x1cb00  R.s 0x18d00
+ 599:                                                      R.d 0x1c900               R.d 0x1cd00
+ 631:               R.r 0x14019                            W.d 0x1c900  R.s 0x18b00  W.d 0x1cd00
+ 663:               R.s 0x18300               R.s 0x18700               R.d 0x1cb00
+ 695:               R.r 0x1401a  R.s 0x18500  R.d 0x1c700  R.s 0x18900  W.d 0x1cb00
+ 701:               R.d 0x1c300
+ 727:               W.d 0x1c300  R.d 0x1c500  W.d 0x1c700  R.d 0x1c900
+ 759:               R.r 0x1401b  W.d 0x1c500               W.d 0x1c900               R.s 0x18d80
+ 791:               R.s 0x18300               R.s 0x18700                            R.d 0x1cd80
+ 823:               R.d 0x1c300  R.s 0x18500  R.d 0x1c700               R.s 0x18b80  W.d 0x1cd80
+ 855:               R.r 0x1401c  R.d 0x1c500  W.d 0x1c700               R.d 0x1cb80
+ 861:               W.d 0x1c300
+ 887:                            W.d 0x1c500               R.s 0x18980  W.d 0x1cb80  R.s 0x18d80
+ 919:  R.r 0x1400a  R.r 0x1401d                            R.d 0x1c980               R.d 0x1cd80
+ 951:  R.d 0x1c180                                         W.d 0x1c980  R.s 0x18b80  W.d 0x1cd80
+ 983:  R.r 0x1400b  R.r 0x1401e               R.s 0x18780               R.d 0x1cb80
+ 989:  W.d 0x1c180
+1015:               R.s 0x18380  R.s 0x18580  R.d 0x1c780  R.s 0x18980  W.d 0x1cb80
+1047:               R.r 0x1401f  R.d 0x1c580  W.d 0x1c780  R.d 0x1c980
+1079:  R.r 0x1400c  R.d 0x1c380  W.d 0x1c580               W.d 0x1c980               R.s 0x18e00
+1085:  R.s 0x18180
+1111:               W.d 0x1c380               R.s 0x18780                            R.d 0x1ce00
+1143:  R.r 0x1400d  R.r 0x14020  R.s 0x18580  R.d 0x1c780               R.s 0x18c00  W.d 0x1ce00
+1149:  R.d 0x1c180
+1175:  W.d 0x1c180  R.s 0x18380  R.d 0x1c580  W.d 0x1c780               R.d 0x1cc00
+1207:  R.r 0x1400e  R.r 0x14021  W.d 0x1c580               R.s 0x18a00  W.d 0x1cc00  R.s 0x18e00
+1213:               R.d 0x1c380
+1267:               R.r 0x14022                            R.d 0x1ca00  R.s 0x18c00  R.d 0x1ce00
+1275:  R.r 0x1400f  W.d 0x1c380
+1291:                                                      W.d 0x1ca00               W.d 0x1ce00
+1299:                                                                   R.d 0x1cc00
+1307:  R.s 0x18200                            R.s 0x18800
+1324:                                                                   W.d 0x1cc00
+1334:               R.r 0x14023
+1343:  R.r 0x14010               R.s 0x18600  R.d 0x1c800
+1351:  R.d 0x1c200
+1359:                                                      R.s 0x18a00
+1367:                                         W.d 0x1c800

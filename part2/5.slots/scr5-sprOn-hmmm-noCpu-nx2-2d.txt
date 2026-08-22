@@ -1,0 +1,25 @@
+  29:                            R.s 0x1bd00  W.. 0x00000               R.d 0x1c680  W.. 0x00980
+  93:               R.s 0x1ba00  W.d 0x1fd00               R.d 0x1c380  W.. 0x00680
+ 163:               W.d 0x1fa00               R.d 0x1c080  W.. 0x00380               R.d 0x1ca00
+ 189:                                         W.. 0x00080                            W.. 0x00a00
+ 253:                            R.s 0x1bd80                            R.d 0x1c700
+ 317:               R.s 0x1ba80  W.d 0x1fd80               R.d 0x1c400  W.. 0x00700
+ 349:               W.d 0x1fa80               R.d 0x1c100  W.. 0x00400               R.d 0x1ca80
+ 381:                                         W.. 0x00100                            W.. 0x00a80
+ 477:                            R.s 0x1be00                            R.d 0x1c780
+ 509:               R.s 0x1bb00  W.d 0x1fe00               R.d 0x1c480  W.. 0x00780
+ 573:               W.d 0x1fb00               R.d 0x1c180  W.. 0x00480               R.d 0x1cb00
+ 605:                                         W.. 0x00180                            W.. 0x00b00
+ 701:                            R.s 0x1be80                            R.d 0x1c800
+ 733:               R.s 0x1bb80  W.d 0x1fe80               R.d 0x1c500  W.. 0x00800
+ 765:  R.s 0x1b880  W.d 0x1fb80               R.d 0x1c200  W.. 0x00500               R.d 0x1cb80
+ 829:  W.d 0x1f880                            W.. 0x00200                            W.. 0x00b80
+ 893:                            R.s 0x1bf00                            R.d 0x1c880
+ 957:               R.s 0x1bc00  W.d 0x1ff00               R.d 0x1c580  W.. 0x00880
+ 989:  R.s 0x1b900  W.d 0x1fc00               R.d 0x1c280  W.. 0x00580               R.d 0x1cc00
+1021:  W.d 0x1f900                            W.. 0x00280                            W.. 0x00c00
+1117:                            R.s 0x1bf80                            R.d 0x1c900
+1149:               R.s 0x1bc80  W.d 0x1ff80               R.d 0x1c600  W.. 0x00900
+1213:  R.s 0x1b980  W.d 0x1fc80               R.d 0x1c300  W.. 0x00600
+1265:  W.d 0x1f980                            W.. 0x00300
+1331:                            R.d 0x1c000                            R.d 0x1c980
