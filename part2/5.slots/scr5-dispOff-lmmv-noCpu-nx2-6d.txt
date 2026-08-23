@@ -43,23 +43,23 @@
  805:               W.d 0x1f280                                         W.d 0x1fd00
  837:                                         R.d 0x1f800
  845:  R.d 0x1f000                                         R.d 0x1fa80
- 861:                            R.d 0x1f580  W.d 0x1f800                            R.. 0x00000
+ 861:                            R.d 0x1f580  W.d 0x1f800                            R.d 0x00000
  869:  W.d 0x1f000                                         W.d 0x1fa80
- 885:                            W.d 0x1f580                                         W.. 0x00000
+ 885:                            W.d 0x1f580                                         W.d 0x00000
  933:                                         R.d 0x1f800
  941:               R.d 0x1f300                                         R.d 0x1fd80
- 957:                            R.d 0x1f580  W.d 0x1f800                            R.. 0x00000
+ 957:                            R.d 0x1f580  W.d 0x1f800                            R.d 0x00000
  965:               W.d 0x1f300                                         W.d 0x1fd80
- 981:                            W.d 0x1f580                                         W.. 0x00000
+ 981:                            W.d 0x1f580                                         W.d 0x00000
 1005:  R.d 0x1f080                                         R.d 0x1fb00
 1029:  W.d 0x1f080                                         W.d 0x1fb00
 1037:               R.d 0x1f300                                         R.d 0x1fd80
 1061:               W.d 0x1f300                                         W.d 0x1fd80
 1093:                                         R.d 0x1f880
 1101:  R.d 0x1f080                                         R.d 0x1fb00
-1117:                            R.d 0x1f600  W.d 0x1f880                            R.. 0x00080
+1117:                            R.d 0x1f600  W.d 0x1f880                            R.d 0x00080
 1125:  W.d 0x1f080                                         W.d 0x1fb00
-1141:                            W.d 0x1f600                                         W.. 0x00080
+1141:                            W.d 0x1f600                                         W.d 0x00080
 1189:                                         R.d 0x1f880
 1197:               R.d 0x1f380                                         R.d 0x1fe00
 1213:                            R.d 0x1f600  W.d 0x1f880
