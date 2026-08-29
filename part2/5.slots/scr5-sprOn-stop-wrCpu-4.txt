@@ -12,7 +12,7 @@
  477:                            W.w 0x16538  W.w 0x16548  W.w 0x16559
  509:  W.w 0x16519                                                      W.w 0x16569  W.w 0x1657c
  573:  W.w 0x1651a  W.w 0x16527  W.w 0x16539  W.w 0x16549  W.w 0x1655a  W.w 0x1656a  W.w 0x1657d
- 605:               W.w 0x16528  R.r 0x1653a
+ 605:               W.w 0x16528  W.w 0x1653a
  637:                                         W.w 0x1654a  W.w 0x1655b  W.w 0x1656b  W.w 0x1657e
  701:  W.w 0x1651b  W.w 0x16529  W.w 0x1653b  W.w 0x1654b  W.w 0x1655c               W.w 0x1657f
  733:                            W.w 0x1653c                            W.w 0x1656c
