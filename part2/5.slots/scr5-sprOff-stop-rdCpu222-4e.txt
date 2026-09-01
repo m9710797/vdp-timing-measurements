@@ -1,0 +1,29 @@
+  23:               R.r 0x148ea                                         R.r 0x14902
+ 163:                                         R.r 0x148f7
+ 215:                            R.r 0x148f1                                         R.r 0x14909
+ 247:               R.r 0x148eb                                         R.r 0x14903
+ 311:                                                      R.r 0x148fd
+ 375:                                         R.r 0x148f8
+ 439:                            R.r 0x148f2                                         R.r 0x1490a
+ 471:               R.r 0x148ec                                         R.r 0x14904
+ 509:                                                      R.. 0x1ffff
+ 535:                                                      R.r 0x148fe
+ 599:                                         R.r 0x148f9
+ 663:                            R.r 0x148f3                                         R.r 0x1490b
+ 695:               R.r 0x148ed                                         R.r 0x14905
+ 733:                                                      R.. 0x1ffff
+ 759:                                                      R.r 0x148ff
+ 823:                                         R.r 0x148fa
+ 861:                            R.. 0x1ffff                                         R.. 0x1ffff
+ 887:                            R.r 0x148f4                                         R.r 0x1490c
+ 919:               R.r 0x148ee                                         R.r 0x14906
+ 951:                                                      R.r 0x14900
+1047:                                         R.r 0x148fb
+1079:                            R.r 0x148f5
+1085:                                                                                R.. 0x1ffff
+1111:                                                                                R.r 0x1490d
+1143:               R.r 0x148ef                                         R.r 0x14907
+1175:  R.r 0x148e9                                         R.r 0x14901
+1267:                                         R.r 0x148fc
+1307:                            R.r 0x148f6                                         R.r 0x1490e
+1351:               R.r 0x148f0                                         R.r 0x14908

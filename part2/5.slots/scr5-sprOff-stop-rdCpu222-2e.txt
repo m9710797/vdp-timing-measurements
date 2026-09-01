@@ -1,0 +1,32 @@
+  23:                                                                   R.r 0x148ea
+  63:               R.r 0x148d3
+ 111:                                                      R.r 0x148e5
+ 163:                                         R.r 0x148df
+ 215:                            R.r 0x148d9                                         R.r 0x148f1
+ 247:                                                                   R.r 0x148eb
+ 311:               R.r 0x148d4
+ 343:                                                      R.r 0x148e6
+ 375:                                         R.r 0x148e0
+ 439:                            R.r 0x148da                                         R.r 0x148f2
+ 471:                                                                   R.r 0x148ec
+ 567:                                                      R.r 0x148e7
+ 599:                                         R.r 0x148e1
+ 637:                            R.. 0x1ffff                                         R.. 0x1ffff
+ 663:                            R.r 0x148db                                         R.r 0x148f3
+ 695:               R.r 0x148d5                                         R.r 0x148ed
+ 791:  R.r 0x148d0                                         R.r 0x148e8
+ 823:                                         R.r 0x148e2
+ 855:                            R.r 0x148dc
+ 861:                                                                                R.. 0x1ffff
+ 887:                                                                                R.r 0x148f4
+ 919:               R.r 0x148d6                                         R.r 0x148ee
+ 989:  R.. 0x1ffff
+1015:  R.r 0x148d1
+1047:                                         R.r 0x148e3
+1079:                            R.r 0x148dd                                         R.r 0x148f5
+1143:               R.r 0x148d7                                         R.r 0x148ef
+1175:                                                      R.r 0x148e9
+1207:  R.r 0x148d2
+1267:                                         R.r 0x148e4
+1299:                            R.r 0x148de
+1351:               R.r 0x148d8                                         R.r 0x148f0
