@@ -1,0 +1,101 @@
+   1:               W.w 0x19f89
+  17:                                         W.w 0x19fad
+  25:                            W.w 0x19f9a                                         W.w 0x19fe4
+  33:                                                                   W.w 0x19fd1
+  73:               W.w 0x19f8a
+  89:                                         W.w 0x19fae
+  97:                            W.w 0x19f9b                                         W.w 0x19fe5
+ 105:                                                                   W.w 0x19fd2
+ 165:               W.w 0x19f8b  W.w 0x19f9c  W.w 0x19faf                            W.w 0x19fe6
+ 181:                                                                   W.w 0x19fd3
+ 189:                                                      W.w 0x19fc0
+ 213:               W.w 0x19f8c
+ 229:                                         W.w 0x19fb0
+ 237:                            W.w 0x19f9d                                         W.w 0x19fe7
+ 253:                                                                   W.w 0x19fd4
+ 261:                                                      W.w 0x19fc1
+ 293:               W.w 0x19f8d
+ 301:                                         W.w 0x19fb1
+ 309:                            W.w 0x19f9e
+ 325:                                                                   W.w 0x19fd5
+ 333:                                                      W.w 0x19fc2
+ 357:               W.w 0x19f8e
+ 373:                                         W.w 0x19fb2
+ 381:                            W.w 0x19f9f
+ 389:                                                                   W.w 0x19fd6
+ 405:                                                      W.w 0x19fc3
+ 429:               W.w 0x19f8f
+ 437:  W.w 0x19f7c
+ 445:                                         W.w 0x19fb3
+ 453:                            W.w 0x19fa0
+ 461:                                                                   W.w 0x19fd7
+ 469:                                                      W.w 0x19fc4
+ 493:                                                                                W.w 0x19fe8
+ 501:               W.w 0x19f90
+ 509:  W.w 0x19f7d
+ 517:                                         W.w 0x19fb4
+ 525:                            W.w 0x19fa1
+ 533:                                                                   W.w 0x19fd8
+ 549:                                                      W.w 0x19fc5
+ 565:                                                                                W.w 0x19fe9
+ 573:               W.w 0x19f91
+ 581:  W.w 0x19f7e
+ 589:                                         W.w 0x19fb5
+ 597:                            W.w 0x19fa2
+ 605:                                                                   W.w 0x19fd9
+ 613:                                                      W.w 0x19fc6
+ 637:                                                                                W.w 0x19fea
+ 645:               W.w 0x19f92
+ 653:  W.w 0x19f7f
+ 661:                                         W.w 0x19fb6
+ 677:                            W.w 0x19fa3                            W.w 0x19fda
+ 685:                                                      W.w 0x19fc7
+ 709:                                                                                W.w 0x19feb
+ 717:               W.w 0x19f93
+ 725:  W.w 0x19f80
+ 733:                                         W.w 0x19fb7
+ 741:                            W.w 0x19fa4
+ 749:                                                                   W.w 0x19fdb
+ 757:                                                      W.w 0x19fc8
+ 781:                                                                                W.w 0x19fec
+ 789:               W.w 0x19f94
+ 805:  W.w 0x19f81                            W.w 0x19fb8
+ 813:                            W.w 0x19fa5
+ 821:                                                                   W.w 0x19fdc
+ 829:                                                      W.w 0x19fc9
+ 845:                                                                                W.w 0x19fed
+ 853:               W.w 0x19f95
+ 869:  W.w 0x19f82
+ 877:                                         W.w 0x19fb9
+ 885:                            W.w 0x19fa6
+ 893:                                                                   W.w 0x19fdd
+ 901:                                                      W.w 0x19fca
+ 933:               W.w 0x19f96
+ 941:  W.w 0x19f83
+ 949:                                         W.w 0x19fba
+ 957:                            W.w 0x19fa7
+ 965:                                                                   W.w 0x19fde
+ 973:                                                      W.w 0x19fcb
+ 997:               W.w 0x19f97
+1013:  W.w 0x19f84
+1021:                                         W.w 0x19fbb
+1029:                            W.w 0x19fa8
+1037:                                                                   W.w 0x19fdf
+1045:                                                      W.w 0x19fcc
+1077:  W.w 0x19f85
+1093:                                         W.w 0x19fbc
+1101:                            W.w 0x19fa9
+1109:                                                                   W.w 0x19fe0
+1117:                                                      W.w 0x19fcd
+1149:  W.w 0x19f86
+1165:                                         W.w 0x19fbd
+1173:                            W.w 0x19faa
+1189:                                                      W.w 0x19fce  W.w 0x19fe1
+1221:  W.w 0x19f87
+1229:                                         W.w 0x19fbe
+1269:               W.w 0x19f98  W.w 0x19fab               W.w 0x19fcf  W.w 0x19fe2
+1293:  W.w 0x19f88
+1301:                                         W.w 0x19fbf
+1317:                            W.w 0x19fac
+1326:               W.w 0x19f99                                         W.w 0x19fe3
+1336:                                                      W.w 0x19fd0
