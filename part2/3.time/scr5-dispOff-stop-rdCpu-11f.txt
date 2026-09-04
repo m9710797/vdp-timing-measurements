@@ -1,0 +1,114 @@
+-115:  R.. 0x1ffff
+-107:  R.. 0x1ffff
+ -59:  R.. 0x17ac1
+   1:               R.r 0x17ad5
+   9:  R.r 0x17ac2                                         R.r 0x17b0c
+  25:                                         R.r 0x17af9
+  33:                                                                                R.r 0x17b30
+  41:                                                                   R.r 0x17b1d
+  73:               R.r 0x17ad6
+  81:  R.r 0x17ac3                                         R.r 0x17b0d
+  97:                                         R.r 0x17afa
+ 105:                                                                                R.r 0x17b31
+ 113:                                                                   R.r 0x17b1e
+ 165:  R.r 0x17ac4  R.r 0x17ad7               R.r 0x17afb  R.r 0x17b0e
+ 173:                                                                                R.r 0x17b32
+ 181:                                                                   R.r 0x17b1f
+ 221:               R.r 0x17ad8
+ 229:  R.r 0x17ac5                                         R.r 0x17b0f
+ 237:                                         R.r 0x17afc
+ 245:                            R.r 0x17ae9                                         R.r 0x17b33
+ 253:                                                                   R.r 0x17b20
+ 285:  R.R 0x0b0bf  R.R 0x0b8bf  R.R 0x0c0ff  R.R 0x0c8ff  R.R 0x0d0ff  R.R 0x0d8ff  R.R 0x0e0ff
+ 293:               R.r 0x17ad9
+ 301:  R.r 0x17ac6                                         R.r 0x17b10
+ 309:                                         R.r 0x17afd
+ 317:                            R.r 0x17aea                                         R.r 0x17b34
+ 325:                                                                   R.r 0x17b21
+ 365:               R.r 0x17ada
+ 373:  R.r 0x17ac7
+ 381:                                         R.r 0x17afe
+ 389:                            R.r 0x17aeb
+ 397:                                                                   R.r 0x17b22
+ 413:  R.R 0x1b1bf  R.R 0x1b9bf  R.R 0x1c1ff  R.R 0x1c9ff  R.R 0x1d1ff  R.R 0x1d9ff
+ 429:               R.r 0x17adb
+ 445:  R.r 0x17ac8
+ 453:                                         R.r 0x17aff
+ 461:                            R.r 0x17aec
+ 469:                                                                   R.r 0x17b23
+ 501:               R.r 0x17adc
+ 517:  R.r 0x17ac9
+ 525:                                         R.r 0x17b00
+ 533:                            R.r 0x17aed
+ 541:  R.R 0x0b2bf  R.R 0x0babf  R.R 0x0c2ff  R.R 0x0caff  R.R 0x0d2ff  R.R 0x0daff
+ 549:                                                      R.r 0x17b11  R.r 0x17b24
+ 573:               R.r 0x17add
+ 581:  R.r 0x17aca
+ 597:                                         R.r 0x17b01
+ 605:                            R.r 0x17aee
+ 613:                                                                   R.r 0x17b25
+ 621:                                                      R.r 0x17b12
+ 645:               R.r 0x17ade
+ 653:  R.r 0x17acb
+ 669:  R.R 0x1b3bf  R.R 0x1bbbf  R.R 0x1c3ff  R.R 0x1cbff  R.R 0x1d3ff  R.R 0x1dbff
+ 677:                            R.r 0x17aef  R.r 0x17b02
+ 685:                                                                   R.r 0x17b26
+ 693:                                                      R.r 0x17b13
+ 717:               R.r 0x17adf
+ 725:  R.r 0x17acc
+ 733:                                         R.r 0x17b03
+ 749:                            R.r 0x17af0
+ 757:                                                                   R.r 0x17b27
+ 765:                                                      R.r 0x17b14
+ 789:               R.r 0x17ae0
+ 797:  R.R 0x0b4bf  R.R 0x0bcbf  R.R 0x0c4ff  R.R 0x0ccff  R.R 0x0d4ff  R.R 0x0dcff
+ 805:  R.r 0x17acd                            R.r 0x17b04
+ 821:                            R.r 0x17af1
+ 829:                                                                   R.r 0x17b28
+ 837:                                                      R.r 0x17b15
+ 861:               R.r 0x17ae1
+ 869:  R.r 0x17ace
+ 877:                                         R.r 0x17b05
+ 885:                            R.r 0x17af2
+ 901:                                                                   R.r 0x17b29
+ 909:                                                      R.r 0x17b16
+ 925:  R.R 0x1b5bf  R.R 0x1bdbf  R.R 0x1c5ff  R.R 0x1cdff  R.R 0x1d5ff  R.R 0x1ddff
+ 933:               R.r 0x17ae2
+ 941:  R.r 0x17acf
+ 949:                                         R.r 0x17b06
+ 957:                            R.r 0x17af3
+ 973:                                                                   R.r 0x17b2a
+ 981:                                                      R.r 0x17b17
+1005:               R.r 0x17ae3
+1013:  R.r 0x17ad0
+1021:                                         R.r 0x17b07
+1029:                            R.r 0x17af4
+1045:                                                                   R.r 0x17b2b
+1053:  R.R 0x0b6bf  R.R 0x0bebf  R.R 0x0c6ff  R.R 0x0ceff  R.R 0x0d6ff  R.R 0x0deff
+1061:                                                      R.r 0x17b18
+1077:               R.r 0x17ae4
+1085:  R.r 0x17ad1
+1093:                                         R.r 0x17b08
+1101:                            R.r 0x17af5
+1109:                                                                   R.r 0x17b2c
+1125:                                                      R.r 0x17b19
+1149:               R.r 0x17ae5
+1157:  R.r 0x17ad2
+1165:                                         R.r 0x17b09
+1173:                            R.r 0x17af6
+1181:  R.R 0x1b7bf  R.R 0x1bfbf  R.R 0x1c7ff  R.R 0x1cfff  R.R 0x1d7ff  R.R 0x1dfff
+1189:                                                      R.r 0x17b1a  R.r 0x17b2d
+1221:               R.r 0x17ae6
+1229:  R.r 0x17ad3
+1237:  R.. 0x1ffff  R.. 0x1ffff  R.. 0x1ffff  R.. 0x1ffff  R.. 0x1ffff  R.. 0x1ffff
+1245:  R.. 0x1ffff  R.. 0x1ffff  R.. 0x1ffff  R.. 0x1ffff  R.. 0x1ffff  R.. 0x1ffff
+1253:  R.. 0x1ffff  R.. 0x1ffff  R.. 0x1ffff  R.. 0x1ffff  R.. 0x1ffff  R.. 0x1ffff
+1261:  R.. 0x1ffff  R.. 0x1ffff  R.. 0x1ffff  R.. 0x1ffff  R.. 0x1ffff  R.. 0x1ffff
+1269:                            R.r 0x17af7  R.r 0x17b0a  R.r 0x17b1b  R.r 0x17b2e
+1293:               R.r 0x17ae7
+1301:  R.r 0x17ad4
+1309:                                         R.r 0x17b0b
+1317:                            R.r 0x17af8
+1326:                                                                   R.r 0x17b2f
+1336:                                                      R.r 0x17b1c
+1361:               R.r 0x17ae8

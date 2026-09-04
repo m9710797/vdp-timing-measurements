@@ -1,0 +1,112 @@
+   1:                                                      R.s 0x183d3
+  25:               R.s 0x1839f
+  41:                                         R.s 0x183c3
+  49:                            R.s 0x183b0
+  57:                                                                   R.s 0x183e7
+  65:                                                      R.s 0x183d4
+  97:               R.s 0x183a0
+ 113:                                         R.s 0x183c4
+ 121:                            R.s 0x183b1
+ 165:               R.s 0x183a1                            R.s 0x183d5  R.s 0x183e8  R.s 0x183f9
+ 181:                                         R.s 0x183c5
+ 189:                            R.s 0x183b2
+ 205:                                                                   R.s 0x183e9
+ 213:                                                      R.s 0x183d6
+ 229:                                                                                R.s 0x183fa
+ 237:               R.s 0x183a2
+ 253:                                         R.s 0x183c6
+ 261:                            R.s 0x183b3
+ 277:                                                                   R.s 0x183ea
+ 285:               R.R 0x0103f  R.R 0x0183f  R.R 0x0203f  R.R 0x0283f  R.R 0x0303f  R.R 0x0383f
+ 293:                                                      R.s 0x183d7
+ 301:                                                                                R.s 0x183fb
+ 309:               R.s 0x183a3
+ 325:                                         R.s 0x183c7
+ 333:                            R.s 0x183b4
+ 341:                                                                   R.s 0x183eb
+ 357:                                                      R.s 0x183d8
+ 373:                                                                                R.s 0x183fc
+ 381:               R.s 0x183a4
+ 397:                                         R.s 0x183c8
+ 405:                            R.s 0x183b5
+ 413:               R.R 0x1113f  R.R 0x1193f  R.R 0x1213f  R.R 0x1293f  R.R 0x1313f  R.R 0x1393f
+ 421:                                                      R.s 0x183d9  R.s 0x183ec
+ 445:                                                                                R.s 0x183fd
+ 453:               R.s 0x183a5
+ 469:                                         R.s 0x183c9
+ 477:                            R.s 0x183b6
+ 485:                                                                   R.s 0x183ed
+ 493:                                                      R.s 0x183da
+ 517:                                                                                R.s 0x183fe
+ 525:               R.s 0x183a6
+ 541:               R.R 0x0123f  R.R 0x01a3f  R.R 0x0223f  R.R 0x02a3f  R.R 0x0323f  R.R 0x03a3f
+ 549:                            R.s 0x183b7  R.s 0x183ca
+ 557:                                                                   R.s 0x183ee
+ 565:                                                      R.s 0x183db
+ 589:                                                                                R.s 0x183ff
+ 597:               R.s 0x183a7
+ 605:  R.s 0x18394
+ 613:                                         R.s 0x183cb
+ 621:                            R.s 0x183b8
+ 629:                                                                   R.s 0x183ef
+ 637:                                                      R.s 0x183dc
+ 661:                                                                                R.s 0x18400
+ 669:  R.R 0x10b3f  R.R 0x1133f  R.R 0x11b3f  R.R 0x1233f  R.R 0x12b3f  R.R 0x1333f  R.R 0x13b3f
+ 677:  R.s 0x18395  R.s 0x183a8
+ 685:                                         R.s 0x183cc
+ 693:                            R.s 0x183b9
+ 701:                                                                   R.s 0x183f0
+ 709:                                                      R.s 0x183dd
+ 733:                                                                                R.s 0x18401
+ 749:  R.s 0x18396
+ 757:                                         R.s 0x183cd
+ 765:                            R.s 0x183ba
+ 773:                                                                   R.s 0x183f1
+ 781:                                                      R.s 0x183de
+ 797:  R.R 0x00c3f  R.R 0x0143f  R.R 0x01c3f  R.R 0x0243f  R.R 0x02c3f  R.R 0x0343f  R.R 0x03c3f
+ 805:                                                                                R.s 0x18402
+ 821:  R.s 0x18397
+ 829:                                         R.s 0x183ce
+ 837:                            R.s 0x183bb
+ 845:                                                                   R.s 0x183f2
+ 853:                                                      R.s 0x183df
+ 869:                                                                                R.s 0x18403
+ 893:  R.s 0x18398
+ 901:                                         R.s 0x183cf
+ 909:                            R.s 0x183bc
+ 917:               R.s 0x183a9                                         R.s 0x183f3
+ 925:  R.R 0x10d3f  R.R 0x1153f  R.R 0x11d3f  R.R 0x1253f  R.R 0x12d3f  R.R 0x1353f  R.R 0x13d3f
+ 933:                                                      R.s 0x183e0
+ 941:                                                                                R.s 0x18404
+ 965:  R.s 0x18399
+ 973:                                         R.s 0x183d0
+ 981:                            R.s 0x183bd
+ 989:               R.s 0x183aa                                         R.s 0x183f4
+ 997:                                                      R.s 0x183e1
+1013:                                                                                R.s 0x18405
+1029:  R.s 0x1839a
+1053:  R.R 0x00e3f  R.R 0x0163f  R.R 0x01e3f  R.R 0x0263f  R.R 0x02e3f  R.R 0x0363f
+1061:               R.s 0x183ab  R.s 0x183be                            R.s 0x183f5
+1069:                                                      R.s 0x183e2
+1101:  R.s 0x1839b
+1125:                            R.s 0x183bf
+1133:               R.s 0x183ac                                         R.s 0x183f6
+1141:                                                      R.s 0x183e3
+1173:  R.s 0x1839c
+1181:  R.R 0x10f3f  R.R 0x1173f  R.R 0x11f3f  R.R 0x1273f  R.R 0x12f3f  R.R 0x1373f
+1197:                            R.s 0x183c0
+1205:               R.s 0x183ad                                         R.s 0x183f7
+1213:                                                      R.s 0x183e4
+1221:                                         R.s 0x183d1
+1237:  R.. 0x1ffff  R.. 0x1ffff  R.. 0x1ffff  R.. 0x1ffff  R.. 0x1ffff  R.. 0x1ffff
+1245:  R.. 0x1ffff  R.. 0x1ffff  R.. 0x1ffff  R.. 0x1ffff  R.. 0x1ffff  R.. 0x1ffff
+1253:  R.. 0x1ffff  R.. 0x1ffff  R.. 0x1ffff  R.. 0x1ffff  R.. 0x1ffff  R.. 0x1ffff
+1261:  R.. 0x1ffff  R.. 0x1ffff  R.. 0x1ffff  R.. 0x1ffff  R.. 0x1ffff  R.. 0x1ffff
+1269:  R.s 0x1839d               R.s 0x183c1
+1277:               R.s 0x183ae                                         R.s 0x183f8
+1285:                                                      R.s 0x183e5
+1293:                                         R.s 0x183d2
+1317:  R.s 0x1839e
+1336:                            R.s 0x183c2
+1353:               R.s 0x183af
+1361:                                                      R.s 0x183e6
