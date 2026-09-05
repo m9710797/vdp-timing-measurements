@@ -48,7 +48,7 @@
  733:               R.. 0x1ffff
  759:               R.r 0x14cb9  R.s 0x14500  R.r 0x14cdd  R.r 0x14cf0               R.r 0x14d14
  765:               R.s 0x14281                            W.d 0x18981  R.s 0x14c01
- 791:               W.d 0x18281  W.d 0x18500  R.s 0x14780               R.s 0x14d01  R.s 0x14e80
+ 791:               W.d 0x18281  W.d 0x18500  R.s 0x14780               R.r 0x14d01  R.s 0x14e80
  823:               R.r 0x14cba               R.r 0x14cde  R.r 0x14cf1  W.d 0x18c01  W.d 0x18e80
  829:                                         W.d 0x18780
  855:                            R.r 0x14ccb                            R.r 0x14d02  R.r 0x14d15
