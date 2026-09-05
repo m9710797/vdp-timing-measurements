@@ -1,0 +1,27 @@
+   7:                                                      R.r 0x1499b
+  71:                                         R.r 0x14991
+  79:                            R.r 0x14988                                         R.r 0x149af
+ 163:               R.r 0x1497e                            R.r 0x1499c  R.r 0x149a5
+ 215:                                         R.r 0x14992                            R.r 0x149b0
+ 279:               R.r 0x1497f                                         R.r 0x149a6
+ 343:                                         R.r 0x14993
+ 407:               R.r 0x14980  R.r 0x14989                            R.r 0x149a7
+ 471:                                         R.r 0x14994  R.r 0x1499d
+ 535:               R.r 0x14981  R.r 0x1498a                            R.r 0x149a8  R.r 0x149b1
+ 599:                                         R.r 0x14995  R.r 0x1499e
+ 663:               R.r 0x14982  R.r 0x1498b                            R.r 0x149a9  R.r 0x149b2
+ 727:  R.r 0x14978                            R.r 0x14996  R.r 0x1499f
+ 791:               R.r 0x14983  R.r 0x1498c                            R.r 0x149aa  R.r 0x149b3
+ 855:  R.r 0x14979                            R.r 0x14997  R.r 0x149a0
+ 919:               R.r 0x14984  R.r 0x1498d                            R.r 0x149ab  R.r 0x149b4
+ 983:  R.r 0x1497a                            R.r 0x14998  R.r 0x149a1
+1047:               R.r 0x14985  R.r 0x1498e                            R.r 0x149ac  R.r 0x149b5
+1111:  R.r 0x1497b                                         R.r 0x149a2
+1117:                                         R.. 0x1ffff
+1143:                                         R.r 0x14999
+1175:                            R.r 0x1498f                                         R.r 0x149b6
+1207:               R.r 0x14986                                         R.r 0x149ad
+1267:  R.r 0x1497c                            R.r 0x1499a  R.r 0x149a3
+1307:                            R.r 0x14990
+1315:               R.r 0x14987                                         R.r 0x149ae
+1367:  R.r 0x1497d                                         R.r 0x149a4

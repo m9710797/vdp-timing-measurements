@@ -1,0 +1,54 @@
+   1:                            R.r 0x1566c                                         R.r 0x15693
+  57:               R.r 0x15662                                         R.r 0x15689
+  65:                                                      R.r 0x15680
+ 121:                                         R.r 0x15676                                         R.r 0x1569d
+ 165:                                                                                R.r 0x15694
+ 189:               R.r 0x15663                                         R.r 0x1568a
+ 253:                                         R.r 0x15677                                         R.r 0x1569e
+ 285:               R.R 0x086bf  R.R 0x08ebf  R.R 0x096bf  R.R 0x09ebf  R.R 0x0a6bf  R.R 0x0aebf
+ 309:                            R.r 0x1566d
+ 317:               R.r 0x15664                                         R.r 0x1568b
+ 373:                                                      R.r 0x15681
+ 381:                                         R.r 0x15678
+ 413:               R.R 0x187bf  R.R 0x18fbf  R.R 0x197bf  R.R 0x19fbf  R.R 0x1a7bf  R.R 0x1afbf
+ 437:                            R.r 0x1566e                                         R.r 0x15695
+ 445:               R.r 0x15665
+ 453:                                                                   R.r 0x1568c
+ 509:                                                      R.r 0x15682
+ 517:                                         R.r 0x15679
+ 541:               R.R 0x088bf  R.R 0x090bf  R.R 0x098bf  R.R 0x0a0bf  R.R 0x0a8bf  R.R 0x0b0bf
+ 573:                            R.r 0x1566f                                         R.r 0x15696
+ 581:               R.r 0x15666                                         R.r 0x1568d
+ 637:                                                      R.r 0x15683
+ 645:                                         R.r 0x1567a
+ 669:               R.R 0x189bf  R.R 0x191bf  R.R 0x199bf  R.R 0x1a1bf  R.R 0x1a9bf  R.R 0x1b1bf
+ 701:                            R.r 0x15670                                         R.r 0x15697
+ 709:               R.r 0x15667                                         R.r 0x1568e
+ 765:                                                      R.r 0x15684
+ 781:                                         R.r 0x1567b
+ 797:               R.R 0x08abf  R.R 0x092bf  R.R 0x09abf  R.R 0x0a2bf  R.R 0x0aabf  R.R 0x0b2bf
+ 837:                            R.r 0x15671                                         R.r 0x15698
+ 845:               R.r 0x15668                                         R.r 0x1568f
+ 901:                                                      R.r 0x15685
+ 909:                                         R.r 0x1567c
+ 925:               R.R 0x18bbf  R.R 0x193bf  R.R 0x19bbf  R.R 0x1a3bf  R.R 0x1abbf  R.R 0x1b3bf
+ 965:                            R.r 0x15672                                         R.r 0x15699
+ 973:               R.r 0x15669                                         R.r 0x15690
+1029:                                                      R.r 0x15686
+1037:                                         R.r 0x1567d
+1053:               R.R 0x08cbf  R.R 0x094bf  R.R 0x09cbf  R.R 0x0a4bf  R.R 0x0acbf  R.R 0x0b4bf
+1093:                            R.r 0x15673                                         R.r 0x1569a
+1101:               R.r 0x1566a
+1109:                                                                   R.r 0x15691
+1165:                                                      R.r 0x15687
+1173:                                         R.r 0x1567e
+1181:  R.R 0x185bf  R.R 0x18dbf  R.R 0x195bf  R.R 0x19dbf  R.R 0x1a5bf  R.R 0x1adbf  R.R 0x1b5bf
+1229:                            R.r 0x15674                                         R.r 0x1569b
+1237:  R.. 0x1ffff  R.. 0x1ffff  R.. 0x1ffff  R.. 0x1ffff  R.. 0x1ffff  R.. 0x1ffff  R.. 0x1ffff
+1245:  R.. 0x1ffff  R.. 0x1ffff  R.. 0x1ffff  R.. 0x1ffff  R.. 0x1ffff  R.. 0x1ffff  R.. 0x1ffff
+1253:  R.. 0x1ffff  R.. 0x1ffff  R.. 0x1ffff  R.. 0x1ffff  R.. 0x1ffff  R.. 0x1ffff  R.. 0x1ffff
+1261:  R.. 0x1ffff  R.. 0x1ffff  R.. 0x1ffff  R.. 0x1ffff  R.. 0x1ffff  R.. 0x1ffff  R.. 0x1ffff
+1269:               R.r 0x1566b                                         R.r 0x15692
+1293:  R.r 0x15661                                         R.r 0x15688
+1301:                                         R.r 0x1567f
+1361:                            R.r 0x15675                                         R.r 0x1569c
