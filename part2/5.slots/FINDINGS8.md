@@ -1020,17 +1020,20 @@ What it costs the engine model to get this wrong, over 139 mixed files:
 
 Every unclassified `R.. 0x1FFFF` that is not part of the blanking four-slot
 block sits on one of the 25 packed slots. The next CPU-legal slot is +26 (323
-cases) or +54 (10); that slot **is** a CPU RAS in 332 / 333. `C−6` is empty or
-a command, never CPU.
+cases) or +54 (10); +54 is exclusively the packed row 1212, where the
+display-to-blanking lattice omits the usual +26 rising edge. That next slot
+**is** a CPU RAS in 332 / 333. `C−6` is empty or a command, never CPU.
 
-So the VDP **does** grant the packed slot to the CPU path, that memory cycle
-cannot carry a CPU access, it strobes `0x1FFFF`, and the CPU is served one slot
-later. Rate is the same at 12 T and 37 T (~7% of sprites-off CPU RAS):
+The packed slot is reserved from the command path, strobes `0x1FFFF`, and the
+CPU is served one slot later. It is not itself a CPU grant: hardware analysis
+below shows that it is the continuation of a high CPU-slot waveform, while the
+grant circuit responds only to the rising edge at `C-6`. Rate is the same at
+12 T and 37 T (~7% of sprites-off CPU RAS):
 crowding the request stream does not create dummies. It is not simply "any CPU
 request near a packed slot" — stop traces hold 326 CPU RAS whose table
 predecessor is a packed `S−26`, and only **42** produce a dummy.
 
-### 10.2 D6: the packed slot is decided ~2 cycles earlier
+### 10.2 D6 narrowed: `WAITING` on the packed continuation tick
 
 On the full command table, `NEED = 16` grants packed `C` for arming times
 `T − C ∈ {−21 … −16}` while the CPU-legal table already grants `C+26`.
@@ -1042,21 +1045,39 @@ Hardware is stricter on packed:
 | packed **hit** with CPU at `C+26` | starts at **−18** |
 | stop, empty packed slot with CPU at `C+26` | starts at **−18**, never −21…−19 |
 
-**D6** (needs arming `T`, which an emulator has exactly): skip packed `C` if
-the CPU RAS is at `C+26` and `T − C ∈ (−22, −19]`. That cut gives dummy **29**,
-empty **0** on the stop set, and is exactly `first_slot` on the full table with
-`NEED = 19` — three cycles more than the CPU-legal table needs.
+Each packed `C` is the second tick of a two-tick-high `VRAM_SLOT_CPU` pulse
+whose rising edge is at
+`P=C-6`. U95/U96 can grant only at `P`. Gate-level CI simulation gives three
+regions:
+
+```
+T - C <= -22          granted normally at P
+-22 < T - C <= -18   misses P; WAITING is high at C
+T - C > -18           WAITING reaches CI after C
+```
+
+This gives a hardware-supported **D6 candidate**: reserve/dummy packed `C` when
+the request misses `P` but the arbiter's one-bit `WAITING` state is high on the
+continuation tick. In the integer model this is
+`T-C ∈ (-22,-18]`, or `NEED=18` on the full table — exactly two cycles more
+lookahead than the CPU-legal table. The published command-control and address
+source logic is absent, however, so the connection from `WAITING` to command
+suppression and `0x1FFFF` cannot be traced.
 
 Same fact from the pin: display-off lead 26.19 ± 0.38 cycles, packed-pair slots
 28.01 ± 1.41. A uniform 26-cycle lead would predict **472** dummies against 335
 observed; the extra ~2 cycles predicts **336**.
 
-**The exact extra is between 2 and 3 and this corpus cannot close it**: the
-boundary is one cycle wide. Observed dummies have `T − C ∈ {−21,−20,−19,−18}` =
-12 / 16 / 12 / 4 and non-dummy packed predecessors `{−18,−17,−16,…}` =
-5 / 11 / 18 / …, so a cut at `NEED+3` misses the four dummies at −18 and a cut
-at `NEED+2` invents five dummies for the hits at −18. Occupying the observed
-`R..` tag is 84/84 but is an oracle, not a rule; D6 is 78/84.
+The corpus does not establish `NEED=18` as exact. The original classified set
+has
+`T-C ∈ {−21,-20,-19,-18}` = 12 / 16 / 12 / 4 and non-dummies start with five
+cases in the same integer `-18` bin; fresh broader diagnostics also contain a
+few reconstructed `-17` dummies. `T=floor(t2+phi)` loses phase at this second
+sampling boundary, but one fitted sub-cycle phase per capture still does not
+close the model. A deterministic `NEED=19` approximation scores one command
+step better than `NEED=18`, with the same number of perfect files. Keep
+`NEED=19` as the current integer rule and `NEED=18` as the strongest
+circuit-derived hypothesis.
 
 ### 10.3 The `Δ=32` skip is lattice geometry, not a CPU predicate
 
@@ -1362,16 +1383,17 @@ mode), each ~47 µs long at a 64.14 µs pitch, so the extra sprite-fetch line is
 - Command skips fired CPU RAS; may use packed +6; never delays the CPU; the
   loser takes the next slot with no full re-arm. No engine rule references the
   future CPU access (§10.3).
-- Dummy `R..` on packed +6 is a CPU-path grant the CPU cannot carry; the CPU
-  RAS follows at +26 (rarely +54).
+- Dummy `R..` on packed +6 correlates with the continuation tick seeing
+  `WAITING` after the request missed the run-start grant; the CPU RAS follows
+  at +26 (row 1212: +54).
 - `T` is now limited by the analyzer's sample clock, 0.064 cycles rms (§9.4).
 
 **Open.**
 
 1. **The three captures of §12**, and whether they are processing or model.
-2. **Predict the dummy without the `R..` tag** (§10.2). D6 is the mechanism and
-   is directly implementable once `T` is known, but the extra lookahead on
-   packed slots is 2 or 3 and the −18 boundary is one cycle wide.
+2. **The exact packed-dummy boundary and `0x1FFFF` source** (§10.2). The
+   published command/address ownership path is absent; `NEED=18` is suggested
+   by CI, while `NEED=19` remains the better integer approximation.
 3. **A combined R#9/R#18 capture.** The circuit composition is exact enough to
    generate it (§13), but only the separate sweeps have been measured.
 4. **The `.txt` axis** (§9.5): absolute time is `1368 * column + row`, so the

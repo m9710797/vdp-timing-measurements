@@ -348,14 +348,18 @@ The comparison is inclusive (`>=`) in both formulas.
 ## 7. Packed-slot dummy access
 
 In sprites-disabled bitmap mode the CPU itself never accesses a packed slot.
-In a narrow timing window, however, the CPU path occupies the packed slot with
-a dummy read before serving the CPU at the next CPU-legal slot.
+A packed slot `C` is the continuation tick of a two-tick-high CPU-slot
+waveform whose rising edge is at `P = C - 6`. The grant circuit responds only
+to the rising edge, so `C` is never a separate CPU grant. In a narrow request
+window, however, `C` is reserved with a dummy read before the CPU is served at
+the next CPU-legal slot.
 
 After booking a real CPU access at `S`, let `C` be the immediately preceding
 command slot. If all conditions below hold:
 
 - `C` is packed;
-- `S = C + 26`;
+- `S` is the next rising-edge CPU slot after `C` (normally `C + 26`;
+  `C + 54` for packed row 1212);
 - `-22 < T - C <= -19`;
 
 then:
@@ -366,9 +370,13 @@ then:
 4. do not treat the dummy as completion of the CPU request and do not advance
    the CPU VRAM address for it.
 
-This is the best deterministic rule currently available. Its boundary is
-uncertain by one cycle: a small number of cases at `T - C = -18` behave as
-dummies and others do not.
+This is the best deterministic integer-coordinate rule. CI simulation supplies
+a likely mechanism: after missing `C-6`, the request buffer becomes `waiting`
+at `C` over the wider interval `-22 < T-C <= -18` (`need = 18`). The missing
+command/address ownership circuitry prevents proving that it samples
+`waiting` at precisely this point, and reconstructed measurements contain
+dummy and non-dummy cases around that boundary. Do not widen the implemented
+rule to `-18` solely from the CI result.
 
 Blanking-region dummy reads outside the command/CPU slot table are a separate
 display-pipeline behaviour.
@@ -655,7 +663,7 @@ void maybeBookPackedDummy(Cycle requestTime, CpuSlot cpuSlot)
     int margin = requestTime - candidate.time;
 
     if (candidate.packed &&
-        cpuSlot.time == candidate.time + 26 &&
+        cpuSlot.time == nextCpuSlotAfter(candidate.time) &&
         -22 < margin && margin <= -19) {
         bookCpuDummy(candidate);
     }

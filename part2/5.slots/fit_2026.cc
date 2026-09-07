@@ -15,6 +15,7 @@
 //   ./fit_2026 --rw [--sel=SUB] [dir]      # independent /CSR and /CSW δ
 //   ./fit_2026 --rw --force=D [--sel=SUB]  # mismatch rows at a fixed δ
 //   ./fit_2026 --pad3[=E] / --need=N       # sprites-on padding / lookahead
+//   ./fit_2026 --packedneed=N               # packed continuation deadline
 //   ./fit_2026 --rawthreshdist              # diagnostic: do not remove RCC stalls
 //
 // VDP arbiter: FINDINGS7. Request at T, D16 with engine-distance,
@@ -22,7 +23,9 @@
 // CPU never uses packed +6. Command: FINDINGS4 waits, sprites-on addend +1,
 // padding +4 in every mode (sprites-on: 1330 costs 2, 1337/1348 one each),
 // packed-start +1 unconditional. Mixed: skip CPU RAS and dummy R...
-// Dummy R.. : D6 occupy (T−C in (−22,−19], CPU at C+26) or observed tag.
+// Dummy R.. : best integer approximation is packed NEED=19 after the request
+// missed the run-start slot at C-6. CI WAITING suggests NEED=18, but the
+// command/address ownership path and exact boundary are absent from IKA9958.
 //
 // CPU model: /CSR or /CSW edges (both, for the interleaved rdwrCpu captures)
 // from the matching .vcd, converted onto the
@@ -58,6 +61,7 @@ namespace fs = std::filesystem;
 
 constexpr int LINE = 1368;
 int NEED = 16; // --need=N, to trade lookahead against δ (FINDINGS7 §8.2)
+int PACKED_NEED = 19; // --packedneed=18 tests the CI continuation hypothesis
 constexpr int BUSY = 2;
 constexpr int CSX_MIN_GAP = 20; // VDP cycles; drop ringing at ~15–17, keep first-I/O ~23+
 constexpr int CSX_MIN_SAMPLES = 8; // drop 1-sample spikes; real I/O is ~56 samples
@@ -365,8 +369,9 @@ static bool skip_packed_for_cpu(Mode mode, int last, int cand, int delta, int Sn
 	return false;
 }
 
-// CPU RAS, plus packed +6 granted to the CPU path 2 cycles early (D6):
-// CPU RAS at C+26 (rarely +54) and T−C ∈ (−22, −19]. Those stay dummy.
+// CPU RAS, plus the best deterministic approximation of packed +6 cycles
+// suppressed by a request that missed the run-start grant. CI WAITING gives a
+// NEED=18 candidate; reconstructed integer T scores marginally better at 19.
 static std::unordered_set<int> occupy_for_command(
 	const std::vector<std::pair<int, int>>& ts, Mode mode, int need = NEED)
 {
@@ -382,7 +387,8 @@ static std::unordered_set<int> occupy_for_command(
 				int C = base + wrap * LINE + r;
 				int lead = S - C;
 				int d = T - C;
-				if ((lead == 26 || lead == 54) && d > -22 && d <= -19)
+				if ((lead == 26 || lead == 54) &&
+				    d > -(NEED + 6) && d <= -PACKED_NEED)
 					occ.insert(C);
 			}
 		}
@@ -3253,7 +3259,8 @@ static int run_mismatch(const fs::path& slots_dir)
 // Iteration 8+: dummy as CPU D16 on the full table; G1 mid-wait CPU; stop traces.
 static int run_iter8(const fs::path& slots_dir)
 {
-	std::vector<int> cpu_slot[3], packed_slot[3], cpu_wait[3], full_wait[3], full_wait19[3];
+	std::vector<int> cpu_slot[3], packed_slot[3], cpu_wait[3], full_wait[3],
+			 full_wait19[3], full_wait_packed[3];
 	std::unordered_set<int> packed_set[3];
 	for (int m = 0; m < 3; ++m) {
 		cpu_slot[m] = cpu_slots_of(CMD_TABLE[m]);
@@ -3265,6 +3272,7 @@ static int run_iter8(const fs::path& slots_dir)
 		for (int i = 0; i < CMD_TABLE[m].n; ++i) all.push_back(CMD_TABLE[m].data[i]);
 		full_wait[m] = make_wait(all, CMD_TABLE[m], NEED);
 		full_wait19[m] = make_wait(all, CMD_TABLE[m], 19);
+		full_wait_packed[m] = make_wait(all, CMD_TABLE[m], PACKED_NEED);
 	}
 
 	std::cout << "\n======== Iteration 8 probes ========\n";
@@ -3629,25 +3637,28 @@ static int run_iter8(const fs::path& slots_dir)
 			std::vector<int> obs_e;
 			for (auto& e : cap.eng) obs_e.push_back(e.ras);
 
+			auto is_next_cpu = [](int cand0, int Snext) {
+				return Snext == cand0 + 26 || Snext == cand0 + 54;
+			};
 			auto skip_d4 = [&](int lastp, int cand0, int delta, int Snext) {
 				bool p5 = packed_set[mi].count(mod_line(lastp)) &&
 					  packed_set[mi].count(mod_line(cand0)) &&
 					  delta == 32 && Snext > cand0;
 				if (p5) return true;
 				if (!have_t || !packed_set[mi].count(mod_line(cand0))) return false;
-				if (Snext != cand0 + 26) return false;
+				if (!is_next_cpu(cand0, Snext)) return false;
 				auto jt = S_to_T.find(Snext);
 				return jt != S_to_T.end() && in_dummy_win(jt->second, cand0);
 			};
 			auto skip_d4only = [&](int, int cand0, int, int Snext) {
 				if (!have_t || !packed_set[mi].count(mod_line(cand0))) return false;
-				if (Snext != cand0 + 26) return false;
+				if (!is_next_cpu(cand0, Snext)) return false;
 				auto jt = S_to_T.find(Snext);
 				return jt != S_to_T.end() && in_dummy_win(jt->second, cand0);
 			};
 			auto tight_win = [&](int T, int C) {
 				int rel = T - C;
-				return rel <= -19 && rel > -22;
+				return rel <= -PACKED_NEED && rel > -(NEED + 6);
 			};
 			auto skip_d6 = [&](int lastp, int cand0, int delta, int Snext) {
 				bool p5 = packed_set[mi].count(mod_line(lastp)) &&
@@ -3655,13 +3666,13 @@ static int run_iter8(const fs::path& slots_dir)
 					  delta == 32 && Snext > cand0;
 				if (p5) return true;
 				if (!have_t || !packed_set[mi].count(mod_line(cand0))) return false;
-				if (Snext != cand0 + 26) return false;
+				if (!is_next_cpu(cand0, Snext)) return false;
 				auto jt = S_to_T.find(Snext);
 				return jt != S_to_T.end() && tight_win(jt->second, cand0);
 			};
 			auto skip_d6only = [&](int, int cand0, int, int Snext) {
 				if (!have_t || !packed_set[mi].count(mod_line(cand0))) return false;
-				if (Snext != cand0 + 26) return false;
+				if (!is_next_cpu(cand0, Snext)) return false;
 				auto jt = S_to_T.find(Snext);
 				return jt != S_to_T.end() && tight_win(jt->second, cand0);
 			};
@@ -3672,7 +3683,7 @@ static int run_iter8(const fs::path& slots_dir)
 				    delta == 32 && Snext > cand0)
 					return true;
 				if (!have_t || !packed_set[mi].count(mod_line(cand0))) return false;
-				if (Snext != cand0 + 26) return false;
+				if (!is_next_cpu(cand0, Snext)) return false;
 				auto jt = S_to_T.find(Snext);
 				if (jt == S_to_T.end()) return false;
 				return ngrant(fw, jt->second, cand0, k) >= min_n;
@@ -3738,7 +3749,7 @@ static int run_iter8(const fs::path& slots_dir)
 				if (packed_set[mi].count(mod_line(cand))) {
 					auto it = std::upper_bound(cap.obs.begin(), cap.obs.end(), last);
 					int S = (it == cap.obs.end()) ? -1 : *it;
-					if (S == cand + 26) {
+					if (S == cand + 26 || S == cand + 54) {
 						bool dummy = dummy_set.count(cand);
 						bool hit = cand == obs;
 						auto jt = S_to_T.find(S);
@@ -3796,7 +3807,8 @@ static int run_iter8(const fs::path& slots_dir)
 			  << d4.ok << '/' << d4.n << "  " << d4.hit << '/' << d4.tot << "\n";
 		std::cout << "  D4+P5: " << d4p5.ok << '/' << d4p5.n << "  " << d4p5.hit << '/'
 			  << d4p5.tot << "\n";
-		std::cout << "  D6 skip if T-C in (-22,-19] (early 3 cycles): "
+		std::cout << "  D6 skip if T-C in (" << -(NEED + 6) << ','
+			  << -PACKED_NEED << "] (integer approximation): "
 			  << d6.ok << '/' << d6.n << "  " << d6.hit << '/' << d6.tot << "\n";
 		std::cout << "  D6+P5: " << d6p5.ok << '/' << d6p5.n << "  " << d6p5.hit << '/'
 			  << d6p5.tot << "\n";
@@ -3885,7 +3897,7 @@ static int run_iter8(const fs::path& slots_dir)
 				st_dum_rel[rel] += d ? 1 : 0;
 				st_empty_rel[rel] += d ? 0 : 1;
 				bool inw = in_dummy_win(jt->second, C);
-				bool early = rel <= -19 && rel > -22;
+				bool early = rel <= -PACKED_NEED && rel > -(NEED + 6);
 				if (inw && d) ++st_in_dum;
 				else if (inw && !d) ++st_in_empty;
 				else if (!inw && d) ++st_out_dum;
@@ -3900,8 +3912,9 @@ static int run_iter8(const fs::path& slots_dir)
 		std::cout << "  in-window  dummy " << st_in_dum << "  empty " << st_in_empty << "\n";
 		std::cout << "  out-window dummy " << st_out_dum << "  empty " << st_out_empty << "\n";
 		std::cout << "  no sim S " << st_nom << "\n";
-		std::cout << "  early T-C<=-19  dummy " << st_early_dum << "  empty " << st_early_empty << "\n";
-		std::cout << "  late in-window ( -18..-16) dummy " << st_late_dum
+		std::cout << "  D6 T-C<=-" << PACKED_NEED << "  dummy " << st_early_dum
+			  << "  empty " << st_early_empty << "\n";
+		std::cout << "  later broad-window cases dummy " << st_late_dum
 			  << "  empty " << st_late_empty << "\n";
 		std::cout << "  stop dummy T-C:";
 		for (auto [r, c] : st_dum_rel) if (c) std::cout << " " << r << "=" << c;
@@ -3986,11 +3999,11 @@ static int run_iter8(const fs::path& slots_dir)
 
 		auto dummy_grant = [&](const std::unordered_map<int, int>& ST, int mi,
 				       int cand, int Snext) {
-			if (Snext != cand + 26) return false;
+			if (Snext != cand + 26 && Snext != cand + 54) return false;
 			if (!packed_set[mi].count(mod_line(cand))) return false;
 			auto it = ST.find(Snext);
 			if (it == ST.end()) return false;
-			return first_slot(full_wait19[mi], it->second) == cand;
+			return first_slot(full_wait_packed[mi], it->second) == cand;
 		};
 
 		auto score_eng = [&](const Capture& cap, const std::unordered_set<int>& occ_cpu,
@@ -4217,7 +4230,8 @@ static int run_iter8(const fs::path& slots_dir)
 			std::cout << "  " << t << "  " << r.ok << '/' << r.n << " files  "
 				  << r.hit << '/' << r.tot << "\n";
 		};
-		std::cout << "Engine P5+newline + dummy if NEED=19 grant at C with CPU at C+26:\n";
+		std::cout << "Engine P5+newline + dummy if full-table NEED=" << PACKED_NEED
+			  << " selects C with CPU at next slot (+26/+54):\n";
 		prb("ε = integer δ (current D6)", r_int);
 		prb("ε best for CPU D16", r_d16);
 		prb("ε best for engine (oracle phase)", r_eng);
@@ -6391,6 +6405,8 @@ int main(int argc, char** argv)
 			SPR_ADDEND = std::stoi(a.substr(11));
 		} else if (a.rfind("--need=", 0) == 0) {
 			NEED = std::stoi(a.substr(7));
+		} else if (a.rfind("--packedneed=", 0) == 0) {
+			PACKED_NEED = std::stoi(a.substr(13));
 		} else if (a.rfind("--qdepth=", 0) == 0) {
 			QDEPTH = std::stoi(a.substr(9));
 		} else if (a.rfind("--needrow=", 0) == 0) {
