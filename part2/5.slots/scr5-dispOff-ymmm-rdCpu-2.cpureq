@@ -1,0 +1,138 @@
+# scr5-dispOff-ymmm-rdCpu-2  CPU VRAM request cycles
+# Comments carry no information; everything the arbiter needs is on a
+# keyword line. 'requests' comes last and is followed by that many
+# body lines, one per request: the VDP cycle on which the arbiter
+# latched it, in RAS numbering with the same origin as the .txt grid
+# (cas = line*col + row), and for an interleaved rdwrCpu capture an
+# r or w suffix saying whether it was a read or a write.
+# Requests that cause no visible access are included and must be kept:
+# the arbiter drops some, and some are granted outside the .txt
+# window. Which ones is derived by the model, not recorded here.
+# 'margin' is the whole drop rule: a request is taken only if it
+# arrives at least that many cycles after the slot the request
+# before it was granted. It is negative with sprites on.
+capture scr5-dispOff-ymmm-rdCpu-2
+mode dispOff
+line 1368
+need 16
+need_row 170 16
+margin 2
+buffer 1
+policy drop-new
+kind r
+requests 115
+1108
+1166
+1237
+1309
+1380
+1452
+1523
+1595
+1666
+1738
+1809
+1881
+1952
+2024
+2095
+2167
+2239
+2310
+2382
+2453
+2525
+2775
+2847
+2918
+2990
+3061
+3133
+3204
+3276
+3347
+3419
+3490
+3562
+3634
+3705
+3777
+3848
+3920
+3991
+4063
+4134
+4206
+4277
+4349
+4421
+4492
+4563
+4635
+4707
+4778
+4850
+4921
+4993
+5064
+5136
+5207
+5279
+5350
+5422
+5493
+5565
+5815
+5887
+5958
+6030
+6102
+6173
+6245
+6316
+6388
+6459
+6531
+6602
+6674
+6745
+6817
+6888
+6960
+7031
+7103
+7174
+7246
+7318
+7389
+7460
+7532
+7604
+7675
+7747
+7818
+7890
+7961
+8033
+8104
+8176
+8247
+8319
+8391
+8462
+8534
+8605
+8856
+8927
+8999
+9070
+9142
+9213
+9285
+9356
+9428
+9499
+9571
+9642
+9714
+9786

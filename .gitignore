@@ -1,2 +1,13 @@
 *~
 *.swp
+*.bak
+*.pyc
+__pycache__/
+
+# Locally compiled analysis programs.
+/8.final-analysis/cpu_scratch_2013
+/8.final-analysis/fit_2013
+/part2/5.slots/fit_2026
+
+# Large generated trellis search cache.
+/part2/5.slots/trellis-2026.txt
