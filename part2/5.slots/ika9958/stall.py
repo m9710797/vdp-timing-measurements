@@ -35,7 +35,7 @@ import mpla6
 LINE = 1368
 STALL_FIRST = 326
 N_STALL = 4          # 4 for a 1368-cycle line, 1 for 1365
-OFF = {'dispOff': 20, 'sprOff': 18, 'sprOn': 18}
+OFF = {'dispOff': 20, 'g123': 22, 'sprOff': 18, 'sprOn': 18}
 
 MEASURED = __import__('subslot').MEASURED
 
@@ -55,13 +55,16 @@ def lattice(mode, first=STALL_FIRST, n=N_STALL, sub0_at_rise=True):
 
 
 def rows(mode, r18=0, s=0):
-    """Command-slot RAS rows for one R#18.H and R#9.S1/S0 combination.
+    """PLA CPU-slot-level RAS rows for an R#18.H/R#9.S1/S0 combination.
 
     R#18.H is a signed nibble. It moves the hcntr-relative stall window one
     phiL tick per unit; non-zero S selects the one-tick rather than four-tick
     window. The PLA sequence and sub-slot choice themselves do not change.
     In sprites-off mode this includes the 25 packed command-only slots; remove
     those unchanged rows to obtain the CPU-legal table.
+    In G1/G2/G3 every emitted level is a rising edge and therefore CPU-legal.
+    Whether the command engine can use those rows is outside the published
+    command-control circuitry.
     """
     h = r18 & 15
     if h & 8:

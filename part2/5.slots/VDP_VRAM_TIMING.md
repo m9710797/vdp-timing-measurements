@@ -11,6 +11,7 @@ what to emulate, without explaining how the rules were established.
 The exact scope is:
 
 - V9938 bitmap modes, in particular screen 5 and screen 8;
+- V9938 G1/G2/G3 CPU slots (commands remain bitmap-only);
 - display disabled, sprites disabled, and sprites enabled;
 - command-engine access timing;
 - CPU VRAM request timing, buffering, and arbitration with commands;
@@ -380,6 +381,25 @@ rule to `-18` solely from the CI result.
 
 Blanking-region dummy reads outside the command/CPU slot table are a separate
 display-pipeline behaviour.
+
+## 7.1 G1/G2/G3 CPU slots
+
+V9938 G1, G2 and G3 share this CPU slot table:
+
+```
+32, 96, 166, 174, 188, 220, 252, 316, 348, 380, 444, 476, 508,
+572, 604, 636, 700, 732, 764, 828, 860, 892, 956, 988, 1020,
+1084, 1116, 1148, 1212, 1268, 1334
+```
+
+Rows 166 and 174 are `Plain` (`ras0=0`); all other rows are `Late`
+(`ras0=1`). Apply the same `need(slot)`, `threshold(previousSlot)`, buffering
+and drop rules as in bitmap modes. This table remains active when sprites or
+display output are disabled.
+
+This does not enable the V9938 command engine in these modes. V9958 can enable
+non-bitmap commands with R#25 bit 6; their command execution timing is outside
+this specification.
 
 ## 8. R#9 line-length modes
 

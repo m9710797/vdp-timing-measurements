@@ -1386,6 +1386,13 @@ mode), each ~47 µs long at a 64.14 µs pitch, so the extra sprite-fetch line is
 - Dummy `R..` on packed +6 correlates with the continuation tick seeing
   `WAITING` after the request missed the run-start grant; the CPU RAS follows
   at +26 (row 1212: +54).
+- Gate-derived G1/G2/G3 CPU timing reproduces openMSX's existing 31-row
+  character table exactly. The six four-cycle differences from bitmap
+  sprites-on come from combinational `gt075` versus registered `gt076`
+  (§4.8 of `IKA9958.md`).
+- Text T1/T2 gates reproduce the measured 47-slot cyclic pattern exactly, but
+  leave a global one-`phiL` phase ambiguity; retain the measured openMSX rows
+  (§4.9 of `IKA9958.md`).
 - `T` is now limited by the analyzer's sample clock, 0.064 cycles rms (§9.4).
 
 **Open.**

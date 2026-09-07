@@ -96,21 +96,42 @@ class Pla6:
         m[14] = ac_hi_not0_4 and W and not g55
         m[24] = ac_456       and W and not g55
 
+        gt075 = (not ((bpla[41] or bpla[42]) and not bpla[43])
+                 and not bpla[47] and not bpla[48] and not bpla[49])
         gt076 = ((not self.gt072) and not bpla[47] and not bpla[48]
                  and not bpla[49])
         gt077 = ((self.gt059 or not bpla[44]) and ((bpc & 1) or self.gt063)
                  and not self.gt072 and not bpla[48])
         gt078 = (((bpc & 1) or self.gt063)
                  and ((bpc & 1) or self.gt064 or bz.get(43, 0)))
-        if self.mode == 'sprOn':
+        if self.mode == 'g123':
+            # MPLA 15..22 and CPU output 26. G1/G2/G3 deliberately share
+            # these terms; G3's sprite-side output does not alter CPU slots.
+            ac_15 = c not in (1, 4, 7)
+            ac_17 = (c != 7) and z3
+            ac_20 = c not in (2, 5, 7)
+            m[15] = ac_15 and not g58
+            m[16] = ac_lo7 and not g55 and not bz.get(30, 0)
+            m[17] = ac_17 and not g55
+            m[18] = ac_even and not g57
+            m[19] = bool(bz.get(29, 0))
+            m[20] = ac_20 and not g58
+            m[21] = ac_lo_not0 and not g55
+            m[22] = ac_hi_not0_4 and not g55
+            cpu_t = not gt075
+        elif self.mode == 'sprOn':
             cpu_t = W and not gt076
         elif self.mode == 'sprOff':
             cpu_t = O and not gt077
         else:
             cpu_t = (not A) and not gt078
 
-        ras1 = int(any(m[i] for i in (3, 4, 5, 6, 7, 8, 9, 10, 11)))
-        ras0 = int(bool(m[14] or m[13] or m[12] or m[8] or m[6] or m[-1]))
+        if self.mode == 'g123':
+            ras1 = int(any(m[i] for i in (15, 16, 17, 18, 19)))
+            ras0 = int(any(m[i] for i in (18, 20, 21, 22)))
+        else:
+            ras1 = int(any(m[i] for i in (3, 4, 5, 6, 7, 8, 9, 10, 11)))
+            ras0 = int(bool(m[14] or m[13] or m[12] or m[8] or m[6] or m[-1]))
         cpu = int(bool(cpu_t and not (bpla[84] or bpla[85])))
         spr = int(bool(m[24]))
         out = (ras1, ras0, cpu, spr)
@@ -165,7 +186,7 @@ def trace(mode, h=0, warm=4000, span=1400):
 
 
 if __name__ == '__main__':
-    for mode in ('dispOff', 'sprOff', 'sprOn'):
+    for mode in ('dispOff', 'g123', 'sprOff', 'sprOn'):
         t = trace(mode)
         print(f"{mode:8s} ticks {len(t):4d}  cpu {sum(x[2] for x in t):4d}"
               f"  spr {sum(x[3] for x in t):3d}")
