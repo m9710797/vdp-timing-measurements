@@ -72,32 +72,37 @@ def score(mode, pos, off):
     return sum(map(abs, d)), max(map(abs, d)), sum(1 for x in d if x == 0), d
 
 
-print()
-print(f"{'rule':<28} {'offset':>7} " + ' '.join(f"{m:>22}" for m in MEASURED))
-best_overall = None
-for name, rule in RULES.items():
-    pos = {m: positions(m, rule) for m in MEASURED}
-    # one offset shared by all three modes
-    cand = []
-    for off in range(0, LINE, 2):
-        rs = [score(m, pos[m], off) for m in MEASURED]
-        if any(r is None for r in rs):
+def main():
+    print()
+    print(f"{'rule':<28} {'offset':>7} " + ' '.join(f"{m:>22}" for m in MEASURED))
+    best_overall = None
+    for name, rule in RULES.items():
+        pos = {m: positions(m, rule) for m in MEASURED}
+        # one offset shared by all three modes
+        cand = []
+        for off in range(0, LINE, 2):
+            rs = [score(m, pos[m], off) for m in MEASURED]
+            if any(r is None for r in rs):
+                continue
+            cand.append((sum(r[0] for r in rs), off, rs))
+        if not cand:
+            print(f"{name:<28} (slot counts differ)")
             continue
-        cand.append((sum(r[0] for r in rs), off, rs))
-    if not cand:
-        print(f"{name:<28} (slot counts differ)")
-        continue
-    tot, off, rs = min(cand)
-    cells = ' '.join(f"{r[2]:>4}/{len(MEASURED[m]):<3} max{r[1]:<3} "
-                     for r, m in zip(rs, MEASURED))
-    print(f"{name:<28} {off:>7} {cells}  total|d| {tot}")
-    if best_overall is None or tot < best_overall[0]:
-        best_overall = (tot, name, off, rs)
+        tot, off, rs = min(cand)
+        cells = ' '.join(f"{r[2]:>4}/{len(MEASURED[m]):<3} max{r[1]:<3} "
+                         for r, m in zip(rs, MEASURED))
+        print(f"{name:<28} {off:>7} {cells}  total|d| {tot}")
+        if best_overall is None or tot < best_overall[0]:
+            best_overall = (tot, name, off, rs)
 
-tot, name, off, rs = best_overall
-print(f"\nbest: {name} at offset {off}, total |delta| {tot}")
-for r, m in zip(rs, MEASURED):
-    print(f"  {m:8s} exact {r[2]}/{len(MEASURED[m])}  max|d| {r[1]}")
-    bad = [(b, x) for b, x in zip(MEASURED[m], r[3]) if x]
-    if bad:
-        print(f"           off: {bad}")
+    tot, name, off, rs = best_overall
+    print(f"\nbest: {name} at offset {off}, total |delta| {tot}")
+    for r, m in zip(rs, MEASURED):
+        print(f"  {m:8s} exact {r[2]}/{len(MEASURED[m])}  max|d| {r[1]}")
+        bad = [(b, x) for b, x in zip(MEASURED[m], r[3]) if x]
+        if bad:
+            print(f"           off: {bad}")
+
+
+if __name__ == '__main__':
+    main()

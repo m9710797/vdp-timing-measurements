@@ -375,7 +375,8 @@ display-pipeline behaviour.
 
 ## 8. R#9 line-length modes
 
-With `R#9 S1,S0 = 0,0`, use `LINE = 1368` and the tables above.
+`S1,S0` are R#9 bits 5 and 4. With `S1,S0 = 0,0`, use `LINE = 1368`
+and the tables above.
 
 For any of the other three S1/S0 encodings, use `LINE = 1365`. Known bitmap
 table changes are confined to the line-end tail:
@@ -401,7 +402,24 @@ The remaining padding is +1, completed at row 1331.
 Rows up to and including 1264 are unchanged. Replace command/CPU row 1330
 with row 1329. The remaining padding is +1, completed at row 1329.
 
-Display-disabled 1365-cycle timing has not been specified here.
+### Display disabled
+
+Rows up to and including 1324 are unchanged. Replace:
+
+```
+1334, 1344, 1352, 1360
+```
+
+with:
+
+```
+1333, 1341, 1349, 1357
+```
+
+The remaining padding is +1, completed at row 1333.
+
+This display-disabled tail is gate-derived; unlike the two sprite-mode tails,
+it has not yet been measured on V9938 hardware.
 
 ## 9. R#18 horizontal set-adjust
 
@@ -429,11 +447,33 @@ H=6:  1340  -8- 1348 -10- 1358 -10- 1368
 H=-2: 1308  -8- 1316 -10- 1326 -10- 1336
 ```
 
-An exact implementation can use 16 line-tail variants per display state.
+An exact implementation can generate every R#9/R#18 combination from the
+341-tick Memory-PLA sequence:
 
-The real VDP necessarily has deterministic behaviour when non-zero R#18 is
-combined with a 1365-cycle R#9 mode, but that combination has not yet been
-characterized here and needs further investigation.
+```cpp
+signedH     = signExtend4(R18 & 0x0f);
+stallFirst  = 326 + signedH;
+stallCount  = ((R9 >> 4) & 3) == 0 ? 4 : 1;
+
+cycle = 0;
+for (tick = 0; tick != 341; ++tick) {
+    high = 2 + (tick >= stallFirst && tick < stallFirst + stallCount);
+    subslot0Time = cycle;
+    subslot1Time = cycle + high;
+    emit the tick's slots at the selected sub-slot time;
+    cycle += high + 2;
+}
+```
+
+Apply the same mode origins used by the centred tables: +20 cycles for display
+disabled and +18 for either sprite mode, modulo the resulting line length.
+`ika9958/stall.py::rows()` is executable reference code. In sprites-disabled
+mode it emits all 88 command slots; remove the unchanged 25 packed slots for
+the CPU-legal table.
+
+The separate cases are measurement-validated: all 16 R#18 values at S=00, and
+all three non-zero S encodings at H=0. Their combination follows directly from
+the two independent hardware controls above but has not been measured.
 
 For a first implementation, the VRAM slot scheduler may ignore the effects of
 both R#9 and R#18: always use the centred, 1368-cycle slot tables and padding
@@ -689,8 +729,8 @@ The following are not fully specified and must not be hidden as exact rules:
 
 1. The packed-dummy boundary at `T - C = -18`.
 2. Command startup except for HMMV with display disabled.
-3. Combined non-zero R#18 and non-default R#9 S1/S0 timing has not yet been
-   characterized.
+3. Combined non-zero R#18 and non-default R#9 S1/S0 timing is hardware-derived
+   but has not been validated by a combined capture.
 4. Character, text, undocumented, and MSX1 access tables.
 5. The exact border/display table-switch point: cycle 164 versus the line
    boundary.

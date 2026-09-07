@@ -18,6 +18,14 @@ with `gc024` low costs exactly one extra cycle.  `gc024` is `~hpla[14]`
     1364 + 4      = 1368        S == 0
     1364 + 1      = 1365        S != 0   (= 227.5 colour cycles, true NTSC)
 
+R#18.H moves the BPLA sequence relative to the hcntr-derived stall window. In
+the trace coordinate this is exactly:
+
+    first stalled tick = 326 + sign_extend_4(R#18.H)
+
+S1/S0 still selects four versus one stalled tick, so this also defines their
+previously unmeasured combined behaviour.
+
 Sweeping only the window position against the measured tables gives a unique
 answer: stalls at ticks 326..329 with sub-slot 0 on the phiL rising edge, and
 all 273 measured positions exact.
@@ -27,6 +35,7 @@ import mpla6
 LINE = 1368
 STALL_FIRST = 326
 N_STALL = 4          # 4 for a 1368-cycle line, 1 for 1365
+OFF = {'dispOff': 20, 'sprOff': 18, 'sprOn': 18}
 
 MEASURED = __import__('subslot').MEASURED
 
@@ -43,6 +52,23 @@ def lattice(mode, first=STALL_FIRST, n=N_STALL, sub0_at_rise=True):
             out.append(s1 if t[i][1] else s0)
         base += hi + 2
     return sorted(out), base
+
+
+def rows(mode, r18=0, s=0):
+    """Command-slot RAS rows for one R#18.H and R#9.S1/S0 combination.
+
+    R#18.H is a signed nibble. It moves the hcntr-relative stall window one
+    phiL tick per unit; non-zero S selects the one-tick rather than four-tick
+    window. The PLA sequence and sub-slot choice themselves do not change.
+    In sprites-off mode this includes the 25 packed command-only slots; remove
+    those unchanged rows to obtain the CPU-legal table.
+    """
+    h = r18 & 15
+    if h & 8:
+        h -= 16
+    n = 4 if (s & 3) == 0 else 1
+    pos, line = lattice(mode, first=STALL_FIRST + h, n=n)
+    return sorted((p + OFF[mode]) % line for p in pos), line
 
 
 if __name__ == '__main__':

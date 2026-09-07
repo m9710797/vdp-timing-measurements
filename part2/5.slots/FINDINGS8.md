@@ -1236,6 +1236,16 @@ Used in §3, and derived in §8.4. Not a second slot map.
   invariant (§3.2). Confirmed independently from the CPU side (§9.2). There is
   no combined `adjustN` + S1/S0 capture.
 
+The circuit nevertheless determines the combined case without another fitted
+table. Let `H = sign_extend_4(R#18[3:0])`. On the 341-tick Memory-PLA sequence,
+the first stalled tick is `326 + H`; R#9 selects four consecutive stalled ticks
+for S1/S0=`00`, or one for every other encoding. Each normal tick is 4 cycles,
+each stalled tick 5, and sub-slot 1 is at cycle 3 rather than 2 within a stalled
+tick. `ika9958/stall.py::rows(mode, r18, s)` implements this composition and
+reproduces the centred tables, all measured set-adjust examples, and all
+measured 1365-cycle tails. The combined result is hardware-derived but remains
+an unmeasured prediction.
+
 Keep the tables at centred (R#18 = 0) / S1S0 = 00 / 1368 unless a leftover is
 specifically a wrap through 1330.
 
@@ -1342,7 +1352,8 @@ mode), each ~47 µs long at a 64.14 µs pitch, so the extra sprite-fetch line is
 - The slot lattice, from silicon: 1368 and 1365, 154 / 88 / 31, and 273 of 273
   measured positions (§8.4).
 - The CPU rule of §8.1: one buffer, drop-new, the booked slot never moves, and
-  two formulas over three Memory PLA signals with no display-mode term.
+  two formulas over the Memory PLA sub-slot bit with no display-mode or sprite
+  term, both evaluated on signed stalled-grid distance.
   263 / 266 captures reconstruct every recorded `/CSx` edge exactly.
 - `phi` ≈ 10.75 cycles, one real number for all three modes, in
   [10.746, 10.748) over the whole corpus.
@@ -1361,25 +1372,20 @@ mode), each ~47 µs long at a 64.14 µs pitch, so the extra sprite-fetch line is
 2. **Predict the dummy without the `R..` tag** (§10.2). D6 is the mechanism and
    is directly implementable once `T` is known, but the extra lookahead on
    packed slots is 2 or 3 and the −18 boundary is one cycle wide.
-3. **Derive the sub-slot rule and the `slot_spr` correction from gates**
-   (§8.1). They are the only fitted things left in the CPU path. This needs a
-   simulation across the arbiter, memory-interface and PLA sheets, and the PLA
-   side is blocked by an array shorthand in the schematics.
-4. **The R#18 prediction** of §8.4: each unit moves every VRAM access by 4
-   cycles, up to ±32. Measured for the HBLANK slots (§3.2); not yet tested at
-   the extremes, where it is a direct check on the two-counter topology.
-5. **The `.txt` axis** (§9.5): absolute time is `1368 * column + row`, so the
+3. **A combined R#9/R#18 capture.** The circuit composition is exact enough to
+   generate it (§13), but only the separate sweeps have been measured.
+4. **The `.txt` axis** (§9.5): absolute time is `1368 * column + row`, so the
    origin is implicit and every consumer re-derives it. Record it in the file,
    or trim captures to a line boundary. Until then `--origin` is the guard.
    Doing this would also address §12.
-6. **openMSX CPU origin** (§8.5): `Delta::D16` from the Z80 port timestamp is
+5. **openMSX CPU origin** (§8.5): `Delta::D16` from the Z80 port timestamp is
    ~29 cycles early. Lost-request timing cancels; the stolen command slot does
    not (`vdpcmdx` `+CPU`).
-7. **Command startup** `S₀` is measured for HMMV in display off only (§14).
+6. **Command startup** `S₀` is measured for HMMV in display off only (§14).
    The read-first commands and the other two modes are untouched, as are the
    character, text and MSX1 tables.
-8. **The border/display comb boundary** (§15): cycle ~164 or the line edge.
-9. **Packed-start +1 is unobservable on 2013** (§6.1), and the dummy `R..` may
+7. **The border/display comb boundary** (§15): cycle ~164 or the line edge.
+8. **Packed-start +1 is unobservable on 2013** (§6.1), and the dummy `R..` may
    be 8280-only — 2013 mixed traces are HMMV only.
 
 **Not worth collecting:** another `IN` gap purely to crowd or empty the buffer
