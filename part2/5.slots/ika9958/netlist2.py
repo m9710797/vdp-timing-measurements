@@ -129,12 +129,15 @@ def load(path):
         pins = []
         for lp in libpins[lib]:
             cx, cy = lp['x'], -lp['y']
-            if mirror == 'y':
-                cx = -cx
-            elif mirror == 'x':
-                cy = -cy
+            # KiCad's mirror is in sheet coordinates, after symbol rotation.
+            # Applying it here in local coordinates misplaces pins whenever a
+            # symbol is both rotated and mirrored (notably MI U633 at /RAS).
             rx = cx * math.cos(a) + cy * math.sin(a)
             ry = -cx * math.sin(a) + cy * math.cos(a)
+            if mirror == 'y':
+                rx = -rx
+            elif mirror == 'x':
+                ry = -ry
             pins.append({**lp, 'k': key(x0 + rx, y0 + ry)})
         cells.append({'lib': lib, 'ref': ref, 'pins': pins,
                       'rot': rot, 'mirror': mirror})

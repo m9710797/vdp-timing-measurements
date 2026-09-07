@@ -8,16 +8,16 @@ the memory cycle, which is the tick's rising edge for a sub-slot-0 slot and its
 falling edge -- two cycles later -- for a sub-slot-1 slot.  Referring the two
 constants back to the tick removes every per-mode number:
 
-    NEED   = 16 + 2 * vram_ras_rq[0]                     (measured *to* the slot)
-    THRESH =  1 - 2 * vram_ras_rq[0] - 2 * vram_slot_spr (measured *from* the
-                                                          previous slot)
+    NEED   = 16 + 2 * vram_ras_rq[0] (measured *to* the slot)
+    THRESH =  1 - 2 * vram_ras_rq[0] (measured *from* the previous slot)
 
 vram_ras_rq[0] is the sub-slot selector, so NEED gains the two cycles by which
-a sub-slot-1 slot is recorded late and THRESH loses them again; the extra two
-for vram_slot_spr apply to the four ticks where the CPU slot coincides with a
-sprite slot.  THRESH = 1 at the tick is D = 4 in the arbiter cone.  Nothing here
-depends on the display mode, which is what CI.kicad_sch says: the cone has
-K = 13 and D = 4 and no mode input at all.
+a sub-slot-1 slot is recorded late and THRESH loses them again.  THRESH = 1 at
+the tick is D = 4 in the arbiter cone.  The threshold comparison uses signed
+engine distance, so RCC stall cycles between a request and the preceding
+booked RAS row are excluded just as they are for NEED.  Nothing here depends on
+the display mode, which is what CI.kicad_sch says: the cone has K = 13 and D = 4
+and no mode input at all.
 
 Across all three modes the CPU ticks fall into exactly four classes:
 
@@ -25,11 +25,13 @@ Across all three modes the CPU ticks fall into exactly four classes:
       0    0    0  187      0        16     +1
       1    0    0   32      0        16     +1
       1    1    0   50      1        18     -1
-      1    1    1    4      1        18     -3
+      1    1    1    4      1        18     -1
 
-Only the last two constants, -1 and -3, are chosen against the corpus, and both
-land on the same two-cycle quantum as the derived one.  The classes themselves
-come from the Memory PLA and the RCC clock divider, not from fitting.
+An earlier corpus fit used THRESH=-3 for the last class.  The discriminating
+events were at the RCC-padded row 1330: raw wall-clock distance was -3, but
+signed engine distance is -1 after excluding the two stall cycles.  Applying
+-3 to all four sprite-coincident rows was therefore a correlation-based
+extrapolation, not a separate silicon class.
 
 Usage:
     ./fit_2026 --trellis --sel= $(subslot_rows.py)
@@ -76,9 +78,9 @@ def flags():
     need16 = sorted(r for r in sprite_rows if not cls[r][1])
     thresh = {}
     for r in sorted(sprite_rows):
-        ras1, ras0, spr = cls[r]
+        _, ras0, _ = cls[r]
         if ras0:
-            thresh[r] = 1 - 2 * ras0 - 2 * spr
+            thresh[r] = 1 - 2 * ras0
 
     out = ['--needoff=0,2,2',
            '--needrow=' + ','.join(str(r) for r in need16) + ':16',

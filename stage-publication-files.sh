@@ -39,6 +39,7 @@ git add -- \
 	part2/5.slots/fit_stop_cpu.py \
 	part2/5.slots/retag.py \
 	part2/5.slots/ika9958/align.py \
+	part2/5.slots/ika9958/class_sweep.py \
 	part2/5.slots/ika9958/cone3.py \
 	part2/5.slots/ika9958/drop.py \
 	part2/5.slots/ika9958/invariant.py \

@@ -141,6 +141,13 @@ memoryCycleDistance(a, b) =
 ```
 
 Use absolute, unwrapped times, so `b > a`. Padding repeats each line.
+For comparisons that can point backward, define:
+
+```cpp
+signedMemoryCycleDistance(a, b) =
+    b >= a ?  memoryCycleDistance(a, b)
+           : -memoryCycleDistance(b, a)
+```
 
 For the default 1368-cycle line:
 
@@ -272,13 +279,12 @@ names; annotate the slots as follows:
 | every CPU-legal sprites-disabled slot | `Plain` | 16 | +1 |
 | sprites-enabled rows 162 and 170 | `Plain` | 16 | +1 |
 | sprites-enabled rows 188, 220, 252, 316, 348, 380, 444, 476, 508, 572, 604, 636, 700, 732, 764, 828, 860, 892, 956, 988, 1020, 1084, 1116, 1148, 1212 | `Late` | 18 | −1 |
-| sprites-enabled rows 28, 92, 1264 and 1330 | `SpriteCoincident` | 18 | −3 |
+| sprites-enabled rows 28, 92, 1264 and 1330 | `Late` | 18 | −1 |
 
 `need()` is evaluated for the candidate slot. `threshold()` is evaluated for
 the previously booked CPU slot.
 
-Equivalently, if the implementation already exposes the slot attributes
-`ras0` and `spriteCoincident`:
+Equivalently, if the implementation already exposes the slot attribute `ras0`:
 
 ```
 int need(CpuSlot slot)
@@ -288,7 +294,7 @@ int need(CpuSlot slot)
 
 int threshold(CpuSlot slot)
 {
-    return 1 - 2 * slot.ras0 - 2 * slot.spriteCoincident;
+    return 1 - 2 * slot.ras0;
 }
 ```
 
@@ -300,8 +306,14 @@ no threshold check. Otherwise:
 
 ```cpp
 accept request iff
-    T - previousCpuSlot->time >= threshold(*previousCpuSlot)
+    signedMemoryCycleDistance(previousCpuSlot->time, T)
+        >= threshold(*previousCpuSlot)
 ```
+
+This must use signed memory-cycle distance, not raw wall-clock subtraction.
+In particular, a request three wall-clock cycles before sprites-enabled row
+1330 is only one engine cycle before it because two RCC padding cycles complete
+there. The comparison therefore uses `-1`, without a sprite-specific rule.
 
 If the request is discarded:
 
@@ -468,7 +480,6 @@ constexpr int CPU_REQUEST_DELAY = 29;
 enum class CpuSlotClass {
     Plain,
     Late,
-    SpriteCoincident,
 };
 
 struct CpuSlot {
@@ -511,7 +522,6 @@ int need(CpuSlot slot)
     switch (slot.cpuClass) {
     case CpuSlotClass::Plain:              return 16;
     case CpuSlotClass::Late:               return 18;
-    case CpuSlotClass::SpriteCoincident:   return 18;
     }
 }
 
@@ -520,7 +530,6 @@ int threshold(CpuSlot previousSlot)
     switch (previousSlot.cpuClass) {
     case CpuSlotClass::Plain:              return +1;
     case CpuSlotClass::Late:               return -1;
-    case CpuSlotClass::SpriteCoincident:   return -3;
     }
 }
 
@@ -528,6 +537,12 @@ int memoryCycleDistance(Cycle from, Cycle to)
 {
     // The interval is (from, to]: exclude from, include to.
     return (to - from) - stallCyclesCompletedBetween(from, to);
+}
+
+int signedMemoryCycleDistance(Cycle from, Cycle to)
+{
+    return to >= from ?  memoryCycleDistance(from, to)
+                      : -memoryCycleDistance(to, from);
 }
 
 bool occupiedByCpuPath(Cycle time)
@@ -615,7 +630,8 @@ void onCpuPortAccess(Cycle ioAccessTime)
     Cycle requestTime = ioAccessTime + CPU_REQUEST_DELAY;
 
     if (previousCpuSlot &&
-        requestTime - previousCpuSlot->time < threshold(*previousCpuSlot)) {
+        signedMemoryCycleDistance(previousCpuSlot->time, requestTime) <
+            threshold(*previousCpuSlot)) {
         return; // Discard this request without changing any scheduler state.
     }
 
@@ -672,13 +688,11 @@ occupied and advances to the next command slot.
 The following are not fully specified and must not be hidden as exact rules:
 
 1. The packed-dummy boundary at `T - C = -18`.
-2. A possible one-cycle ambiguity in the CPU discard comparison near the four
-   sprite-coincident rows.
-3. Command startup except for HMMV with display disabled.
-4. Combined non-zero R#18 and non-default R#9 S1/S0 timing has not yet been
+2. Command startup except for HMMV with display disabled.
+3. Combined non-zero R#18 and non-default R#9 S1/S0 timing has not yet been
    characterized.
-5. Character, text, undocumented, and MSX1 access tables.
-6. The exact border/display table-switch point: cycle 164 versus the line
+4. Character, text, undocumented, and MSX1 access tables.
+5. The exact border/display table-switch point: cycle 164 versus the line
    boundary.
 
 For the default 1368-cycle centred bitmap modes, use the rules above without

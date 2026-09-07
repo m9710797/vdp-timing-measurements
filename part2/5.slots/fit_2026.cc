@@ -15,6 +15,7 @@
 //   ./fit_2026 --rw [--sel=SUB] [dir]      # independent /CSR and /CSW δ
 //   ./fit_2026 --rw --force=D [--sel=SUB]  # mismatch rows at a fixed δ
 //   ./fit_2026 --pad3[=E] / --need=N       # sprites-on padding / lookahead
+//   ./fit_2026 --rawthreshdist              # diagnostic: do not remove RCC stalls
 //
 // VDP arbiter: FINDINGS7. Request at T, D16 with engine-distance,
 // drop-new while occupied (keep scheduled slot), 2-cycle holdoff after RAS,
@@ -77,11 +78,10 @@ int PRE_PACE = 0;                     // --prepace=K: K pre-capture requests at 
 bool WRITE_REQ = false;               // --reqfiles: write the .cpureq sibling files
 bool FAIL_DUMP = false;               // --faildump: attribute each miss to a discarded request
 std::string ONLY;                     // --only=SUB: restrict --faildiag to matching captures
-// Cycles by which a request must clear the slot granted to the request before
-// it, per mode (dispOff, sprOff, sprOn). The whole drop rule is that one
-// inequality. Sprites off it is BUSY, pinned there by drops at a margin of 1;
-// sprites on the same value discards ten-odd requests per capture that the VDP
-// served, and -1 is what the measurements ask for (FINDINGS7 §11.6).
+// Engine-grid cycles by which a request must clear the slot granted to the
+// request before it, per mode (dispOff, sprOff, sprOn). The whole drop rule is
+// that one inequality. Row overrides below translate the gate-derived
+// sub-slot classes; signed_engine_dist() removes intervening RCC stalls.
 int THRESH_MODE[3] = {BUSY, BUSY, -1}; // --thresh=N or --thresh=a,b,c
 // Diagnostic only (--threshrow=ROW:N): give one row of the lattice its own
 // threshold, to ask whether a capture that cannot be reconstructed wants
@@ -89,6 +89,8 @@ int THRESH_MODE[3] = {BUSY, BUSY, -1}; // --thresh=N or --thresh=a,b,c
 // had the chance to observe. Not written to the .cpureq files.
 std::map<int, int> THRESH_ROW;
 int ACC_THRESH = BUSY;                 // the entry for the capture in hand
+bool THRESH_ENGINE_DIST = true;         // threshold is on the stalled phiL grid
+int ACC_MODE_INDEX = 0;
 
 // The threshold that applies to a request whose predecessor was granted sprev.
 static int mod_line(int t);
@@ -315,6 +317,11 @@ static int pad_sub(int t, int s, const SlotTable& tab)
 static int engine_dist(int t, int s, const SlotTable& tab)
 {
 	return s - t - pad_sub(t, s, tab);
+}
+
+static int signed_engine_dist(int from, int to, const SlotTable& tab)
+{
+	return to >= from ? engine_dist(from, to, tab) : -engine_dist(to, from, tab);
 }
 
 static std::vector<int> packed_slots_of(const SlotTable& tab)
@@ -4624,7 +4631,11 @@ static TrelSol trellis_fit(
 			// matched as soon as it is handed out: its slot always lies
 			// later than the previous one, so the order the .txt records
 			// is the order the requests were taken in.
-			if (s.last >= 0 && T - s.last < thresh_at(s.last)) {
+			int dt = s.last < 0 ? 0 :
+				(THRESH_ENGINE_DIST
+					? signed_engine_dist(s.last, T, CMD_TABLE[ACC_MODE_INDEX])
+					: T - s.last);
+			if (s.last >= 0 && dt < thresh_at(s.last)) {
 				out = s;
 				return true;
 			}
@@ -4879,7 +4890,7 @@ struct TrelCheck {
 // A plain forward simulation, written out rather than shared with the DP so
 // that the two implementations can disagree.
 // A discarded request, with the slot granted to the request before it. The
-// margin T - sprev is the quantity the drop decision turns on.
+// The drop decision uses signed engine distance from sprev to T.
 struct DropEv { int T, sprev; };
 static std::vector<DropEv>* DROP_LOG = nullptr;
 
@@ -4890,14 +4901,18 @@ static std::vector<int> queue_sim(const std::vector<int>& posts,
 	n_drop = 0;
 	if (QDEPTH == 1) {
 		// With one buffer entry the whole rule is a single inequality: take
-		// the request only if it arrives at least ACC_THRESH cycles after
-		// the slot the previous one was granted. Waiting for the pending
+		// the request only if it arrives at least ACC_THRESH engine cycles
+		// after the slot the previous one was granted. Waiting for the pending
 		// grant and the holdoff after it are the two halves of that one
 		// test, so they need not be simulated separately.
 		std::vector<int> out;
 		int sprev = -1;
 		for (int T : posts) {
-			if (sprev >= 0 && T - sprev < thresh_at(sprev)) {
+			int dt = sprev < 0 ? 0 :
+				(THRESH_ENGINE_DIST
+					? signed_engine_dist(sprev, T, CMD_TABLE[ACC_MODE_INDEX])
+					: T - sprev);
+			if (sprev >= 0 && dt < thresh_at(sprev)) {
 				++n_drop;
 				if (DROP_LOG) DROP_LOG->push_back({T, sprev});
 				continue;
@@ -5083,6 +5098,7 @@ static std::string trel_key()
 			"," + std::to_string(NEED_OFF[1]) + "," + std::to_string(NEED_OFF[2]);
 	for (auto [r, n] : NEED_ROW) k += "_r" + std::to_string(r) + ":" + std::to_string(n);
 	for (auto [r, n] : THRESH_ROW) k += "_R" + std::to_string(r) + ":" + std::to_string(n);
+	if (THRESH_ENGINE_DIST) k += "_E";
 	k += "_q" + std::to_string(QDEPTH);
 	// The preprocessing variants change t2 itself, so they are part of the key.
 	if (!ANCHOR_FIX) k += "_A";
@@ -5679,7 +5695,8 @@ static int run_faildiag(const fs::path& slots_dir, const fs::path& vcd_dir)
 		} catch (const std::exception&) { continue; }
 		if (cap.obs.empty()) continue;
 		const auto& w = cpu_wait[mode_index(cap.mode)];
-		ACC_THRESH = THRESH_MODE[mode_index(cap.mode)];
+		ACC_MODE_INDEX = mode_index(cap.mode);
+		ACC_THRESH = THRESH_MODE[ACC_MODE_INDEX];
 
 		int b_extra = 1 << 30, b_miss = 0, b_pre = -1, b_got = 0, b_drop = 0;
 		double b_phi = 0;
@@ -5952,8 +5969,9 @@ static int run_fromreq(const fs::path& slots_dir)
 		NEED_ROW = rf.need_row;
 		QDEPTH = rf.buffer;
 		ACC_THRESH = rf.margin;
-		DROP_LOG = &drops[mode_index(rf.mode)];
-		int mi = mode_index(rf.mode);
+		ACC_MODE_INDEX = mode_index(rf.mode);
+		DROP_LOG = &drops[ACC_MODE_INDEX];
+		int mi = ACC_MODE_INDEX;
 		auto wait = make_wait(cpu_slots_of(CMD_TABLE[mi]), CMD_TABLE[mi], rf.need);
 
 		int n_drop = 0;
@@ -6061,7 +6079,8 @@ static int run_trellis(const fs::path& slots_dir, const fs::path& vcd_dir,
 		r.nacc = int(cap.obs.size());
 		r.pace = median_pace(cap.t2[1]);
 		const auto& w = cpu_wait[mode_index(cap.mode)];
-		ACC_THRESH = THRESH_MODE[mode_index(cap.mode)];
+		ACC_MODE_INDEX = mode_index(cap.mode);
+		ACC_THRESH = THRESH_MODE[ACC_MODE_INDEX];
 		// A pre-capture request is physically possible but it is also
 		// extra freedom, so only reach for it when nothing else works.
 		for (int q : eps_grid) {
@@ -6301,6 +6320,10 @@ int main(int argc, char** argv)
 				THRESH_MODE[m] = std::stoi(tok);
 			// One value sets all three.
 			for (int i = m; i < 3; ++i) THRESH_MODE[i] = THRESH_MODE[m - 1];
+		} else if (a == "--rawthreshdist") {
+			// Historical diagnostic: compare raw wall-clock coordinates. This
+			// needs an ad-hoc -2 at padded row 1330 to mimic the phiL distance.
+			THRESH_ENGINE_DIST = false;
 		} else if (a == "--rawdump") {
 			do_rawdump = true;
 		} else if (a == "--margins") {

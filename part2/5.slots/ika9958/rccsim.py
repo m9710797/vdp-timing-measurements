@@ -55,7 +55,9 @@ def run(nstall_ticks, settle=400, watch=200):
     # now at the first cycle of a phiL high phase; count periods
     periods, hi_len = [], []
     ticks_stalled = 0
-    n, hi, prev = 0, 0, 1
+    # The rising-edge sample belongs to the new period. Count edge-to-edge
+    # distances, excluding the next rising-edge sample from the old high phase.
+    n, hi, prev = 0, 1, 1
     stalling = False
     for _ in range(watch):
         # gc024 goes low for nstall_ticks whole phiL ticks, starting at
@@ -65,16 +67,14 @@ def run(nstall_ticks, settle=400, watch=200):
         low = stalling and ticks_stalled < nstall_ticks
         cur, _h = r.step(gc024=0 if low else 1)
         n += 1
-        if prev:
-            hi += 1
-        if prev and not cur:
-            pass
         if not prev and cur:            # rising edge: period ended
-            periods.append(n - 1)
-            hi_len.append(hi - 1 if False else hi)
+            periods.append(n)
+            hi_len.append(hi)
             if low:
                 ticks_stalled += 1
-            n, hi = 1, 1
+            n, hi = 0, 1
+        elif cur:
+            hi += 1
         prev = cur
     return periods[:12], hi_len[:12]
 

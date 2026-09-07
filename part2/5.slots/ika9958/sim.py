@@ -82,7 +82,7 @@ class Sim:
             self.cells.append({
                 'ref': c['ref'], 'lib': c['lib'],
                 'in': [(p['name'], netof(p['k'])) for p in ins],
-                'out': [(p['style'], netof(p['k'])) for p in outs],
+                'out': [(p['name'], p['style'], netof(p['k'])) for p in outs],
             })
         self.net = defaultdict(int)
         self.state = {}          # ref -> latch/flop state
@@ -102,8 +102,21 @@ class Sim:
                 lib = c['lib']
                 iv = [self.net[n] for _, n in c['in']]
                 names = {nm: self.net[n] for nm, n in c['in'] if nm}
+                output_values = None
                 if lib in COMB:
                     core = core_of(lib, iv)
+                elif lib == 'HA':
+                    # The half adder has two independent non-inverted outputs;
+                    # it cannot use the common-core shortcut below.
+                    output_values = {
+                        'S': names['CI'] ^ names['A'],
+                        'CO': names['CI'] & names['A'],
+                    }
+                    core = 0
+                elif lib == 'VDD':
+                    core = 1
+                elif lib == 'GND':
+                    core = 0
                 elif lib in ('VY_DDL_small', 'DLPEN'):
                     en = names.get('PHI1', names.get('EN'))
                     st = self.state.get(c['ref'], 0)
@@ -131,8 +144,10 @@ class Sim:
                     core = self.state.get(c['ref'], 0)
                 else:
                     raise KeyError(lib)
-                for style, n in c['out']:
-                    v = (1 - core) if style == 'inverted' else core
+                for name, style, n in c['out']:
+                    v = output_values[name] if output_values is not None else core
+                    if style == 'inverted':
+                        v = 1 - v
                     if self.net[n] != v:
                         self.net[n] = v
                         changed = True

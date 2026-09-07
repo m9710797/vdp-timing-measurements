@@ -513,10 +513,28 @@ actually fired on. CPU RAS and command RAS never coincide, and the CPU wins
 every contested CPU-legal slot, because it was booked ahead from `T` while the
 engine decides late.
 
-### 8.1 `NEED` and `THRESH` are one pair of tick-referred constants
+### 8.1 One gate-derived rule on the stalled `phiL` grid
 
 This is the part FINDINGS7 fitted per display mode and could not explain. It
-comes out of the silicon (§8.4) as a single mode-free rule.
+comes out of the silicon (§8.4) as a single mode-free rule:
+
+```
+NEED   = 16 + 2 * vram_ras_rq[0]
+THRESH =  1 - 2 * vram_ras_rq[0]
+```
+
+Both comparisons are made on the Memory PLA's stalled `phiL` grid. In table
+coordinates:
+
+```
+accept next request iff
+    signed_memory_cycle_distance(previous_cpu_slot, T) >= THRESH(previous_cpu_slot)
+```
+
+`signed_memory_cycle_distance(a, b)` is `memory_cycle_distance(a, b)` when
+`b >= a`, and `-memory_cycle_distance(b, a)` otherwise. It excludes RCC
+stall/padding cycles in either direction. Using raw `T - previous_cpu_slot`
+here is wrong.
 
 **The arbiter decides at a `phiL` tick; the slot tables record a memory cycle.**
 `phiL` is the VDP clock divided by 4, and each tick carries two DRAM sub-slots:
@@ -527,10 +545,7 @@ already claimed the first half of the tick.
 
 So a slot table row is the tick position for some slots and the tick position
 **+2** for others, and every per-mode constant was that offset averaged over a
-mode. Referring the constants back to the tick removes all of them:
-
-    NEED   = 16 + 2 * vram_ras_rq[0]
-    THRESH =  1 - 2 * vram_ras_rq[0] - 2 * vram_slot_spr
+mode. Referring the derived constants back to the tick removes all of them.
 
 `NEED` is measured *to* the slot, so it gains the two cycles by which a
 sub-slot-1 slot is recorded late; `THRESH` is measured *from* the previous
@@ -544,17 +559,34 @@ Across all three modes every CPU tick is one of four kinds:
 | 0 | 0 | 0 | 187 | 0 | 16 | +1 |
 | 1 | 0 | 0 | 32 | 0 | 16 | +1 |
 | 1 | 1 | 0 | 50 | 1 | 18 | −1 |
-| 1 | 1 | 1 | 4 | 1 | 18 | −3 |
+| 1 | 1 | 1 | 4 | 1 | 18 | −1 |
 
 The last class is the four sprites-on slots where a CPU slot lands on a sprite
 slot — rows 28, 92, 1264 and 1330, the isolated slots in the sprite-fetch
 region. There are none in the other two modes.
 
-Of the constants, `(16, +1)` is the arbiter's own `K` and `D`, the ±2 on
-`ras_rq[0]` is derived, and only the −2 on `slot_spr` is fitted. It is tightly
-pinned: −5 scores 254, −9 scores 241, +1 scores 256, against 263. `NEED` does
-*not* move with it (20 scores 249), so at a coincident tick the table still
-records the CPU's own memory cycle and only the drop window shifts.
+Of the constants, `(16, +1)` is the arbiter's own `K` and `D`, and the ±2 on
+`ras_rq[0]` is derived. A direct CI sweep using the natural slot waveform gives
+the same inclusive `K = 13` and `D = 4` boundaries for all four classes,
+including the sprite-coincident one.
+
+An earlier version used raw wall-clock distance for `THRESH`. It then needed
+`THRESH = -3` on the four sprite-coincident rows to retain the 263/266 common-
+`phi` corpus score. That was suspicious for two reasons: CI did not generate
+the term, and moving the grant-to-RAS reference should have moved `NEED` too.
+Breaking the boundary evidence down by row showed that the discriminating
+normal captures were at row **1330**, exactly where two RCC stall cycles
+complete. For example, raw distance `T - S = -3` becomes signed memory-cycle
+distance `-1` after those two cycles are removed. Rows 28, 92 and 1264 did not
+establish a common sprite rule.
+
+With signed memory-cycle distance and the uniform gate-derived threshold, the
+common-`phi` result remains **263/266** with the same three failures. The
+per-capture result is 264/266 rather than the old empirical 265/266: the
+additional loss is `stop-rdwrCpu-5g`, whose row-28 reconstruction already
+depends on the known bad pre-window timing (§12). Thus removing the fitted
+sprite term causes no regression in the shared model and removes an
+unsupported extrapolation.
 
 **Two of FINDINGS7's exceptions were this rule showing through.** It needed
 `--needrow=170:16` and could not say why; sprites on has exactly two sub-slot-0
@@ -565,8 +597,8 @@ captures fit. FINDINGS7 also found row 162 wanted a threshold on a plateau "at
 either 1 or 2"; the derived value is 1, and it arrives with no row-162
 parameter.
 
-No change to `fit_2026.cc` was needed to test this: `--needrow` and
-`--threshrow` already key on the slot row and on the predecessor's row.
+`fit_2026.cc` now uses signed engine distance for the threshold;
+`--rawthreshdist` retains the historical wall-clock comparison as a diagnostic.
 `ika9958/subslot_rows.py` emits the classes, computed from the Memory PLA and
 the clock divider rather than from the corpus.
 
