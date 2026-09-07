@@ -18,8 +18,9 @@ The exact scope is:
 - the default 1368-cycle line, plus the known R#9 and R#18 effects;
 - the border/display transition.
 
-Character, text, undocumented, and MSX1 modes require other slot tables and
-are outside this specification.
+Text, undocumented, and MSX1 modes require other slot tables and are outside
+this specification. G1/G2/G3 CPU timing is included in §7.1; V9938 commands
+remain bitmap-only.
 
 All times are VDP master-clock cycles. Slot tables contain the `/RAS` falling
 edge, i.e. the start of a VRAM access. Absolute slot times repeat every line:
@@ -759,7 +760,10 @@ The following are not fully specified and must not be hidden as exact rules:
 2. Command startup except for HMMV with display disabled.
 3. Combined non-zero R#18 and non-default R#9 S1/S0 timing is hardware-derived
    but has not been validated by a combined capture.
-4. Character, text, undocumented, and MSX1 access tables.
+4. Text, undocumented, and MSX1 access tables. The existing measured T1/T2
+   table's 47-slot cyclic structure is circuit-confirmed, but the circuit model
+   retains a global one-`phiL` phase ambiguity and therefore supplies no
+   replacement table.
 5. The exact border/display table-switch point: cycle 164 versus the line
    boundary.
 
