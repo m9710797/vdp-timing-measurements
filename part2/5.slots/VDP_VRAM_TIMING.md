@@ -238,18 +238,29 @@ candidate slot is reached.
 
 ### 5.3 Command start
 
-For HMMV with display disabled, the first command access is the first command
-slot `S` satisfying:
+The first command access is the first command slot `S` satisfying
 
 ```cpp
-memoryCycleDistance(ioAccessTime, S) >= 112
+memoryCycleDistance(ioAccessTime, S) >= S0
 ```
 
-Here `ioAccessTime` is the emulator-level R#46 port-write timestamp defined in
-section 1.
+where `ioAccessTime` is the emulator-level R#46 port-write timestamp defined in
+section 1. `S0` depends on the command, not on the display mode:
 
-The exact startup delay for read-first commands and for other display states
-is not yet specified. Do not assume that it necessarily equals the HMMV value.
+```
+LMMM  64   // first access: source read
+LMMV  88   // dest read
+HMMM 100   // source read
+YMMM 100   // source read
+HMMV 112   // dest write
+LINE 112   // dest read
+```
+
+These are 18 cycles more than the same thresholds measured from the rising
+`/CSW` edge (46, 70, 82, 82, 94, 94), which is the start-of-T2 to pin-rise
+offset of section 6.1. A launch whose `/CSW` edge sits on a cycle boundary can
+ceil the other way and miss by one; do not add a second, mode-specific startup
+term.
 
 ## 6. CPU VRAM requests
 
@@ -757,7 +768,9 @@ occupied and advances to the next command slot.
 The following are not fully specified and must not be hidden as exact rules:
 
 1. The packed-dummy boundary at `T - C = -18`.
-2. Command startup except for HMMV with display disabled.
+2. What the leftover integer in command startup counts. The six command
+   thresholds in section 5.3 are measured; they are not derived from the
+   published command-control circuitry.
 3. Combined non-zero R#18 and non-default R#9 S1/S0 timing is hardware-derived
    but has not been validated by a combined capture.
 4. Text, undocumented, and MSX1 access tables. The existing measured T1/T2

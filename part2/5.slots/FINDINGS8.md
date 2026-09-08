@@ -1274,18 +1274,30 @@ an unmeasured prediction.
 Keep the tables at centred (R#18 = 0) / S1S0 = 00 / 1368 unless a leftover is
 specifically a wrap through 1330.
 
-## 14. Command start: `S₀` = 93..95 from rising `/CSW`
+## 14. Command start
 
 The delay between the CPU writing the command byte (R#46) and the engine's
-first VRAM access. Data: `scr5-dispOff-hmmv-noCpu-nx4-ny2-{1..6}f` — HMMV,
-NX=4, NY=2 on screen 5, so exactly four dest writes per run, with the command
-restarted in a loop so the launch falls inside a random 7-line snippet. Six
-launches captured.
+first VRAM access. Treat the start like any other wait: the first command slot
+`S` with `engine_dist(CE, S) ≥ S₀`. Each launch then contributes the integer
+interval
+
+```
+S₀ ∈ [engine_dist(CE, prev_slot(S)) + 1, engine_dist(CE, S)]
+```
+
+with `CE` the rising edge of `/CSW` on that last register write, rounded up to
+a whole cycle. Intersect over launches.
 
 The register setup is a burst of 15 `OUT (#99)` at ~137 cycles (23 T) each; the
 **last** pulse of the burst is the CE write. `/CSW` low is **14.9 ± 0.1** cycles
 wide (2.50 T-states), which is also the cleanest measurement of the pulse width
 used in §8.5.
+
+### 14.1 HMMV, display off, the original six
+
+Data: `scr5-dispOff-hmmv-noCpu-nx4-ny2-{1..6}f`. NX=4, NY=2 on screen 5, so
+exactly four dest writes per run, with the command restarted in a loop so the
+launch falls inside a random 7-line snippet.
 
 | capture | `/CSW` rise | first engine RAS | lead |
 |--|--|--|--|
@@ -1297,25 +1309,88 @@ used in §8.5.
 | `6f` | 2750.2 | 2847.7 (row 188) | 97.6 |
 
 `4f` is not an outlier: its wait lands inside the 44-cycle hole (row 120→164),
-so the first legal slot is 44 cycles further on. Treating the start like any
-other wait — first command slot with `engine_dist(CE, S) ≥ S₀` — the six
-launches intersect at
+so the first legal slot is 44 cycles further on. The six launches intersect at
 
 ```
 S₀ ∈ {93, 94, 95}     from the rising edge of /CSW
 S₀ ∈ {111, 112, 113}  from openMSX's port-write timestamp (start of T2, §8.5)
 ```
 
-Only HMMV was measured, and only in display off. A command that has to read
-before it writes (LMMM, HMMM, LINE) may well start later.
+### 14.2 All six commands, three modes
 
-**openMSX.** Every `execute*()` entry path starts with `nextAccessSlot(time)`,
-i.e. `getAccessSlot(time, Delta::D0)` at the port-write timestamp: `S₀ = 0`.
-Hardware is ~112 cycles later, about 14 display-off slots. For a long command
-this is a constant offset of the whole access pattern rather than a shape
-error, so it mostly shows up in short commands, in the `CE` clear time, and in
-the arbitration against a CPU access issued right after the launch. Same class
-of fix as §8.5, and the same origin.
+Data: `scr5-{mode}-{cmd}-noCpu-nx4-ny2-*h` (LMMV sprites-off/on are named
+`scrOff`/`scrOn`). Same NX=4, NY=2 geometry. First access is command-typed:
+HMMV dest write, LMMV/LINE dest read, LMMM/HMMM/YMMM source read. Display-off
+pins a single integer; sprites-off contains it. Sprites-on is looser. HMMM
+there intersects at 83..84 rather than 82 — one cycle, the size of the §4
+addend — so do not treat sprites-on as an independent pin of the same
+integer. The addend is **not** otherwise required by the display-off and
+sprites-off launches.
+
+| command | first access | dispOff | sprOff | sprOn | `S₀` from `/CSW` |
+|--|--|--|--|--|--|
+| **LMMM** | R source | **46** | 46..47 | 42..48 | **46** |
+| **LMMV** | R dest | **70** | 69..75 | 68..73 | **70** |
+| **HMMM** | R source | **82** | 80..85 | 83..84 | **82** |
+| **YMMM** | R source | **82** | 82..84 | 81..98 | **82** |
+| **HMMV** | W dest | **94** | 94..96 | 91..104 | **94** |
+| **LINE** | R dest | **94** | 93..95 | 92..99 | **94** |
+
+Display-off intersections that are a point: LMMM 18/19 launches, HMMM 24/24,
+HMMV 26/26, LINE 25/25. Two LMMV launches have wall-clock 69.9 and therefore
+`hi = 69` if `/CSW` is ceiled the other way; 21/23 still contain 70. YMMM has
+no usable refresh lattice in these files (every `0x3f` RAS is VDS-active), so
+the line origin is the 44-cycle hole at row 120→164; the lower envelope of
+those walls is 82, with the same one-cycle rounding as LMMV.
+
+[`sndpl/openMSX#5`](https://github.com/sndpl/openMSX/pull/5) independently
+reported the same six integers, including the rounding leftovers. That is the
+check.
+
+From the port-write timestamp add the 18 cycles of §8.5 (start of T2 to the
+rising `/CSW` edge):
+
+```
+LMMM  64
+LMMV  88
+HMMM 100
+YMMM 100
+HMMV 112
+LINE 112
+```
+
+HMMV's 112 is the centre of §14.1's `{111, 112, 113}`.
+
+### 14.3 Split into known costs
+
+The four distinct `/CSW` values are 46, 70, 82, 94 — **all congruent to 10
+modulo 12**:
+
+```
+S₀ = 10 + 12 * N    N = 3 (LMMM), 5 (LMMV), 6 (HMMM, YMMM), 7 (HMMV, LINE)
+```
+
+The 10 is the pin-to-arbiter delay already measured from CPU accesses
+(`phi` ≈ 10.75 from the rising edge, §9.3). The 12 is the even quantum the
+engine's own delays are built from: R→W 24, YMMM W→R 36, HMMM/LMMM W→R 60,
+LMMV W→R 72, LINE W→R 84. Only HMMV's 46 and LMMM's 32 are not multiples of 12,
+and they are not the startup values either.
+
+`N` is **not** identified. It is not the number of accesses per pixel, not the
+steady-state delay that would precede the first access, and not the
+minor-direction addend of §5 (104 / 130 / 104 / 128 / 128 / 120 against
+startups 94 / 70 / 82 / 82 / 46 / 94). Two components are known; the integer
+per command is not.
+
+### 14.4 openMSX
+
+Every `execute*()` entry path starts with `nextAccessSlot(time)`, i.e.
+`getAccessSlot(time, Delta::D0)` at the port-write timestamp: `S₀ = 0`.
+Hardware is 64 to 112 cycles later depending on the command, about 8 to 14
+display-off slots. For a long command this is a constant offset of the whole
+access pattern rather than a shape error, so it mostly shows up in short
+commands, in the `CE` clear time, and in the arbitration against a CPU access
+issued right after the launch. Same class of fix as §8.5, and the same origin.
 
 ## 15. Vertical border ↔ display: the grid switches one line early
 
@@ -1414,9 +1489,9 @@ mode), each ~47 µs long at a 64.14 µs pitch, so the extra sprite-fetch line is
 5. **openMSX CPU origin** (§8.5): `Delta::D16` from the Z80 port timestamp is
    ~29 cycles early. Lost-request timing cancels; the stolen command slot does
    not (`vdpcmdx` `+CPU`).
-6. **Command startup** `S₀` is measured for HMMV in display off only (§14).
-   The read-first commands and the other two modes are untouched, as are the
-   character, text and MSX1 tables.
+6. **What `N` counts in command startup** (§14.3). The six commands are
+   measured; the leftover integer per command is not explained. Character,
+   text, and MSX1 tables are still untouched.
 7. **The border/display comb boundary** (§15): cycle ~164 or the line edge.
 8. **Packed-start +1 is unobservable on 2013** (§6.1), and the dummy `R..` may
    be 8280-only — 2013 mixed traces are HMMV only.
