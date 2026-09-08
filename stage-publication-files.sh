@@ -21,6 +21,7 @@ git add -- \
 	part2/5.slots/FINDINGS7.md \
 	part2/5.slots/FINDINGS8.md \
 	part2/5.slots/IKA9958.md \
+	part2/5.slots/TRELLIS_CPU_REQUESTS.md \
 	part2/5.slots/VDP_VRAM_TIMING.md
 
 git add -- \

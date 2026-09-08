@@ -19,6 +19,10 @@ tables, frozen), [`FINDINGS5.md`](FINDINGS5.md), [`FINDINGS6.md`](FINDINGS6.md),
 [`ARBITER_ITER.md`](ARBITER_ITER.md),
 [`FINDINGS-ADJUST-S10.md`](FINDINGS-ADJUST-S10.md).
 
+The Viterbi-style reconstruction, its validity limits, and the generated
+`.cpureq` workflow are documented separately in
+[`TRELLIS_CPU_REQUESTS.md`](TRELLIS_CPU_REQUESTS.md).
+
 | | 2013 | 2026 |
 |--|------|------|
 | Machine | Philips **NMS 8250** | Philips **NMS 8280** |
