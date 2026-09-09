@@ -115,6 +115,13 @@ the same observations. Failure is stronger: under the stated decoder,
 timebase, error bound, initial-state policy, and arbiter, no legal attribution
 exists.
 
+Some rules never enter the grant sequence, so an exact reconstruction cannot
+support them even in principle: the packed-dummy window of FINDINGS8 §10.2
+(`cpu_slots_of()` never waits on a packed slot), the sprites-on command
+addend, and the base drop margin 1 versus 2. Those need a dummy-read census,
+command-engine scoring, or a `.cpureq` replay, respectively. Buffer depth is
+visible: `--qdepth=2` falls from 263 to 208 exact captures.
+
 ## 5. What improved
 
 The old integer-delay score rounded the request train using one integer offset

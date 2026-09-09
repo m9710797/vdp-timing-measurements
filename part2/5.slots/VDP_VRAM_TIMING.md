@@ -241,11 +241,14 @@ candidate slot is reached.
 The first command access is the first command slot `S` satisfying
 
 ```cpp
-memoryCycleDistance(ioAccessTime, S) >= S0
+delay = S0
+if spritesEnabled:
+    delay += 1   // section 5.1; same extra as every later step
+memoryCycleDistance(ioAccessTime, S) >= delay
 ```
 
 where `ioAccessTime` is the emulator-level R#46 port-write timestamp defined in
-section 1. `S0` depends on the command, not on the display mode:
+section 1. The base `S0` depends on the command, not on the display mode:
 
 ```
 LMMM  64   // first access: source read
@@ -258,9 +261,11 @@ LINE 112   // dest read
 
 These are 18 cycles more than the same thresholds measured from the rising
 `/CSW` edge (46, 70, 82, 82, 94, 94), which is the start-of-T2 to pin-rise
-offset of section 6.1. A launch whose `/CSW` edge sits on a cycle boundary can
-ceil the other way and miss by one; do not add a second, mode-specific startup
-term.
+offset of section 6.1. Apply the section 5.1 sprites-enabled addend to this
+wait as to every other command delay. That is what makes the sprites-on HMMM
+launches, which intersect at 83..84 from `/CSW` rather than 82, agree with
+display-off. A launch whose `/CSW` edge sits on a cycle boundary can ceil the
+other way and miss by one; do not invent an additional startup-only mode term.
 
 ## 6. CPU VRAM requests
 

@@ -699,9 +699,12 @@ engine. Display-off command slots are often 8 apart, so 29 cycles is typically
 three or four slots early; sprites-on gaps are 32–64, so usually one whole slot
 early. That is the `vdpcmdx` `+CPU` column.
 
-Proposed (not implemented): a **17.9 + 10.75 ≈ 29-cycle wall-clock** constant
-from the port-access timestamp, followed by the 16-**memory-cycle**,
-padding-aware lookahead.
+Proposed: a **17.9 + 10.75 ≈ 29-cycle wall-clock** constant from the
+port-access timestamp, followed by the 16-**memory-cycle**, padding-aware
+lookahead. Upstream openMSX still grants from D16 at the port timestamp;
+[`sndpl/openMSX#9`](https://github.com/sndpl/openMSX/pull/9) implements this
+constant (and has to take the release threshold in the same change: `+29`
+alone drops requests the hardware keeps).
 
 ## 9. Measuring the request time (2026)
 
@@ -1322,10 +1325,13 @@ Data: `scr5-{mode}-{cmd}-noCpu-nx4-ny2-*h` (LMMV sprites-off/on are named
 `scrOff`/`scrOn`). Same NX=4, NY=2 geometry. First access is command-typed:
 HMMV dest write, LMMV/LINE dest read, LMMM/HMMM/YMMM source read. Display-off
 pins a single integer; sprites-off contains it. Sprites-on is looser. HMMM
-there intersects at 83..84 rather than 82 — one cycle, the size of the §4
-addend — so do not treat sprites-on as an independent pin of the same
-integer. The addend is **not** otherwise required by the display-off and
-sprites-off launches.
+there intersects at **83..84 rather than 82**. That is exactly the §4 addend
+on the first wait: §14 already treats startup as an ordinary engine delay, and
+§4 puts the extra on every such delay. The other sprites-on bands contain both
+the display-off integer and that integer plus one, so they neither require a
+new constant nor reject applying §4 here. Display-off and sprites-off still
+pin the **base** values in the table; they never needed a startup-only
+mode term.
 
 | command | first access | dispOff | sprOff | sprOn | `S₀` from `/CSW` |
 |--|--|--|--|--|--|
@@ -1374,7 +1380,8 @@ The 10 is the pin-to-arbiter delay already measured from CPU accesses
 (`phi` ≈ 10.75 from the rising edge, §9.3). The 12 is the even quantum the
 engine's own delays are built from: R→W 24, YMMM W→R 36, HMMM/LMMM W→R 60,
 LMMV W→R 72, LINE W→R 84. Only HMMV's 46 and LMMM's 32 are not multiples of 12,
-and they are not the startup values either.
+and they are not the startup values either. This split is the base wait,
+before the sprites-on extra of §4.
 
 `N` is **not** identified. It is not the number of accesses per pixel, not the
 steady-state delay that would precede the first access, and not the
@@ -1384,13 +1391,16 @@ per command is not.
 
 ### 14.4 openMSX
 
-Every `execute*()` entry path starts with `nextAccessSlot(time)`, i.e.
-`getAccessSlot(time, Delta::D0)` at the port-write timestamp: `S₀ = 0`.
+Upstream openMSX still starts every `execute*()` with `nextAccessSlot(time)`,
+i.e. `getAccessSlot(time, Delta::D0)` at the port-write timestamp: `S₀ = 0`.
 Hardware is 64 to 112 cycles later depending on the command, about 8 to 14
 display-off slots. For a long command this is a constant offset of the whole
 access pattern rather than a shape error, so it mostly shows up in short
 commands, in the `CE` clear time, and in the arbitration against a CPU access
 issued right after the launch. Same class of fix as §8.5, and the same origin.
+[`sndpl/openMSX#9`](https://github.com/sndpl/openMSX/pull/9) implements the
+six thresholds above and, because they go through the command delta path,
+applies the sprites-on extra to this first wait as well.
 
 ## 15. Vertical border ↔ display: the grid switches one line early
 
@@ -1486,12 +1496,14 @@ mode), each ~47 µs long at a 64.14 µs pitch, so the extra sprite-fetch line is
    origin is implicit and every consumer re-derives it. Record it in the file,
    or trim captures to a line boundary. Until then `--origin` is the guard.
    Doing this would also address §12.
-5. **openMSX CPU origin** (§8.5): `Delta::D16` from the Z80 port timestamp is
-   ~29 cycles early. Lost-request timing cancels; the stolen command slot does
-   not (`vdpcmdx` `+CPU`).
+5. **openMSX CPU origin** (§8.5): upstream still applies `Delta::D16` at the
+   Z80 port timestamp, ~29 cycles early. Lost-request timing cancels; the
+   stolen command slot does not (`vdpcmdx` `+CPU`). The rule itself is no
+   longer open; it is implemented on [`sndpl/openMSX#9`](https://github.com/sndpl/openMSX/pull/9), not merged.
 6. **What `N` counts in command startup** (§14.3). The six commands are
-   measured; the leftover integer per command is not explained. Character,
-   text, and MSX1 tables are still untouched.
+   measured; the leftover integer per command is not explained. Command-engine
+   delays in character, text, and MSX1 modes are still unmeasured (G1/G2/G3
+   *CPU* classes are known, §7.1 of `VDP_VRAM_TIMING.md`).
 7. **The border/display comb boundary** (§15): cycle ~164 or the line edge.
 8. **Packed-start +1 is unobservable on 2013** (§6.1), and the dummy `R..` may
    be 8280-only — 2013 mixed traces are HMMV only.
