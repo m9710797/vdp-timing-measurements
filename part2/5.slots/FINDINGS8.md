@@ -701,10 +701,11 @@ early. That is the `vdpcmdx` `+CPU` column.
 
 Proposed: a **17.9 + 10.75 ≈ 29-cycle wall-clock** constant from the
 port-access timestamp, followed by the 16-**memory-cycle**, padding-aware
-lookahead. Upstream openMSX still grants from D16 at the port timestamp;
+lookahead. Upstream openMSX still grants from D16 at the port timestamp.
 [`sndpl/openMSX#9`](https://github.com/sndpl/openMSX/pull/9) implements this
-constant (and has to take the release threshold in the same change: `+29`
-alone drops requests the hardware keeps).
+constant together with the release threshold (`+29` alone drops requests the
+hardware keeps). The same PR implements the packed-slot dummy read the command
+engine loses when the CPU is served at the next slot.
 
 ## 9. Measuring the request time (2026)
 
@@ -1081,10 +1082,25 @@ has
 cases in the same integer `-18` bin; fresh broader diagnostics also contain a
 few reconstructed `-17` dummies. `T=floor(t2+phi)` loses phase at this second
 sampling boundary, but one fitted sub-cycle phase per capture still does not
-close the model. A deterministic `NEED=19` approximation scores one command
-step better than `NEED=18`, with the same number of perfect files. Keep
-`NEED=19` as the current integer rule and `NEED=18` as the strongest
-circuit-derived hypothesis.
+close the model.
+
+**Best integer cutoff.** Replaying the trellis `.cpureq` request times against
+the **603** sprites-off dummy reads (`C - T` in cycles, no fitting):
+
+| window `C - T` | dummies predicted | of 603 | predicted but absent |
+|--|--|--|--|
+| 17..21 | 603 | 603 | 134 |
+| **18..21** | **585** | 603 | **11** |
+| 19..21 | 449 | 603 | 1 |
+| 20..21 | 305 | 603 | 1 |
+
+Total error is **29** at the **−18** boundary against **155** at **−19**. Use
+`T-C ∈ (-22,-18]` — the same interval CI already suggested — as the
+implementation rule, with about eleven false positives. An older integer
+approximation that scored one command step better with `NEED=19` did not use
+these reconstructed request times.
+[`sndpl/openMSX#9`](https://github.com/sndpl/openMSX/pull/9) implements the
+dummy occupancy at that boundary via `Delta::CPU_16` versus `CPU_16_ANY`.
 
 ### 10.3 The `Δ=32` skip is lattice geometry, not a CPU predicate
 
@@ -1391,16 +1407,15 @@ per command is not.
 
 ### 14.4 openMSX
 
-Upstream openMSX still starts every `execute*()` with `nextAccessSlot(time)`,
-i.e. `getAccessSlot(time, Delta::D0)` at the port-write timestamp: `S₀ = 0`.
-Hardware is 64 to 112 cycles later depending on the command, about 8 to 14
-display-off slots. For a long command this is a constant offset of the whole
-access pattern rather than a shape error, so it mostly shows up in short
-commands, in the `CE` clear time, and in the arbitration against a CPU access
-issued right after the launch. Same class of fix as §8.5, and the same origin.
-[`sndpl/openMSX#9`](https://github.com/sndpl/openMSX/pull/9) implements the
-six thresholds above and, because they go through the command delta path,
-applies the sprites-on extra to this first wait as well.
+Upstream `openMSX/openMSX` still starts every `execute*()` with
+`nextAccessSlot(time)`, i.e. `getAccessSlot(time, Delta::D0)` at the port-write
+timestamp: `S₀ = 0`. Hardware is 64 to 112 cycles later depending on the
+command. [`sndpl/openMSX#9`](https://github.com/sndpl/openMSX/pull/9) (Sep 2026,
+rebased on master) implements, in separate commits: line padding per mode,
+command start for the six block commands, the CPU request path (`+29`, buffer,
+slot classes), and the packed-slot dummy read at the **−18** boundary. Border
+table switching at cycle 164 is documented there but not yet coded. R#9/R#18
+variant tables are still omitted.
 
 ## 15. Vertical border ↔ display: the grid switches one line early
 
@@ -1424,24 +1439,32 @@ access grid follows the fetching, not the rendering:
 So the switch is not at a line boundary: cycles ~0..130 of a line belong to the
 *previous* line's mode (they hold the sprite-pattern fetches for the line about
 to be shown), and the grid changes at the start of the display-fetch region,
-between RAS 120/126 and RAS 164. All 9 top-border captures agree exactly, down
+between RAS 120/126 and RAS 164. The **same position applies at both borders**,
+somewhere in **(126, 162]**: a different **line origin for the access grid**,
+not a different number of lines. All 9 top-border captures agree exactly, down
 to the sprite counts: the pre-display line does 40 attribute and 4 pattern
 fetches instead of 48 and 8, the missing 8 being precisely the ones a normal
 line does in its left HBLANK — which is why that part of the line falls back to
 the sprites-off comb.
 
-The parallel analysis in [`sndpl/openMSX#5`](https://github.com/sndpl/openMSX/pull/5)
-reproduces the one-line-early fetching and the dummy-read counts but reads the
-comb as changing *at* the line boundary rather than at cycle ~164. Worth
-re-deriving; it is worth two lines per frame.
+[`sndpl/openMSX#5`](https://github.com/sndpl/openMSX/pull/5) initially read the
+comb as changing *at* the line boundary; that came from grouping lines on a
+global refresh fit, which smears ±1 cycle here. The 11 Sep 2026 follow-up on
+that thread agrees with the per-line picture above and corrects the earlier
+claim.
 
-Two consequences for openMSX. `getTab()` already keys on
-`isDisplayEnabled() = isDisplayArea && displayEnabled`, so the vertical border
-correctly uses `tabScreenOff` — the measurement confirms that (167 RAS,
-8-cycle comb, identical to a display-disabled line). What it gets wrong is the
-boundary: the table should become `tabSpritesOn` at cycle 164 of the line
-**before** `isDisplayArea` starts, and go back to `tabScreenOff` at cycle 164
-of the line **after** it ends.
+**openMSX impact.** On the line before the display area, hardware exposes
+**44** slots to the command engine and CPU; openMSX currently gives **154** —
+about **110 slots too many** for one line per frame. Switching a whole line
+early would not fix that; only a switch at cycle **164 inside the line** does.
+The renderer and sprite checker should keep their existing line boundary; only
+`getTab()` needs a separate switch moment. Not implemented in openMSX yet.
+
+One detail even a correct switch does not capture: the left blanking of the
+pre-display line uses the sprites-off comb (6, 14, … 118), not the display-off
+one (0, 8, … 120) — fifteen slots where display-off has sixteen, six cycles
+later — because that line fetches no sprite patterns for the border line above
+it. A fourth table for one blanking region per frame is not worth it.
 
 `VDS` is a clean real-vs-dummy discriminator: it stays high on the dummy
 `0x1FFFF` reads that replace the bitmap fetches. The 1 MHz captures show
@@ -1474,7 +1497,8 @@ mode), each ~47 µs long at a 64.14 µs pitch, so the extra sprite-fetch line is
   future CPU access (§10.3).
 - Dummy `R..` on packed +6 correlates with the continuation tick seeing
   `WAITING` after the request missed the run-start grant; the CPU RAS follows
-  at +26 (row 1212: +54).
+  at +26 (row 1212: +54). Best integer window `T-C ∈ (-22,-18]` from the
+  `.cpureq` census (§10.2).
 - Gate-derived G1/G2/G3 CPU timing reproduces openMSX's existing 31-row
   character table exactly. The six four-cycle differences from bitmap
   sprites-on come from combinational `gt075` versus registered `gt076`
@@ -1487,24 +1511,29 @@ mode), each ~47 µs long at a 64.14 µs pitch, so the extra sprite-fetch line is
 **Open.**
 
 1. **The three captures of §12**, and whether they are processing or model.
-2. **The exact packed-dummy boundary and `0x1FFFF` source** (§10.2). The
-   published command/address ownership path is absent; `NEED=18` is suggested
-   by CI, while `NEED=19` remains the better integer approximation.
+2. **The `0x1FFFF` dummy source** (§10.2). The packed-slot window is now
+   `-18` from the `.cpureq` census above; only the command/address ownership
+   path remains absent in the published silicon sheets.
 3. **A combined R#9/R#18 capture.** The circuit composition is exact enough to
    generate it (§13), but only the separate sweeps have been measured.
 4. **The `.txt` axis** (§9.5): absolute time is `1368 * column + row`, so the
    origin is implicit and every consumer re-derives it. Record it in the file,
    or trim captures to a line boundary. Until then `--origin` is the guard.
    Doing this would also address §12.
-5. **openMSX CPU origin** (§8.5): upstream still applies `Delta::D16` at the
-   Z80 port timestamp, ~29 cycles early. Lost-request timing cancels; the
-   stolen command slot does not (`vdpcmdx` `+CPU`). The rule itself is no
-   longer open; it is implemented on [`sndpl/openMSX#9`](https://github.com/sndpl/openMSX/pull/9), not merged.
+5. **Border/display table switch** (§15): measured at cycle 164 inside the
+   line; not yet emulated in openMSX. Upstream still gives ~110 slots too many
+   on the line before the display area.
 6. **What `N` counts in command startup** (§14.3). The six commands are
-   measured; the leftover integer per command is not explained. Command-engine
-   delays in character, text, and MSX1 modes are still unmeasured (G1/G2/G3
-   *CPU* classes are known, §7.1 of `VDP_VRAM_TIMING.md`).
-7. **The border/display comb boundary** (§15): cycle ~164 or the line edge.
+   measured; the leftover integer per command is not explained.
+7. **Character and text CPU timing.** G1/G2/G3 classes are circuit-derived only
+   (§7.1 of `VDP_VRAM_TIMING.md`); text has no classes and no 8280 CPU corpus.
+   Useful next captures, in order: `noCmd` grid traces in G2 and T1 (three or
+   four frames each, sprites on/off for G2) to pin the slot tables, line-end
+   padding, and the text `phiL` ambiguity; then the usual `rdCpu` / `wrCpu` /
+   `rdwrCpu` loops with `/CSx` in those modes; then one G2 border-transition
+   capture (`scr2-dispOff-sprOn-stop-noCmd-*f`). V9938 commands cannot run in
+   these modes, so command step delays there stay unmeasured. Text has no
+   packed +6 slots, so there is no dummy-read question.
 8. **Packed-start +1 is unobservable on 2013** (§6.1), and the dummy `R..` may
    be 8280-only — 2013 mixed traces are HMMV only.
 

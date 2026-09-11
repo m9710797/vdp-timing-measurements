@@ -378,7 +378,7 @@ command slot. If all conditions below hold:
 - `C` is packed;
 - `S` is the next rising-edge CPU slot after `C` (normally `C + 26`;
   `C + 54` for packed row 1212);
-- `-22 < T - C <= -19`;
+- `-22 < T - C <= -18`;
 
 then:
 
@@ -388,13 +388,20 @@ then:
 4. do not treat the dummy as completion of the CPU request and do not advance
    the CPU VRAM address for it.
 
-This is the best deterministic integer-coordinate rule. CI simulation supplies
-a likely mechanism: after missing `C-6`, the request buffer becomes `waiting`
-at `C` over the wider interval `-22 < T-C <= -18` (`need = 18`). The missing
-command/address ownership circuitry prevents proving that it samples
-`waiting` at precisely this point, and reconstructed measurements contain
-dummy and non-dummy cases around that boundary. Do not widen the implemented
-rule to `-18` solely from the CI result.
+CI simulation supplies a likely mechanism: after missing `C-6`, the request
+buffer becomes `waiting` at `C` over `-22 < T-C <= -18` (`need = 18`). The
+published command/address ownership path is absent, so the connection from
+`waiting` to command suppression and `0x1FFFF` cannot be traced end to end.
+
+The boundary is not perfectly sharp. Classifying observed dummies by integer
+`T-C` gives peaks at −21..−19 with a few at −18; non-dummies start at −18.
+Replaying the trellis `.cpureq` request times against the 603 sprites-off
+dummy reads (`C - T` in cycles) gives **585 / 603** for the window **18..21**,
+**449 / 603** for **19..21**, and **603 / 603** with **134** false positives
+for **17..21**. Total error is 29 at the 18 boundary against 155 at 19, so
+**−18 is the best integer cutoff**, with about eleven dummies predicted that
+did not happen. [`sndpl/openMSX#9`](https://github.com/sndpl/openMSX/pull/9)
+implements this window.
 
 Blanking-region dummy reads outside the command/CPU slot table are a separate
 display-pipeline behaviour.
@@ -545,9 +552,28 @@ before the corresponding pixels are displayed.
     make its accesses dummy;
   - from cycle 164 onward, use the display-disabled grid.
 
-The exact switch point still needs confirmation against an alternative model
-that switches at the line boundary. Cycle 164 is the behaviour to use in this
-specification.
+The switch is at the **same position at both borders**, somewhere in
+**(126, 162]**: a different **line origin for the access grid**, not a
+different number of lines. Per-line calibration shows the pre-display line runs
+the sprites-off left comb (6, 14, … 118) and from 164 onward the sprites-on
+comb with dummy bitmap reads; the post-display line runs the sprites-on fetch
+comb through ~126 (all dummy) and the display-off comb from 164. A global
+refresh fit smears this to “at the line boundary”; that was wrong
+([`sndpl/openMSX#5`](https://github.com/sndpl/openMSX/pull/5) discussion, 11
+Sep 2026).
+
+On the line before the display area, hardware exposes **44** command/CPU slots
+to the engine; openMSX currently gives **154** on that line — about **110 slots
+too many** for one line per frame. Switching a whole line early would not fix
+that; the table must change at cycle **164** inside the line. The renderer and
+sprite checker should keep their existing line boundary; only the slot
+scheduler needs a separate switch moment. Not implemented in openMSX yet.
+
+One detail even a correct switch does not capture: the left blanking of the
+pre-display line uses the sprites-off comb, not the display-off one — fifteen
+slots where display-off has sixteen, six cycles later — because that line
+fetches no sprite patterns for the border line above it. A fourth table for one
+blanking region per frame is not worth it.
 
 ## 11. Reference scheduling pseudocode
 
@@ -701,7 +727,7 @@ void maybeBookPackedDummy(Cycle requestTime, CpuSlot cpuSlot)
 
     if (candidate.packed &&
         cpuSlot.time == nextCpuSlotAfter(candidate.time) &&
-        -22 < margin && margin <= -19) {
+        -22 < margin && margin <= -18) {
         bookCpuDummy(candidate);
     }
 }
@@ -772,18 +798,22 @@ occupied and advances to the next command slot.
 
 The following are not fully specified and must not be hidden as exact rules:
 
-1. The packed-dummy boundary at `T - C = -18`.
-2. What the leftover integer in command startup counts. The six command
+1. What the leftover integer in command startup counts. The six command
    thresholds in section 5.3 are measured; they are not derived from the
    published command-control circuitry.
-3. Combined non-zero R#18 and non-default R#9 S1/S0 timing is hardware-derived
+2. Combined non-zero R#18 and non-default R#9 S1/S0 timing is hardware-derived
    but has not been validated by a combined capture.
-4. Text, undocumented, and MSX1 access tables. The existing measured T1/T2
-   table's 47-slot cyclic structure is circuit-confirmed, but the circuit model
-   retains a global one-`phiL` phase ambiguity and therefore supplies no
-   replacement table.
-5. The exact border/display table-switch point: cycle 164 versus the line
-   boundary.
+3. Text and MSX1 access tables. G1/G2/G3 CPU slot classes are circuit-derived
+   (section 7.1) but not yet measured on the 8280. The text table's 47-slot
+   cyclic structure is circuit-confirmed, but the circuit model retains a global
+   one-`phiL` phase ambiguity and supplies no replacement table; CPU classes in
+   text mode are unmeasured.
+4. The border/display table switch at cycle 164 (section 10): measured and
+   specified, but not yet emulated in openMSX. The `0x1FFFF` dummy address on
+   packed slots is specified and implemented on
+   [`sndpl/openMSX#9`](https://github.com/sndpl/openMSX/pull/9); only the
+   command/address ownership path remains absent in the published silicon
+   sheets.
 
 For the default 1368-cycle centred bitmap modes, use the rules above without
 additional per-mode or per-row exceptions.
